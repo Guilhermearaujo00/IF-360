@@ -51,4 +51,7 @@ Desktop.ini
 *.swp
 *~
 
-# ============ Git ============
+# ============ Env / Secrets ============
+.env
+.env.*
+!.env.example
