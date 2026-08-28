@@ -2,12 +2,14 @@
 
 Jogo desenvolvido em **Unity 6** (6000.4.0f1) por equipe colaborativa.
 
+Repositório: https://github.com/Guilhermearaujo00/IF-360
+
 ## Como clonar e rodar
 
 1. Instale o [Unity Hub](https://unity.com/unity-hub) e o Unity 6 (6000.x)
 2. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/IF-360.git
+   git clone https://github.com/Guilhermearaujo00/IF-360.git
    ```
 3. No Unity Hub: **Add** → selecione a pasta do projeto
 4. Abra e espere o Unity importar os pacotes
