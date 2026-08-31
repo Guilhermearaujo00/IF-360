@@ -1,14 +1,21 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movimento")]
-    public float velMovimento = 8f;
-    public float forcaPulo = 9f;
-    public float gravidade = 25f;
+    [SerializeField] private float velMovimento = 8f;
+    [SerializeField] private float forcaPulo = 9f;
+    [SerializeField] private float gravidade = 25f;
+    [SerializeField] private float velocidadeRotacao = 10f;
 
     private CharacterController controller;
+    private Camera cam;
+    private PlayerInputActions input;
+
     private float velocidadeVertical;
+    private Vector2 moveInput;
     private Vector3 direcaoAtual;
 
     public bool NoChao => controller.isGrounded;
@@ -16,6 +23,20 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        cam = Camera.main;
+
+        input = new PlayerInputActions();
+        input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        input.Player.Jump.performed += _ => Pular();
+    }
+
+    private void OnEnable() => input.Enable();
+    private void OnDisable() => input.Disable();
+
+    private void OnDestroy()
+    {
+        input.Dispose();
     }
 
     private void Update()
@@ -25,22 +46,19 @@ public class PlayerController : MonoBehaviour
 
     private void Movimentar()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        Vector3 frente = Camera.main.transform.forward;
-        Vector3 direita = Camera.main.transform.right;
+        Vector3 frente = cam.transform.forward;
+        Vector3 direita = cam.transform.right;
         frente.y = 0f;
         direita.y = 0f;
         frente.Normalize();
         direita.Normalize();
 
-        direcaoAtual = (frente * v + direita * h).normalized;
+        direcaoAtual = (frente * moveInput.y + direita * moveInput.x).normalized;
 
         if (direcaoAtual.magnitude > 0.1f)
         {
             Quaternion alvo = Quaternion.LookRotation(direcaoAtual);
-            transform.rotation = Quaternion.Slerp(transform.rotation, alvo, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, alvo, Time.deltaTime * velocidadeRotacao);
         }
 
         if (controller.isGrounded && velocidadeVertical < 0f)
@@ -48,15 +66,24 @@ public class PlayerController : MonoBehaviour
             velocidadeVertical = -2f;
         }
 
-        if (Input.GetButtonDown("Jump") && controller.isGrounded)
-        {
-            velocidadeVertical = forcaPulo;
-        }
-
         Vector3 movimento = direcaoAtual * velMovimento;
         movimento.y = velocidadeVertical;
 
         controller.Move(movimento * Time.deltaTime);
         velocidadeVertical -= gravidade * Time.deltaTime;
+    }
+
+    private void Pular()
+    {
+        if (controller.isGrounded)
+        {
+            velocidadeVertical = forcaPulo;
+        }
+    }
+
+    public void TravarControle(bool r)
+    {
+        if (r) input.Disable();
+        else input.Enable();
     }
 }

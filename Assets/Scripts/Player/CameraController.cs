@@ -1,19 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
     [Header("Alvo")]
-    public Transform alvo;
-    public Vector3 offset = new Vector3(0f, 3f, -6f);
+    [SerializeField] private Transform alvo;
 
     [Header("Sensibilidade do mouse")]
-    public float sensibilidade = 3f;
-    public float distanciaMax = 12f;
-    public float distanciaMin = 3f;
+    [SerializeField] private float sensibilidade = 3f;
+    [SerializeField] private float distanciaMax = 12f;
+    [SerializeField] private float distanciaMin = 3f;
+    [SerializeField] private float altura = 3f;
 
+    private PlayerInputActions input;
     private float rotacaoX = 0f;
     private float rotacaoY = 0f;
     private float distanciaAtual = 8f;
+
+    private void Awake()
+    {
+        input = new PlayerInputActions();
+        input.Player.Look.performed += ctx => Orbita(ctx.ReadValue<Vector2>());
+        input.Player.Zoom.performed += ctx => Zoom(ctx.ReadValue<float>());
+    }
 
     private void Start()
     {
@@ -21,24 +30,38 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
 
         if (alvo == null)
-            alvo = GameObject.FindWithTag("Player").transform;
+            alvo = transform.parent;
+    }
+
+    private void OnEnable() => input.Enable();
+    private void OnDisable() => input.Disable();
+
+    private void OnDestroy()
+    {
+        input.Dispose();
     }
 
     private void LateUpdate()
     {
         if (alvo == null) return;
 
-        rotacaoX += Input.GetAxis("Mouse X") * sensibilidade;
-        rotacaoY -= Input.GetAxis("Mouse Y") * sensibilidade;
-        rotacaoY = Mathf.Clamp(rotacaoY, -40f, 60f);
-
-        distanciaAtual -= Input.GetAxis("Mouse ScrollWheel") * 2f;
-        distanciaAtual = Mathf.Clamp(distanciaAtual, distanciaMin, distanciaMax);
-
         Quaternion rot = Quaternion.Euler(rotacaoY, rotacaoX, 0f);
-        Vector3 pos = alvo.position - rot * Vector3.forward * distanciaAtual + Vector3.up * offset.y;
+        Vector3 pos = alvo.position - rot * Vector3.forward * distanciaAtual + Vector3.up * altura;
 
         transform.position = pos;
         transform.LookAt(alvo.position + Vector3.up * 1f);
+    }
+
+    private void Orbita(Vector2 delta)
+    {
+        rotacaoX += delta.x * sensibilidade;
+        rotacaoY -= delta.y * sensibilidade;
+        rotacaoY = Mathf.Clamp(rotacaoY, -40f, 60f);
+    }
+
+    private void Zoom(float valor)
+    {
+        distanciaAtual -= valor * 2f;
+        distanciaAtual = Mathf.Clamp(distanciaAtual, distanciaMin, distanciaMax);
     }
 }

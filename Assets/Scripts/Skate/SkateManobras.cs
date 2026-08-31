@@ -1,61 +1,57 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerController))]
 public class SkateManobras : MonoBehaviour
 {
     [Header("Manobras no ar")]
-    public KeyCode kickflip = KeyCode.K;
-    public KeyCode backflip = KeyCode.L;
-    public float velocidadeRotacao = 720f;
-    public float duracaoManobra = 0.5f;
-    public int pontosPorTruque = 100;
-
-    [Header("Pontos")]
-    public int pontos = 0;
+    [SerializeField] private float duracaoManobra = 0.5f;
+    [SerializeField] private int pontosPorTruque = 100;
 
     private PlayerController player;
+    private PlayerInputActions input;
+
     private bool manobraAtiva = false;
     private float manobraTimer = 0f;
 
     private void Awake()
     {
         player = GetComponent<PlayerController>();
+
+        input = new PlayerInputActions();
+        input.Player.Kickflip.performed += _ => TentarManobra("Kickflip");
+        input.Player.Backflip.performed += _ => TentarManobra("Backflip");
+    }
+
+    private void OnEnable() => input.Enable();
+    private void OnDisable() => input.Disable();
+
+    private void OnDestroy()
+    {
+        input.Dispose();
     }
 
     private void Update()
     {
-        if (player == null) return;
+        if (!manobraAtiva) return;
 
-        if (!player.NoChao && !manobraAtiva)
+        manobraTimer -= Time.deltaTime;
+        if (manobraTimer <= 0f)
         {
-            if (Input.GetKeyDown(kickflip))
-            {
-                IniciarManobra("Kickflip");
-            }
-            else if (Input.GetKeyDown(backflip))
-            {
-                IniciarManobra("Backflip");
-            }
-        }
-
-        if (manobraAtiva)
-        {
-            manobraTimer -= Time.deltaTime;
-            if (manobraTimer <= 0f)
-            {
-                manobraAtiva = false;
-            }
+            manobraAtiva = false;
         }
     }
 
-    private void IniciarManobra(string nome)
+    private void TentarManobra(string nome)
     {
+        if (player == null || player.NoChao || manobraAtiva) return;
+
         manobraAtiva = true;
         manobraTimer = duracaoManobra;
-        pontos += pontosPorTruque;
 
         if (GameManager.Instance != null)
             GameManager.Instance.AdicionarPontos(pontosPorTruque);
 
-        Debug.Log("Truque: " + nome + " → Pontos: " + pontos);
+        Debug.Log("Truque: " + nome + " → Pontos +" + pontosPorTruque);
     }
 }

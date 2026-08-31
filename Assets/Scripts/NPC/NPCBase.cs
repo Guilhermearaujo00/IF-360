@@ -1,29 +1,43 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NPCBase : MonoBehaviour
 {
+    private const string TAG_PLAYER = "Player";
+
     [Header("Identificação")]
-    public string idMissao = "npc_secretaria";
-    public string nomeNPC = "Funcionário da Secretaria";
-    [TextArea] public string falaApresentacao = "Sou o funcionário da secretaria...";
+    [SerializeField] private string idMissao = "npc_secretaria";
+    [SerializeField] private string nomeNPC = "Funcionário da Secretaria";
+    [TextArea] [SerializeField] private string falaApresentacao = "Sou o funcionário da secretaria...";
 
     [Header("Interação")]
-    public float raioInteracao = 3f;
-    public KeyCode teclaInteracao = KeyCode.E;
+    [SerializeField] private float raioInteracao = 3f;
 
+    private PlayerInputActions input;
     private bool jogadorPorPerto = false;
 
-    private void Update()
+    protected string NomeNPC => nomeNPC;
+    protected string FalaApresentacao => falaApresentacao;
+
+    private void Awake()
     {
-        if (jogadorPorPerto && Input.GetKeyDown(teclaInteracao))
-        {
-            Interagir();
-        }
+        input = new PlayerInputActions();
+        input.Player.Interact.performed += _ => Interagir();
+    }
+
+    private void OnEnable() => input.Enable();
+    private void OnDisable() => input.Disable();
+
+    private void OnDestroy()
+    {
+        input.Dispose();
     }
 
     private void Interagir()
     {
-        if (GameManager.Instance.MissaoCompleta(idMissao))
+        if (!jogadorPorPerto) return;
+
+        if (GameManager.Instance != null && GameManager.Instance.MissaoCompleta(idMissao))
         {
             Debug.Log(nomeNPC + ": Você já ajudou! Obrigado!");
         }
@@ -41,11 +55,11 @@ public class NPCBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider outro)
     {
-        if (outro.CompareTag("Player")) jogadorPorPerto = true;
+        if (outro.CompareTag(TAG_PLAYER)) jogadorPorPerto = true;
     }
 
     private void OnTriggerExit(Collider outro)
     {
-        if (outro.CompareTag("Player")) jogadorPorPerto = false;
+        if (outro.CompareTag(TAG_PLAYER)) jogadorPorPerto = false;
     }
 }
