@@ -25,7 +25,7 @@ Protótipo da primeira área do campus Januária. Remanescente: é a única áre
 | Almoxarifado/SET | Roney indica | Onde fica o servidor que precisa ser configurado |
 | Biblioteca | Thiago (sec.: JP, Gleice, Rosy) | Cadastro e função da biblioteca. Missão: devolver livros |
 | Gabinete de Docentes (Núcleo) | Josy (sec.: David, Márcio) | Núcleo e projetos extracurriculares. Missão: finalizar projeto |
-| Lab. Bridge | David | Apresenta o prédio EAD. Missão: ceder componentes do computador |
+| Lab. Bridge (fica dentro do EAD) | David | Apresenta o prédio EAD. Missão: ceder componentes do computador |
 | Prédio do Superior | Márcio | Orienta sobre o prédio do superior. Missão: compilar o jogo (minijogo) |
 | Refeitório | João (sec.: Cláudio) | Uso do refeitório e tickets |
 | Posto de Vendas | Cláudio | Compra de tickets/mercadorias |
@@ -36,7 +36,7 @@ Protótipo da primeira área do campus Januária. Remanescente: é a única áre
 
 ## Prédios SÓ com placa informativa
 
-Quadra Esportiva, Área de Descanso, Academia, Lanchonete Maná, Prédio EAD (e demais não citados em missões).
+Quadra Esportiva, Área de Descanso, Academia, Lanchonete Maná (e demais não citados em missões). O prédio EAD não precisa de placa: é apresentado pelo NPC David dentro do Lab. Bridge.
 
 ---
 
