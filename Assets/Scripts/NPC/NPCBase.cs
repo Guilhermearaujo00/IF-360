@@ -10,9 +10,6 @@ public class NPCBase : MonoBehaviour
     [SerializeField] private string nomeNPC = "Funcionário da Secretaria";
     [TextArea] [SerializeField] private string falaApresentacao = "Sou o funcionário da secretaria...";
 
-    [Header("Interação")]
-    [SerializeField] private float raioInteracao = 3f;
-
     private PlayerInputActions input;
     private bool jogadorPorPerto = false;
 
