@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     public bool NoChao => controller.isGrounded;
 
+    public float Speed => direcaoAtual.magnitude * velMovimento;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
