@@ -23,12 +23,19 @@ public class SkateManobras : MonoBehaviour
         input.Player.Backflip.performed += _ => TentarManobra("Backflip");
     }
 
-    private void OnEnable() => input.Enable();
-    private void OnDisable() => input.Disable();
+    private void OnEnable()
+    {
+        if (input != null) input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        if (input != null) input.Disable();
+    }
 
     private void OnDestroy()
     {
-        input.Dispose();
+        if (input != null) input.Dispose();
     }
 
     private void Update()

@@ -64,6 +64,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Correr"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a2f5b31-8c47-4e0a-b26e-5d44f1a09b7f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""3438d969-5f41-4a5c-80b9-39a382c65964"",
@@ -133,6 +142,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c1e0c02-a55b-4baf-9e3d-1c6d0a8b7f21"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Correr"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c1e0c02-a55b-4baf-9e3d-2c6d0a8b7f22"",
+                    ""path"": ""<Keyboard>/rightShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Correr"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -224,6 +255,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Kickflip = m_Player.FindAction("Kickflip", throwIfNotFound: true);
         m_Player_Backflip = m_Player.FindAction("Backflip", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Correr = m_Player.FindAction("Correr", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
@@ -297,6 +329,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Kickflip;
     private readonly InputAction m_Player_Backflip;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Correr;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Zoom;
@@ -308,6 +341,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Kickflip => m_Wrapper.m_Player_Kickflip;
         public InputAction @Backflip => m_Wrapper.m_Player_Backflip;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Correr => m_Wrapper.m_Player_Correr;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
@@ -332,6 +366,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Correr.started += instance.OnCorrer;
+            @Correr.performed += instance.OnCorrer;
+            @Correr.canceled += instance.OnCorrer;
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -357,6 +394,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Correr.started -= instance.OnCorrer;
+            @Correr.performed -= instance.OnCorrer;
+            @Correr.canceled -= instance.OnCorrer;
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
@@ -389,6 +429,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnKickflip(InputAction.CallbackContext context);
         void OnBackflip(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnCorrer(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,14 +10,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float forcaPulo = 9f;
     [SerializeField] private float gravidade = 25f;
     [SerializeField] private float velocidadeRotacao = 10f;
+    [SerializeField] private float multiplicadorCorrida = 1.8f;
 
     private CharacterController controller;
     private Camera cam;
     private PlayerInputActions input;
+    private Animator animator;
 
     private float velocidadeVertical;
     private Vector2 moveInput;
     private Vector3 direcaoAtual;
+    private bool correndo;
+    private bool podeCorrer;
 
     public bool NoChao => controller.isGrounded;
 
@@ -26,24 +31,50 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         cam = Camera.main;
+        animator = GetComponentInChildren<Animator>();
+        if (animator != null)
+        {
+            podeCorrer = animator.parameters.Any(p => p.name == "Correndo");
+        }
 
         input = new PlayerInputActions();
         input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         input.Player.Jump.performed += _ => Pular();
+        input.Player.Correr.performed += _ => correndo = true;
+        input.Player.Correr.canceled += _ => correndo = false;
     }
 
-    private void OnEnable() => input.Enable();
-    private void OnDisable() => input.Disable();
+    private void OnEnable()
+    {
+        if (input != null) input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        if (input != null) input.Disable();
+    }
 
     private void OnDestroy()
     {
-        input.Dispose();
+        if (input != null) input.Dispose();
     }
 
     private void Update()
     {
         Movimentar();
+        AtualizarAnimacao();
+    }
+
+    private void AtualizarAnimacao()
+    {
+        if (animator == null || animator.runtimeAnimatorController == null) return;
+
+        animator.SetFloat("Speed", direcaoAtual.magnitude);
+        if (podeCorrer)
+        {
+            animator.SetBool("Correndo", correndo && controller.isGrounded && direcaoAtual.magnitude > 0.1f);
+        }
     }
 
     private void Movimentar()
@@ -68,7 +99,7 @@ public class PlayerController : MonoBehaviour
             velocidadeVertical = -2f;
         }
 
-        Vector3 movimento = direcaoAtual * velMovimento;
+        Vector3 movimento = direcaoAtual * velMovimento * (correndo ? multiplicadorCorrida : 1f);
         movimento.y = velocidadeVertical;
 
         controller.Move(movimento * Time.deltaTime);
@@ -80,6 +111,7 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
         {
             velocidadeVertical = forcaPulo;
+            if (animator != null && animator.runtimeAnimatorController != null) animator.SetTrigger("Pular");
         }
     }
 
