@@ -19,6 +19,7 @@
 sysinfo.txt
 # Recovery/auto-save de cenas
 Assets/_Recovery/
+Assets/_Recovery.meta
 
 # Build
 *.apk
