@@ -17,6 +17,8 @@
 
 # Crash reports
 sysinfo.txt
+# Recovery/auto-save de cenas
+Assets/_Recovery/
 
 # Build
 *.apk
