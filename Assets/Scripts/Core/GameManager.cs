@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,9 +8,6 @@ public class GameManager : MonoBehaviour
     public int pontos = 0;
     public int colecionaveisTotal = 0;
     public int colecionaveisColetados = 0;
-
-    [Header("Missões")]
-    [SerializeField] private List<string> missoesCompletas = new List<string>();
 
     private void Awake()
     {
@@ -39,20 +35,16 @@ public class GameManager : MonoBehaviour
 
     public void CompletarMissao(string idMissao)
     {
-        if (!missoesCompletas.Contains(idMissao))
-        {
-            missoesCompletas.Add(idMissao);
-            Debug.Log("Missão completada: " + idMissao);
-        }
+        if (QuestManager.Instancia != null) QuestManager.Instancia.CompletarMissao(idMissao);
     }
 
     public bool MissaoCompleta(string idMissao)
     {
-        return missoesCompletas.Contains(idMissao);
+        return QuestManager.Instancia != null && QuestManager.Instancia.MissaoCompleta(idMissao);
     }
 
     public int QuantidadeMissoesCompletas()
     {
-        return missoesCompletas.Count;
+        return QuestManager.Instancia != null ? QuestManager.Instancia.QuantidadeMissoesCompletas() : 0;
     }
 }
