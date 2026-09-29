@@ -11,6 +11,10 @@ using UnityEngine.UI;
 ///     "DialogoUI" -> "CaixaDialogo" com textos TMP (NpcNome, TextoFala, DicaContinuar);
 ///   - Player: tag "Player" + componente PlayerInteraction.
 ///
+/// A ferramenta é REUTILIZÁVEL: na segunda execução ela não duplica nada — reconstrói
+/// a hierarquia de UI com RectTransform correto (caixa ancorada na PARTE INFERIOR)
+/// e preserva componentes já existentes (incluindo o Font Asset atribuído).
+///
 /// RODAR DEPOIS (uma vez, por cena): Window > TextMeshPro > Import TMP Essential
 /// Resources e, se a fonte não aparecer, atribuir um Font Asset nos três textos.
 /// </summary>
@@ -21,6 +25,15 @@ public static class SetupSistemaDialogo
     [MenuItem(MENU)]
     public static void ConfigurarCena()
     {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            EditorUtility.DisplayDialog("SetupSistemaDialogo",
+                "Saia do Play Mode antes de configurar a cena. " +
+                "Objetos criados durante o Play seriam descartados ao parar.",
+                "OK");
+            return;
+        }
+
         CriarSystems();
         CriarCanvas();
         ConfigurarPlayer();
@@ -28,9 +41,8 @@ public static class SetupSistemaDialogo
         EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 
         Debug.Log("SetupSistemaDialogo: sistema de diálogo configurado. " +
-                  "Lembre-se de importar os recursos essenciais do TextMeshPro " +
-                  "(Window > TextMeshPro > Import TMP Essential Resources) e atribuir " +
-                  "Font Assets aos textos se eles aparecerem vazios.");
+                  "Caixa ancorada na parte inferior. Se os textos aparecerem vazios, " +
+                  "atribua um Font Asset (LiberationSans SDF).");
     }
 
     private static void CriarSystems()
@@ -44,14 +56,12 @@ public static class SetupSistemaDialogo
         GameObject systems = new GameObject("Systems");
         Undo.RegisterCreatedObjectUndo(systems, "Criar Systems");
         systems.AddComponent<DialogueManager>();
-        Debug.Log("SetupSistemaDialogo: 'Systems' criado (não esqueça de atribuir a referência 'ui' " +
-                  "após a criação do Canvas abaixo).");
+        Debug.Log("SetupSistemaDialogo: 'Systems' criado (a referência 'ui' será vinculada quando o Canvas for criado abaixo).");
     }
 
     private static void CriarCanvas()
     {
-        Canvas canvasExistente = Object.FindFirstObjectByType<Canvas>();
-        Canvas canvas = canvasExistente;
+        Canvas canvasExistente = Object.FindAnyObjectByType<Canvas>();
         GameObject canvasGo;
 
         if (canvasExistente != null)
@@ -63,7 +73,7 @@ public static class SetupSistemaDialogo
         {
             canvasGo = new GameObject("Canvas");
             Undo.RegisterCreatedObjectUndo(canvasGo, "Criar Canvas");
-            canvas = canvasGo.AddComponent<Canvas>();
+            Canvas canvas = canvasGo.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvasGo.AddComponent<GraphicRaycaster>();
 
@@ -73,48 +83,42 @@ public static class SetupSistemaDialogo
             scaler.matchWidthOrHeight = 0.5f;
         }
 
-        GameObject uiGo = CriarFilho(canvasGo, "DialogoUI");
+        // "DialogoUI" é apenas o host do componente DialogueUI (é um nó simples,
+        // não é renderizado). A caixa NÃO fica filha dele: fica DIRETAMENTE do
+        // Canvas (que já é RectTransform), senão as âncoras de "inferior" seriam
+        // ignoradas e a caixa apareceria centralizada.
+        GameObject uiGo = ObterOuCriarFilho(canvasGo, "DialogoUI");
         if (uiGo.GetComponent<DialogueUI>() == null) uiGo.AddComponent<DialogueUI>();
 
-        GameObject caixa = CriarCaixaDialogo(uiGo);
-        TMP_Text nome = CriarTexto(caixa, "NpcNome", new Vector2(0f, 1f), new Vector2(0f, 1f),
-                                   new Vector2(20f, -12f), 34, TextAlignmentOptions.TopLeft);
-        RectTransform rectNome = nome.GetComponent<RectTransform>();
-        rectNome.sizeDelta = new Vector2(1560f, 40f);
+        GameObject caixa = ObterOuCriarFilho(canvasGo, "CaixaDialogo");
+        if (caixa.transform.parent != canvasGo.transform)
+        {
+            caixa.transform.SetParent(canvasGo.transform, false);
+        }
+        PrepararCaixa(caixa);
 
-        TMP_Text texto = CriarTexto(caixa, "TextoFala", new Vector2(0f, 1f), new Vector2(1f, 1f),
-                                    new Vector2(20f, -58f), 26, TextAlignmentOptions.TopLeft);
-        RectTransform rectTexto = texto.GetComponent<RectTransform>();
-        rectTexto.offsetMin = new Vector2(20f, -230f);
-        rectTexto.offsetMax = new Vector2(-20f, -52f);
-        texto.enableWordWrapping = true;
-        GameObject dica = CriarTextoCeil(caixa, "DicaContinuar");
+        TMP_Text nome = ObterOuCriarTMP(caixa, "NpcNome");
+        TMP_Text texto = ObterOuCriarTMP(caixa, "TextoFala");
+        TMP_Text dica = ObterOuCriarTMP(caixa, "DicaContinuar");
 
-        TMP_Text dicaTexto = dica.GetComponent<TMP_Text>();
-        dicaTexto.alignment = TextAlignmentOptions.BottomRight;
-        dicaTexto.text = "Pressione [E] para continuar";
+        PosicionarNome(nome);
+        PosicionarTextoFala(texto);
+        PosicionarDica(dica);
 
-        RectTransform rectDica = dica.GetComponent<RectTransform>();
-        rectDica.anchorMin = new Vector2(1f, 0f);
-        rectDica.anchorMax = new Vector2(1f, 0f);
-        rectDica.pivot = new Vector2(1f, 0f);
-        rectDica.anchoredPosition = new Vector2(-20f, 12f);
-        rectDica.sizeDelta = new Vector2(500f, 30f);
-
-        PreencherReferenciasDialogoUI(uiGo, caixa, nome, texto, dica);
+        PreencherReferenciasDialogoUI(uiGo, caixa, nome, texto, dica.gameObject);
         PreencherReferenciaManager(uiGo);
     }
 
-    private static GameObject CriarCaixaDialogo(GameObject pai)
+    private static void PrepararCaixa(GameObject caixa)
     {
-        GameObject caixa = CriarFilho(pai, "CaixaDialogo");
-
         Image fundo = caixa.GetComponent<Image>();
         if (fundo == null)
         {
             fundo = caixa.AddComponent<Image>();
             fundo.color = new Color(0.16f, 0.16f, 0.2f, 0.94f);
         }
+
+        if (caixa.GetComponent<Outline>() == null) caixa.AddComponent<Outline>();
 
         RectTransform rect = caixa.GetComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0f);
@@ -123,54 +127,86 @@ public static class SetupSistemaDialogo
         rect.anchoredPosition = new Vector2(0f, 40f);
         rect.sizeDelta = new Vector2(1600f, 260f);
 
-        caixa.AddComponent<Outline>();
         caixa.SetActive(false);
-
-        return caixa;
     }
 
-    private static TMP_Text CriarTexto(GameObject pai, string nome, Vector2 anchorMin, Vector2 anchorMax,
-                                       Vector2 posicao, int tamanho, TextAlignmentOptions alinhamento)
+    private static void PosicionarNome(TMP_Text nome)
     {
-        GameObject go = CriarFilho(pai, nome);
-        TMP_Text tmp = go.AddComponent<TextMeshProUGUI>();
-
-        RectTransform rect = go.GetComponent<RectTransform>();
-        rect.anchorMin = anchorMin;
-        rect.anchorMax = anchorMax;
+        RectTransform rect = nome.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(0f, 1f);
         rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = posicao;
-        rect.sizeDelta = new Vector2(200f, 40f);
+        rect.anchoredPosition = new Vector2(20f, -12f);
+        rect.sizeDelta = new Vector2(1560f, 40f);
 
-        tmp.fontSize = tamanho;
-        tmp.alignment = alinhamento;
-        tmp.color = Color.white;
-        tmp.text = string.Empty;
-
-        return tmp;
+        nome.fontSize = 34f;
+        nome.alignment = TextAlignmentOptions.TopLeft;
+        nome.color = Color.white;
+        nome.text = string.Empty;
     }
 
-    private static GameObject CriarTextoCeil(GameObject pai, string nome)
+    private static void PosicionarTextoFala(TMP_Text texto)
     {
-        GameObject go = CriarFilho(pai, nome);
-        TMP_Text tmp = go.AddComponent<TextMeshProUGUI>();
+        RectTransform rect = texto.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(0.5f, 1f);
+        rect.offsetMin = new Vector2(20f, -230f);
+        rect.offsetMax = new Vector2(-20f, -52f);
 
-        RectTransform rect = go.GetComponent<RectTransform>();
+        texto.fontSize = 26f;
+        texto.alignment = TextAlignmentOptions.TopLeft;
+        texto.textWrappingMode = TextWrappingModes.Normal;
+        texto.color = Color.white;
+        texto.text = string.Empty;
+    }
+
+    private static void PosicionarDica(TMP_Text dica)
+    {
+        RectTransform rect = dica.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(1f, 0f);
+        rect.anchorMax = new Vector2(1f, 0f);
         rect.pivot = new Vector2(1f, 0f);
+        rect.anchoredPosition = new Vector2(-20f, 12f);
+        rect.sizeDelta = new Vector2(500f, 30f);
 
-        tmp.fontSize = 24f;
-        tmp.color = new Color(1f, 1f, 1f, 0.85f);
-        tmp.text = string.Empty;
-
-        return go;
+        dica.fontSize = 24f;
+        dica.alignment = TextAlignmentOptions.BottomRight;
+        dica.color = new Color(1f, 1f, 1f, 0.85f);
+        dica.text = "Pressione [E] para continuar";
     }
 
-    private static GameObject CriarFilho(GameObject pai, string nome)
+    // ---------- Helpers de objetos (reutilizáveis, sem duplicar) ----------
+
+    private static Transform BuscarFilho(Transform pai, string nome)
     {
+        foreach (Transform filho in pai)
+        {
+            if (filho.name == nome) return filho;
+
+            Transform neto = BuscarFilho(filho, nome);
+            if (neto != null) return neto;
+        }
+        return null;
+    }
+
+    private static GameObject ObterOuCriarFilho(GameObject pai, string nome)
+    {
+        Transform existente = BuscarFilho(pai.transform, nome);
+        if (existente != null) return existente.gameObject;
+
         GameObject go = new GameObject(nome);
         Undo.RegisterCreatedObjectUndo(go, "Criar " + nome);
         go.transform.SetParent(pai.transform, false);
         return go;
+    }
+
+    private static TMP_Text ObterOuCriarTMP(GameObject pai, string nome)
+    {
+        GameObject go = ObterOuCriarFilho(pai, nome);
+        TMP_Text tmp = go.GetComponent<TMP_Text>();
+        if (tmp == null) tmp = go.AddComponent<TextMeshProUGUI>();
+        return tmp;
     }
 
     private static void PreencherReferenciasDialogoUI(GameObject uiGo, GameObject caixa,
