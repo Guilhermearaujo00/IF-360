@@ -46,7 +46,7 @@ Proximidade: cada `NPCBaseNovo` possui Trigger próprio (SphereCollider, raio 2.
 | PlayerInteraction | `Scripts\Player\PlayerInteraction.cs` | Único ouvinte de E; mantém lista de NPCs elegíveis; escolhe o **mais próximo**; roteia E p/ o DialogueManager quando há diálogo ativo | Não tem Trigger próprio, não decide o que é pergunta/resposta |
 | DialogueManager | `Scripts\Sistemas\DialogueManager.cs` | Máquina de estados da conversa; resolve falas (DialogoData → fallback `falaApresentacao`); digitação; encerramento → `NotificarDialogoEncerrado()` | Não desenha nada |
 | DialogueUI | `Scripts\UI\Dialogue\DialogueUI.cs` | Camada visual: mostra/esconde a caixa, define nome, texto e indicador | Sem lógica de estados/input |
-| DialogoData | `Scripts\Dados\DialogoData.cs` | ScriptableObject com `falas[]` + `velDigitacao` | — |
+| DialogoData | `Scripts\Dados\DialogoData.cs` | ScriptableObject com `falas[]` (cada fala tem `nomeFalante` + `textoFala`) + `velDigitacao` | — |
 
 Áreas **fora do escopo** (não alteradas): QuestManager, InventoryManager, SaveManager, AudioManager, GameManager, PlayerController, CameraController, SkateManobras, minijogos e HUD.
 

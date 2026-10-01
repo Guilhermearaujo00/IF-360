@@ -28,7 +28,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private DialogueUI ui;
 
     private NPCBaseNovo npcEmConversa;
-    private string[] falas;
+    private DialogoData.FalaDialogo[] falas;
     private int indiceFala;
     private float velDigitacao = 0.03f;
     private Coroutine coroutineDigitacao;
@@ -97,7 +97,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        string[] lista = ResolverFalas(npc);
+        DialogoData.FalaDialogo[] lista = ResolverFalas(npc);
         if (lista == null || lista.Length == 0)
         {
             Debug.LogWarning($"DialogueManager: '{npc.name}' resolveu para zero falas. Pedido ignorado.", npc);
@@ -121,12 +121,11 @@ public class DialogueManager : MonoBehaviour
         indiceFala = 0;
 
         ui.Mostrar();
-        ui.DefinirNome(npc.nomeNPC);
         ui.MostrarIndicador(true);
         ExibirFalaAtual();
     }
 
-    private static string[] ResolverFalas(NPCBaseNovo npc)
+    private static DialogoData.FalaDialogo[] ResolverFalas(NPCBaseNovo npc)
     {
         DialogoData dados = npc.dialogoData;
         if (dados != null && dados.falas != null && dados.falas.Length > 0)
@@ -136,10 +135,25 @@ public class DialogueManager : MonoBehaviour
 
         if (!string.IsNullOrWhiteSpace(npc.falaApresentacao))
         {
-            return new[] { npc.falaApresentacao };
+            DialogoData.FalaDialogo reserva = new DialogoData.FalaDialogo
+            {
+                nomeFalante = npc.nomeNPC,
+                textoFala = npc.falaApresentacao
+            };
+            return new[] { reserva };
         }
 
         return null;
+    }
+
+    private string NomeDoFalante(DialogoData.FalaDialogo fala)
+    {
+        if (fala != null && !string.IsNullOrWhiteSpace(fala.nomeFalante))
+        {
+            return fala.nomeFalante;
+        }
+
+        return npcEmConversa != null ? npcEmConversa.nomeNPC : string.Empty;
     }
 
     // ---------- Avanço ----------
@@ -189,7 +203,10 @@ public class DialogueManager : MonoBehaviour
         }
 
         estado = Estado.TYPING;
-        coroutineDigitacao = StartCoroutine(DigitarTexto(falas[indiceFala]));
+
+        DialogoData.FalaDialogo falaAgora = falas[indiceFala];
+        ui.DefinirNome(NomeDoFalante(falaAgora));
+        coroutineDigitacao = StartCoroutine(DigitarTexto(falaAgora.textoFala));
     }
 
     private IEnumerator DigitarTexto(string textoCompleto)
@@ -223,7 +240,7 @@ public class DialogueManager : MonoBehaviour
             coroutineDigitacao = null;
         }
 
-        string falaAtual = falas[indiceFala];
+        string falaAtual = falas[indiceFala].textoFala;
         ui.DefinirTexto(falaAtual);
         FinalizarDigitacao();
     }
