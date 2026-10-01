@@ -117,7 +117,19 @@ public class PlayerController : MonoBehaviour
 
     public void TravarControle(bool r)
     {
-        if (r) input.Disable();
-        else input.Enable();
+        if (input == null) return;
+
+        if (r)
+        {
+            // Zera o input em cache para o personagem não deslizar na última direção.
+            moveInput = Vector2.zero;
+            correndo = false;
+            direcaoAtual = Vector3.zero;
+            input.Disable();
+        }
+        else
+        {
+            input.Enable();
+        }
     }
 }

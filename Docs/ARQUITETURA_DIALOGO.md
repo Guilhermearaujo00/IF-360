@@ -97,9 +97,9 @@ Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
 1. Player entra no trigger do NPC → `JogadorEntrouNaArea` → `PlayerInteraction` adiciona à lista.
 2. **E** → diálogo ativo? sim → `Avancar()`; não → `NpcElegivelMaisProximo().Interagir()`.
 3. `Interagir()` valida (ativo, por perto, diálogo válido, subscriber) → `DialogoSolicitado`.
-4. `DialogueManager.IniciarDialogo(npc)`: se NONE e UI válida → resolve falas (`dialogoData.falas` senão `[falaApresentacao]`), `ui.Mostrar()`, `DefinirNome`, digita.
+4. `DialogueManager.IniciarDialogo(npc)`: se NONE e UI válida → resolve falas (`dialogoData.falas` senão `[falaApresentacao]`), **trava o movimento do jogador (`PlayerController.TravarControle(true)`)**, `ui.Mostrar()`, `DefinirNome`, digita.
 5. E em TYPING → completa; E em COMPLETE → próxima fala ou `EncerrarDialogo()`.
-6. `EncerrarDialogo()`: esconde UI, zera estado, chama `npc.NotificarDialogoEncerrado()` → `AoEncerrarDialogo()` → `IniciarMinijogo()` (se `chamarMinijogo` e ainda não tentou).
+6. `EncerrarDialogo()`: esconde UI, zera estado, **destrava o movimento (`TravarControle(false)`)**, chama `npc.NotificarDialogoEncerrado()` → `AoEncerrarDialogo()` → `IniciarMinijogo()` (se `chamarMinijogo` e ainda não tentou).
 7. **Sair do trigger durante a conversa**: a conversa **continua** (já aberta); o NPC sai da lista de elegíveis. Depois que E fechar o diálogo, E não faz nada até o player voltar ao trigger. O fechamento é igual ao item 6 — nunca fica caixa órfã.
 
 ## 7. Limitações conhecidas (documentadas de propósito)
@@ -115,7 +115,7 @@ Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
 2. **Window > TextMeshPro > Import TMP Essential Resources** (recursos padrão do TMP). Se os textos aparecerem vazios, arrastar um **Font Asset** para `NpcNome`, `TextoFala` e `DicaContinuar`.
 3. Nos NPCs: adicionar `NPCBaseNovo`; marcar um Collider como Trigger; preencher `nomeNPC`, e o `dialogoData` ou `falaApresentacao`.
 4. No `DialogueUI`: `CaixaDialogo` / `NpcNome` / `TextoFala` / `DicaContinuar` já vêm vinculados pela ferramenta.
-5. No `DialogueManager`: a referência `ui` já vem vinculada.
+5. No `DialogueManager`: as referências `ui` e `playerController` já vêm vinculadas pela ferramenta. Se o campo `playerController` estiver vazio, o DialogueManager o procura sozinho em cena (cobre sessões sem a ferramenta).
 
 > **Migração da cena Campus.unity:** o NPC "Funcionário da Secretaria" usava o antigo `NPCBase` (removido). Ele ficará com um componente "Missing (Mono Script)" — **remover o componente quebrado** e adicionar `NPCBaseNovo` no objeto. O trigger (SphereCollider raio 2.5) é reaproveitado.
 

@@ -235,6 +235,12 @@ public static class SetupSistemaDialogo
 
         SerializedObject so = new SerializedObject(manager);
         so.FindProperty("ui").objectReferenceValue = uiGo.GetComponent<DialogueUI>();
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            PlayerController pc = player.GetComponent<PlayerController>();
+            if (pc != null) so.FindProperty("playerController").objectReferenceValue = pc;
+        }
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 

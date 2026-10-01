@@ -27,6 +27,10 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("Referência para a DialogueUI. Sem ela o diálogo não é exibido.")]
     [SerializeField] private DialogueUI ui;
 
+    [Header("Extras (opcional)")]
+    [Tooltip("Trava o movimento do jogador enquanto houver diálogo. Se vazio, é procurado automaticamente.")]
+    [SerializeField] private PlayerController playerController;
+
     private NPCBaseNovo npcEmConversa;
     private DialogoData.FalaDialogo[] falas;
     private int indiceFala;
@@ -120,9 +124,28 @@ public class DialogueManager : MonoBehaviour
         falas = lista;
         indiceFala = 0;
 
+        TravarJogador(true);
         ui.Mostrar();
         ui.MostrarIndicador(true);
         ExibirFalaAtual();
+    }
+
+    private void TravarJogador(bool travado)
+    {
+        if (playerController == null)
+        {
+            playerController = Object.FindAnyObjectByType<PlayerController>();
+        }
+
+        if (playerController != null)
+        {
+            playerController.TravarControle(travado);
+        }
+        else
+        {
+            Debug.LogWarning("DialogueManager: não encontrou PlayerController para " +
+                             $"{(travado ? "travar" : "destravar")} o movimento durante a conversa.", this);
+        }
     }
 
     private static DialogoData.FalaDialogo[] ResolverFalas(NPCBaseNovo npc)
@@ -275,6 +298,8 @@ public class DialogueManager : MonoBehaviour
         indiceFala = 0;
 
         estado = Estado.NONE;
+
+        TravarJogador(false);
 
         // Notifica o NPC para o gancho AoEncerrarDialogo (chamarMinijogo e cia).
         // A checagem != null também cobre o caso do NPC ter sido destruído
