@@ -21,7 +21,6 @@ using UnityEngine.UI;
 public static class SetupSistemaDialogo
 {
     private const string MENU = "Tools/IFNMG/Configurar Sistema de Diálogo";
-    private const string MENU_NPC = "Tools/IFNMG/Criar NPC de Teste (Diretor)";
 
     [MenuItem(MENU)]
     public static void ConfigurarCena()
@@ -44,68 +43,6 @@ public static class SetupSistemaDialogo
         Debug.Log("SetupSistemaDialogo: sistema de diálogo configurado. " +
                   "Caixa ancorada na parte inferior. Se os textos aparecerem vazios, " +
                   "atribua um Font Asset (LiberationSans SDF).");
-    }
-
-    [MenuItem(MENU_NPC)]
-    public static void CriarNPCDeTeste()
-    {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
-        {
-            EditorUtility.DisplayDialog("SetupSistemaDialogo",
-                "Saia do Play Mode antes de criar o NPC.", "OK");
-            return;
-        }
-
-        GameObject existente = GameObject.Find("NPC_Diretor");
-        if (existente != null)
-        {
-            Selection.activeGameObject = existente;
-            Debug.Log("SetupSistemaDialogo: 'NPC_Diretor' já existe na cena — selecionado (nada foi duplicado).");
-            return;
-        }
-
-        GameObject npc = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        npc.name = "NPC_Diretor";
-        Undo.RegisterCreatedObjectUndo(npc, "Criar NPC_Diretor");
-
-        GameObject secretaria = GameObject.Find("NPC_Secretaria");
-        Transform basePos = secretaria != null ? secretaria.transform : null;
-        npc.transform.position = basePos != null
-            ? basePos.position + basePos.right * 3f
-            : Vector3.up;
-        npc.transform.rotation = Quaternion.identity;
-
-        CapsuleCollider col = npc.GetComponent<CapsuleCollider>();
-        col.isTrigger = true;
-        col.radius = 0.6f;
-
-        NPCBaseNovo npcComp = Undo.AddComponent<NPCBaseNovo>(npc);
-        npcComp.nomeNPC = "Diretor";
-        npcComp.falaApresentacao = "Olá! Eu sou o Diretor do campus. (NPC de teste)";
-        npcComp.dialogoData = EncontrarDialogoData();
-
-        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-        Selection.activeGameObject = npc;
-
-        string nomeAsset = npcComp.dialogoData != null ? npcComp.dialogoData.name : "nenhum (usará fala de apresentação)";
-        Debug.Log($"SetupSistemaDialogo: 'NPC_Diretor' criado em {npc.transform.position} " +
-                  $"com DialogoData '{nomeAsset}'.");
-
-        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-    }
-
-    private static DialogoData EncontrarDialogoData()
-    {
-        string[] guids = AssetDatabase.FindAssets("t:DialogoData");
-        foreach (string guid in guids)
-        {
-            DialogoData so = AssetDatabase.LoadAssetAtPath<DialogoData>(AssetDatabase.GUIDToAssetPath(guid));
-            if (so != null && so.falas != null && so.falas.Length > 0)
-            {
-                return so;
-            }
-        }
-        return null;
     }
 
     private static void CriarSystems()
