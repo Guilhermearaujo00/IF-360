@@ -21,6 +21,7 @@ using UnityEngine.UI;
 public static class SetupSistemaDialogo
 {
     private const string MENU = "Tools/IFNMG/Configurar Sistema de Diálogo";
+    private const string MENU_NPC_MISSAO = "Tools/IFNMG/Criar NPC Diretor (teste de missão)";
 
     [MenuItem(MENU)]
     public static void ConfigurarCena()
@@ -45,18 +46,113 @@ public static class SetupSistemaDialogo
                   "atribua um Font Asset (LiberationSans SDF).");
     }
 
-    private static void CriarSystems()
+    [MenuItem(MENU_NPC_MISSAO)]
+    public static void CriarNPCDeTeste()
     {
-        if (Object.FindAnyObjectByType<DialogueManager>() != null)
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
         {
-            Debug.Log("SetupSistemaDialogo: DialogueManager já existe na cena. Pulando Systems.");
+            EditorUtility.DisplayDialog("SetupSistemaDialogo",
+                "Saia do Play Mode antes de criar o NPC.", "OK");
             return;
         }
 
-        GameObject systems = new GameObject("Systems");
-        Undo.RegisterCreatedObjectUndo(systems, "Criar Systems");
-        systems.AddComponent<DialogueManager>();
-        Debug.Log("SetupSistemaDialogo: 'Systems' criado (a referência 'ui' será vinculada quando o Canvas for criado abaixo).");
+        GameObject existente = GameObject.Find("NPC_Diretor");
+        if (existente != null)
+        {
+            Selection.activeGameObject = existente;
+            Debug.Log("SetupSistemaDialogo: 'NPC_Diretor' já existe na cena — selecionado (nada foi duplicado).");
+            return;
+        }
+
+        GameObject npc = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        npc.name = "NPC_Diretor";
+        Undo.RegisterCreatedObjectUndo(npc, "Criar NPC_Diretor");
+
+        GameObject secretaria = GameObject.Find("NPC_Secretaria");
+        Transform basePos = secretaria != null ? secretaria.transform : null;
+        npc.transform.position = basePos != null
+            ? basePos.position + basePos.right * -3f
+            : Vector3.up;
+        npc.transform.rotation = Quaternion.identity;
+
+        CapsuleCollider col = npc.GetComponent<CapsuleCollider>();
+        col.isTrigger = true;
+        col.radius = 0.6f;
+
+        NPCBaseNovo npcComp = Undo.AddComponent<NPCBaseNovo>(npc);
+        npcComp.nomeNPC = "Diretor";
+        npcComp.idMissao = "missao_diretor";
+        npcComp.chamarMinijogo = false;
+        npcComp.completarMissaoAoTerminar = true;
+        npcComp.dialogoData = EncontrarDialogoDataPorNome("Dialogo_Diretor_Pre");
+        npcComp.falaApresentacao = "Olá! Sou o Diretor. (NPC de teste de missão)";
+
+        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        Selection.activeGameObject = npc;
+
+        Debug.Log("SetupSistemaDialogo: 'NPC_Diretor' criado — idMissao 'missao_diretor' completa a etapa ao " +
+                  "terminar a conversa. Configure o 'Missão Requisito' da NPC_Secretaria como 'missao_diretor'.");
+
+        EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+    }
+
+    private static DialogoData EncontrarDialogoData()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DialogoData");
+        foreach (string guid in guids)
+        {
+            DialogoData so = AssetDatabase.LoadAssetAtPath<DialogoData>(AssetDatabase.GUIDToAssetPath(guid));
+            if (so != null && so.falas != null && so.falas.Length > 0)
+            {
+                return so;
+            }
+        }
+        return null;
+    }
+
+    private static DialogoData EncontrarDialogoDataPorNome(string nome)
+    {
+        string[] guids = AssetDatabase.FindAssets("t:DialogoData");
+        foreach (string guid in guids)
+        {
+            DialogoData so = AssetDatabase.LoadAssetAtPath<DialogoData>(AssetDatabase.GUIDToAssetPath(guid));
+            if (so != null && so.name == nome)
+            {
+                return so;
+            }
+        }
+        return null;
+    }
+
+    private static void CriarSystems()
+    {
+        GameObject systems = GameObject.Find("Systems");
+        if (systems == null)
+        {
+            systems = new GameObject("Systems");
+            Undo.RegisterCreatedObjectUndo(systems, "Criar Systems");
+        }
+
+        if (Object.FindAnyObjectByType<DialogueManager>() == null)
+        {
+            systems.AddComponent<DialogueManager>();
+            Debug.Log("SetupSistemaDialogo: DialogueManager adicionado em 'Systems'.");
+        }
+        else
+        {
+            Debug.Log("SetupSistemaDialogo: DialogueManager já existe na cena. Pulando.");
+        }
+
+        if (Object.FindAnyObjectByType<QuestManager>() == null)
+        {
+            systems.AddComponent<QuestManager>();
+            Debug.Log("SetupSistemaDialogo: QuestManager adicionado em 'Systems' — sem ele as missões " +
+                      "não são registradas (GameManager. CompletarMissao não teria efeito).");
+        }
+        else
+        {
+            Debug.Log("SetupSistemaDialogo: QuestManager já existe na cena. Pulando.");
+        }
     }
 
     private static void CriarCanvas()

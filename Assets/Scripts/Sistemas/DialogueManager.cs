@@ -108,7 +108,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        DialogoData dados = npc.dialogoData;
+        DialogoData dados = npc.DialogoParaConversa;
         if (dados != null)
         {
             // 0 = texto instantâneo, ou o valor escolhido no Inspector do SO.
@@ -150,7 +150,7 @@ public class DialogueManager : MonoBehaviour
 
     private static DialogoData.FalaDialogo[] ResolverFalas(NPCBaseNovo npc)
     {
-        DialogoData dados = npc.dialogoData;
+        DialogoData dados = npc.DialogoParaConversa;
         if (dados != null && dados.falas != null && dados.falas.Length > 0)
         {
             return dados.falas;

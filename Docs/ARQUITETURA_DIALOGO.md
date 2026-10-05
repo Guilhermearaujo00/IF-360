@@ -141,3 +141,50 @@ Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
 | Caixa não aparece na tela | Canvas em renderMode errado (usar Screen Space Overlay) |
 | ⚠️ "script missing" no NPC da cena | Componente antigo `NPCBase` removido — remover o componente quebrado e adicionar `NPCBaseNovo` |
 | Missão/minijogo não roda ao fechar | NPC sem `dialogoData`/`falaApresentacao`, ou `chamarMinijogo` falso |
+
+## 11. Próximos passos (ideias futuras — NÃO implementadas)
+
+> Itens acordados como evoluções futuras do sistema de diálogo. Quando forem
+> feitos, marcar aqui e atualizar as seções correspondentes.
+
+- [ ] **Escolha de resposta (estilo Undertale)**: caixa com 2+ opções; o jogador seleciona
+      (teclas) antes de o NPC responder conforme a escolha.
+- [ ] **Visual diferente para falas do Caio**: cor/fundo distinto quando o falante é o
+      jogador, deixando claro quem está falando (além do nome no topo).
+- [ ] **Retratos (portraits)**: imagem do falante na caixa, trocando por linha.
+- [x] **Mais de uma conversa por NPC** (pré/pós-missão): implementado no protótipo de
+      missões — ver seção 12.
+- [ ] **Liberar o cursor durante a conversa** (se um dia o diálogo usar cliques/mouse).
+
+## 12. Integração com missões (protótipo)
+
+O NPC muda de conversa conforme o estado da missão (`QuestManager`) e pode completá-la
+ao fim da conversa.
+
+**Campos novos no `NPCBaseNovo`:**
+- `dialogoDataPosMissao` — conversa exibida quando o requisito estiver cumprido.
+- `missaoRequisito` — missão que precisa estar completa para a conversa do "pós".
+  Vazio = usa o próprio `idMissao`.
+- `completarMissaoAoTerminar` — completa `idMissao` somente na conversa de **entrega**
+  (requisito cumprido). Sem requisito, completa na 1ª conversa (pré → pós direto).
+- `DialogoParaConversa` — escolhe pré/pós conforme o requisito.
+- O `DialogueManager` lê `npc.DialogoParaConversa` (não mais `npc.dialogoData`).
+
+**Fluxo "corrente de missões" (ex.: Secretaria → Diretor → Secretaria):**
+
+| Conversa | Quem | O que acontece ao fechar |
+|---|---|---|
+| 1ª (Secretaria) | mostra **Pré** | nada (só instrui) |
+| Diretor | mostra **fala do Diretor** | `CompletarMissao("missao_diretor")` |
+| 2ª (Secretaria) | mostra **Pós** | `CompletarMissao("npc_secretaria")` — missão concluída |
+| 3ª (Secretaria) | mostra **Pós** | dispara `IniciarMinijogo()` (1x) |
+
+**Montagem no Inspector:**
+- `NPC_Secretaria`: `idMissao` = `npc_secretaria`, `missaoRequisito` = `missao_diretor`,
+  `Dialogo Data` = `Dialogo_Secretaria_Pre`, `Dialogo Data Pós-missão` = `Dialogo_Secretaria_Pos`,
+  ✓ `Completar Missão ao Terminar`, ✓ `Chamar Minijogo`.
+- `NPC_Diretor`: `idMissao` = `missao_diretor`, `Dialogo Data` = `Dialogo_Diretor_Pre`,
+  ✓ `Completar Missão ao Terminar`, ✗ `Chamar Minijogo`.
+
+Assets de exemplo: `Assets\Dados\Dialogos\Dialogo_Secretaria_Pre.asset`,
+`..._Pos.asset` e `Dialogo_Diretor_Pre.asset`. 2º NPC: menu `Tools/IFNMG/Criar NPC Diretor (teste de missão)`.

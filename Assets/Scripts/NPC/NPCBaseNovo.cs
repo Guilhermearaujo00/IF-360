@@ -34,10 +34,16 @@ public class NPCBaseNovo : MonoBehaviour
     [Header("Identidade")]
     public string nomeNPC = "NPC";
     public string idMissao = "missao_padrao";
+    [Tooltip("Missão que precisa estar COMPLETA para este NPC mostrar 'dialogoDataPosMissao'. Vazio = usa o próprio idMissao.")]
+    public string missaoRequisito = "";
 
     [Header("Dados do diálogo")]
     [Tooltip("Dados do diálogo deste NPC (preferencial).")]
     public DialogoData dialogoData;
+    [Tooltip("Conversa exibida DEPOIS que a missão (idMissao) deste NPC estiver completa.")]
+    public DialogoData dialogoDataPosMissao;
+    [Tooltip("Completar a missão (idMissao) automaticamente quando esta conversa terminar (1x).")]
+    public bool completarMissaoAoTerminar;
     [Tooltip("Fala de reserva, usada enquanto o NPC ainda não tem DialogoData.")]
     [TextArea] public string falaApresentacao = "Olá!";
 
@@ -53,6 +59,37 @@ public class NPCBaseNovo : MonoBehaviour
 
     public bool TemDialogoValido =>
         dialogoData != null || !string.IsNullOrWhiteSpace(falaApresentacao);
+
+    /// <summary>
+    /// Conversa que o NPC deve mostrar AGORA, conforme o estado da missão:
+    /// se existe DialogoData pós-missão e a missão já foi completada, usa a
+    /// conversa do pós; caso contrário, usa o DialogoData normal.
+    /// </summary>
+    public DialogoData DialogoParaConversa
+    {
+        get
+        {
+            if (dialogoDataPosMissao != null && MissaoRequisitoCompletaNoJogo)
+            {
+                return dialogoDataPosMissao;
+            }
+
+            return dialogoData;
+        }
+    }
+
+    /// <summary>Requisito para a conversa do "pós". Sem missaoRequisito, usa o próprio idMissao.</summary>
+    private bool MissaoRequisitoCompletaNoJogo
+    {
+        get
+        {
+            string idVerificar = string.IsNullOrWhiteSpace(missaoRequisito) ? idMissao : missaoRequisito;
+            return GameManager.Instance != null && GameManager.Instance.MissaoCompleta(idVerificar);
+        }
+    }
+
+    private bool MissaoCompletaNoJogo =>
+        GameManager.Instance != null && GameManager.Instance.MissaoCompleta(idMissao);
 
     // Evita eventos "fantasmas" quando o Enter Play Mode Options está com
     // Domain Reload desativado (os eventos estáticos sobreviveriam ao Play).
@@ -164,10 +201,27 @@ public class NPCBaseNovo : MonoBehaviour
     /// <summary>Ação específica do NPC ao fim da conversa (sobrescreva em NPCs especiais).</summary>
     protected virtual void AoEncerrarDialogo()
     {
-        if (!chamarMinijogo || minijogoTentado) return;
+        bool missaoCompleta = MissaoCompletaNoJogo;
 
-        minijogoTentado = true;
-        IniciarMinijogo();
+        // Só dispara o minigame quando a missão já foi entregue (conversa do pós).
+        if (chamarMinijogo && missaoCompleta && !minijogoTentado)
+        {
+            minijogoTentado = true;
+            IniciarMinijogo();
+            return;
+        }
+
+        // Conclui a própria missão apenas na "entrega": quando o requisito já está
+        // cumprido (corrente de missões) ou quando não há requisito (pré -> pós direto).
+        bool emEntrega = !string.IsNullOrWhiteSpace(missaoRequisito)
+            ? MissaoRequisitoCompletaNoJogo
+            : true;
+
+        if (completarMissaoAoTerminar && !missaoCompleta && emEntrega)
+        {
+            GameManager.Instance?.CompletarMissao(idMissao);
+            minijogoTentado = false;
+        }
     }
 
     protected virtual void IniciarMinijogo()
