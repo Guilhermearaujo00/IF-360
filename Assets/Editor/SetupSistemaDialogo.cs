@@ -22,6 +22,7 @@ public static class SetupSistemaDialogo
 {
     private const string MENU = "Tools/IFNMG/Configurar Sistema de Diálogo";
     private const string MENU_NPC_MISSAO = "Tools/IFNMG/Criar NPC Diretor (teste de missão)";
+    private const string MENU_HUD = "Tools/IFNMG/Criar HUD de Missão";
 
     [MenuItem(MENU)]
     public static void ConfigurarCena()
@@ -96,8 +97,118 @@ public static class SetupSistemaDialogo
         EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
     }
 
-    private static DialogoData EncontrarDialogoData()
+    [MenuItem(MENU_HUD)]
+    public static void CriarHUD()
     {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            EditorUtility.DisplayDialog("SetupSistemaDialogo",
+                "Saia do Play Mode antes de criar o HUD.", "OK");
+            return;
+        }
+
+        Canvas canvas = Object.FindAnyObjectByType<Canvas>();
+        if (canvas == null)
+        {
+            EditorUtility.DisplayDialog("SetupSistemaDialogo",
+                "Nenhum Canvas na cena. Rode 'Tools > IFNMG > Configurar Sistema de Diálogo' primeiro.", "OK");
+            return;
+        }
+
+        GameObject painel = ObterOuCriarFilho(canvas.gameObject, "PainelMissao");
+        if (painel.transform.parent != canvas.transform)
+        {
+            painel.transform.SetParent(canvas.transform, false);
+        }
+        PrepararPainelHUD(painel);
+
+        TMP_Text titulo = ObterOuCriarTMP(painel, "Titulo");
+        TMP_Text objetivo = ObterOuCriarTMP(painel, "Objetivo");
+        TMP_Text progresso = ObterOuCriarTMP(painel, "Progresso");
+
+        PosicionarTituloHUD(titulo);
+        PosicionarObjetivoHUD(objetivo);
+        PosicionarProgressoHUD(progresso);
+
+        HUDMissao comp = painel.GetComponent<HUDMissao>();
+        if (comp == null) comp = Undo.AddComponent<HUDMissao>(painel);
+
+        SerializedObject so = new SerializedObject(comp);
+        so.FindProperty("textoTitulo").objectReferenceValue = titulo;
+        so.FindProperty("textoObjetivo").objectReferenceValue = objetivo;
+        so.FindProperty("textoProgresso").objectReferenceValue = progresso;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        Selection.activeGameObject = painel;
+
+        Debug.Log("SetupSistemaDialogo: HUD de missão pronto no canto superior esquerdo do Canvas. " +
+                  "Preencha 'Nomes de Missões' no HUDMissao para exibir nomes amigáveis.");
+    }
+
+    private static void PrepararPainelHUD(GameObject painel)
+    {
+        Image fundo = painel.GetComponent<Image>();
+        if (fundo == null)
+        {
+            fundo = painel.AddComponent<Image>();
+            fundo.color = new Color(0.1f, 0.1f, 0.14f, 0.8f);
+        }
+
+        RectTransform rect = painel.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(0f, 1f);
+        rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = new Vector2(20f, -20f);
+        rect.sizeDelta = new Vector2(440f, 150f);
+    }
+
+    private static void PosicionarTituloHUD(TMP_Text titulo)
+    {
+        RectTransform rect = titulo.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(0.5f, 1f);
+        rect.offsetMin = new Vector2(16f, -42f);
+        rect.offsetMax = new Vector2(-16f, -10f);
+
+        titulo.fontSize = 26f;
+        titulo.alignment = TextAlignmentOptions.TopLeft;
+        titulo.color = Color.white;
+        titulo.text = "Jornada";
+    }
+
+    private static void PosicionarObjetivoHUD(TMP_Text objetivo)
+    {
+        RectTransform rect = objetivo.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(0.5f, 1f);
+        rect.offsetMin = new Vector2(16f, -98f);
+        rect.offsetMax = new Vector2(-16f, -46f);
+
+        objetivo.fontSize = 20f;
+        objetivo.alignment = TextAlignmentOptions.TopLeft;
+        objetivo.color = new Color(0.9f, 0.9f, 0.9f, 1f);
+        objetivo.text = "Fale com os NPCs para conhecer o campus.";
+    }
+
+    private static void PosicionarProgressoHUD(TMP_Text progresso)
+    {
+        RectTransform rect = progresso.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(0.5f, 1f);
+        rect.offsetMin = new Vector2(16f, -136f);
+        rect.offsetMax = new Vector2(-16f, -102f);
+
+        progresso.fontSize = 18f;
+        progresso.alignment = TextAlignmentOptions.TopLeft;
+        progresso.color = new Color(0.7f, 0.85f, 1f, 1f);
+        progresso.text = "0 missões concluídas";
+    }
+
+    private static DialogoData EncontrarDialogoData()
         string[] guids = AssetDatabase.FindAssets("t:DialogoData");
         foreach (string guid in guids)
         {

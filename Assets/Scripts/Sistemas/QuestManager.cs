@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,16 +6,20 @@ public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instancia { get; private set; }
 
+    /// <summary>Disparado quando uma missão nova é registrada como concluída (idMissao).</summary>
+    public static event Action<string> MissaoCompletada;
+
     [Header("Estado das missões")]
     [SerializeField] private List<string> missoesCompletas = new List<string>();
 
     public IReadOnlyList<string> MissoesCompletas => missoesCompletas;
 
-    // Reset defensivo do singleton para "Enter Play Mode" sem Domain Reload.
+    // Reset defensivo do singleton/evento para "Enter Play Mode" sem Domain Reload.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetarInstanciaEstatica()
     {
         Instancia = null;
+        MissaoCompletada = null;
     }
 
     private void Awake()
@@ -44,6 +49,7 @@ public class QuestManager : MonoBehaviour
 
         missoesCompletas.Add(idMissao);
         Debug.Log("[QuestManager] Missão completada: " + idMissao);
+        MissaoCompletada?.Invoke(idMissao);
     }
 
     public bool MissaoCompleta(string idMissao)
