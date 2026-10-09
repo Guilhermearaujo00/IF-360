@@ -232,3 +232,26 @@ modo conversa e trava movimento/câmera).
 - O `DialogueManager` chama `PlayerController.TravarControle` **e**
   `CameraController.TravarControle` ao abrir/encerrar (procura automaticamente se o
   campo `cameraController` estiver vazio), então movimento e câmera ficam travados juntos.
+
+## 16. Integrações complementares
+
+- **Áudio**: o `DialogueManager` toca `AudioManager.TocarDigitar` (ao iniciar cada fala),
+  `TocarConfirmar` (a cada E válido) e `TocarFechar` (ao encerrar). `Coletavel` toca
+  `TocarConfirmar` ao pegar um item. Atribua os `AudioClips` no `AudioManager`.
+- **Inventário**: `Coletavel` registra o item em `InventoryManager.AdicionarItem(nomeColecionavel)`.
+- **HUD de missão** (`HUDMissao`, `Assets\Scripts\UI\HUD`): mostra o contador de missões
+  concluídas e o nome da última missão concluída. Reage ao evento estático
+  `QuestManager.MissaoCompletada`; preencha a lista "Nomes de Missões" (id → nome amigável).
+  Criar via **Tools > IFNMG > Criar HUD de Missão**.
+- **Ferramenta de setup**: `Tools > IFNMG > Configurar Sistema de Diálogo` agora também
+  garante `SaveManager`, `AudioManager` (+`AudioSource`) e `InventoryManager` no objeto
+  `Systems` (idempotente).
+- **Build Settings**: `Menu` (índice 0) e `Campus` (índice 1) adicionados ao
+  `ProjectSettings/EditorBuildSettings.asset`.
+- **Namespaces**: todo o código de runtime está em `namespace IF360`. O
+  `PlayerInputActions` gerado (`Assets\Input`) permanece no namespace global. As ferramentas
+  de Editor referenciam o runtime via `using IF360;`. Ainda **não** há `asmdef` (opcional).
+
+> **Limitação do HUD**: mostrar o **objetivo ativo** (texto da missão corrente) exige um
+> modelo de missões com etapas (`MissaoData` com `etapas[]`), ainda não implementado —
+> ver discussão de opção "B" para a missão Biblioteca.
