@@ -12,18 +12,21 @@
                           ▼
               ┌─── PlayerInteraction (1 na cena) ───┐
               │  • único ouvinte de Player.Interact  │
+              │  • lista de alvos IInteragivel       │
               └───────┬──────────────┬───────────────┘
                       │              │ E com diálogo ativo
                       │ E sem diálogo │      │
                       ▼              ▼      ▼
-            NPCBaseNovo.Interagir()   DialogueManager.Avancar()
-                      │                     │
-         NPCBaseNovo.DialogoSolicitado ◄────┘ (evento estático)
-                      │ IniciarDialogo(npc)
+        IInteragivel.Interagir()   DialogueManager.Avancar()
+   (NPCBaseNovo / PlacaInformativa)     │
+                      │
+     NPCBaseNovo.DialogoSolicitado ◄────┘ (evento estático, só NPC)
+   PlacaInformativa → IniciarDialogoInformacao(...)
+                      │ IniciarDialogo(npc) / IniciarDialogoInformacao(nome, texto)
                       ▼
             ┌── DialogueManager (Systems) ──┐
             │ NONE/TYPING/COMPLETE/CLOSING   │
-            │ lê npc.dialogoData / fala       │
+            │ lê npc.DialogoParaConversa      │
             └──────────────┬─────────────────┘
                            │ Mostrar/DefinirNome/DefinirTexto
                            ▼
@@ -31,19 +34,22 @@
                   │ CaixaDialogo + 3 textos  │
                   └──────────────────────────┘
                            │
-                 NPCBaseNovo.NotificarDialogoEncerrado()
+              NPCBaseNovo.NotificarDialogoEncerrado()  (só NPC)
                            │
                      AoEncerrarDialogo() → IniciarMinijogo()
 ```
 
-Proximidade: cada `NPCBaseNovo` possui Trigger próprio (SphereCollider, raio 2.5). O trigger **apenas** marca disponibilidade (`JogadorEntrouNaArea` / `JogadorSaiuDaArea`, eventos estáticos). Não abre diálogo automaticamente — ver Fluxo abaixo.
+Proximidade: cada alvo (`NPCBaseNovo` ou `PlacaInformativa`) possui Trigger próprio e **apenas** avisa o canal estático `Interacao` (`JogadorEntrouNaArea` / `JogadorSaiuDaArea`). Não abre diálogo automaticamente — ver Fluxo abaixo. O `PlayerInteraction` não lê `NPCBaseNovo` diretamente: conversa com os alvos pela interface `IInteragivel`.
 
 ## 2. Responsabilidades
 
 | Componente | Arquivo | Responsabilidade | NÃO faz |
 |---|---|---|---|
-| NPCBaseNovo | `Scripts\NPC\NPCBaseNovo.cs` | Identidade (`nomeNPC`, `idMissao`), dados (`dialogoData` / `falaApresentacao`), proximidade (Trigger), validação de interação, evento `DialogoSolicitado`, gancho `AoEncerrarDialogo()` | Não cria UI, não lê input, não conduz a conversa |
-| PlayerInteraction | `Scripts\Player\PlayerInteraction.cs` | Único ouvinte de E; mantém lista de NPCs elegíveis; escolhe o **mais próximo**; roteia E p/ o DialogueManager quando há diálogo ativo | Não tem Trigger próprio, não decide o que é pergunta/resposta |
+| NPCBaseNovo | `Scripts\NPC\NPCBaseNovo.cs` | Identidade (`nomeNPC`, `idMissao`), dados (`dialogoData` / `falaApresentacao`), proximidade (Trigger), validação de interação, evento `DialogoSolicitado`, gancho `AoEncerrarDialogo()`; implementa `IInteragivel` | Não cria UI, não lê input, não conduz a conversa |
+| PlacaInformativa | `Scripts\Interacao\PlacaInformativa.cs` | Placa de prédio/setor sem NPC: Trigger próprio, `titulo` + `texto`; ao apertar E chama `DialogueManager.IniciarDialogoInformacao()` | Não cria UI, não lê input, não tem missão |
+| IInteragivel | `Scripts\Interacao\IInteragivel.cs` | Interface de interação (`JogadorPorPerto`, `Transform`, `Interagir()`) — abastra NPCs e placas para o `PlayerInteraction` | — |
+| Interacao | `Scripts\Interacao\Interacao.cs` | Canal estático de proximidade (`JogadorEntrouNaArea` / `JogadorSaiuDaArea`) com reset no Domain Reload | Não lê input, não guarda estado |
+| PlayerInteraction | `Scripts\Player\PlayerInteraction.cs` | Único ouvinte de E; mantém lista de alvos `IInteragivel` elegíveis; escolhe o **mais próximo**; roteia E p/ o DialogueManager quando há diálogo ativo | Não tem Trigger próprio, não decide o que é pergunta/resposta |
 | DialogueManager | `Scripts\Sistemas\DialogueManager.cs` | Máquina de estados da conversa; resolve falas (DialogoData → fallback `falaApresentacao`); digitação; encerramento → `NotificarDialogoEncerrado()` | Não desenha nada |
 | DialogueUI | `Scripts\UI\Dialogue\DialogueUI.cs` | Camada visual: mostra/esconde a caixa, define nome, texto e indicador | Sem lógica de estados/input |
 | DialogoData | `Scripts\Dados\DialogoData.cs` | ScriptableObject com `falas[]` (cada fala tem `nomeFalante` + `textoFala`) + `velDigitacao` | — |
@@ -54,11 +60,14 @@ Proximidade: cada `NPCBaseNovo` possui Trigger próprio (SphereCollider, raio 2.
 
 ```
 Assets\Scripts\
-├── NPC\NPCBaseNovo.cs          ← script base de NPC
-├── Player\PlayerInteraction.cs ← único ouvinte de E
-├── Sistemas\DialogueManager.cs ← estados da conversa
-├── UI\Dialogue\DialogueUI.cs   ← camada visual (TMP)
-├── Dados\DialogoData.cs        ← ScriptableObject de falas (reutilizado)
+├── NPC\NPCBaseNovo.cs             ← script base de NPC
+├── Interacao\IInteragivel.cs      ← interface de interação (NPC/placa)
+├── Interacao\Interacao.cs         ← canal estático de proximidade
+├── Interacao\PlacaInformativa.cs  ← placas de prédio/setor sem NPC
+├── Player\PlayerInteraction.cs    ← único ouvinte de E
+├── Sistemas\DialogueManager.cs    ← estados da conversa
+├── UI\Dialogue\DialogueUI.cs      ← camada visual (TMP)
+├── Dados\DialogoData.cs           ← ScriptableObject de falas (reutilizado)
 ├── ... demais sistemas/skate/core (não tocar)
 Assets\Editor\SetupSistemaDialogo.cs ← ferramenta de setup da cena
 Docs\ARQUITETURA_DIALOGO.md
@@ -79,6 +88,8 @@ Player (tag "Player")
 └── (PlayerController, CameraController ...) + PlayerInteraction
 NPCs
 └── NPCBaseNovo + Trigger (SphereCollider Is Trigger) (+Colisor físico)
+Placas
+└── PlacaInformativa + Trigger (Collider Is Trigger) + Mesh com o letreiro
 ```
 
 Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
@@ -154,7 +165,8 @@ Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
 - [ ] **Retratos (portraits)**: imagem do falante na caixa, trocando por linha.
 - [x] **Mais de uma conversa por NPC** (pré/pós-missão): implementado no protótipo de
       missões — ver seção 12.
-- [ ] **Liberar o cursor durante a conversa** (se um dia o diálogo usar cliques/mouse).
+- [x] **Liberar o cursor durante a conversa**: implementado — `CameraController.TravarControle`
+      libera o cursor e desliga órbita/zoom enquanto há diálogo (ver seção 13).
 
 ## 12. Integração com missões (protótipo)
 
@@ -188,3 +200,35 @@ ao fim da conversa.
 
 Assets de exemplo: `Assets\Dados\Dialogos\Dialogo_Secretaria_Pre.asset`,
 `..._Pos.asset` e `Dialogo_Diretor_Pre.asset`. 2º NPC: menu `Tools/IFNMG/Criar NPC Diretor (teste de missão)`.
+
+## 13. Placas informativas (prédios sem NPC)
+
+Cobre os prédios que só têm placa (sem NPC). A placa **reutiliza o sistema de diálogo**:
+ao apertar E, o texto aparece na mesma caixa de diálogo (o `DialogueManager` entra em
+modo conversa e trava movimento/câmera).
+
+- `PlacaInformativa` implementa `IInteragivel` e avisa proximidade pelo canal `Interacao`
+  — `PlayerInteraction` continua sendo o **único** ouvinte de E (a placa não lê input).
+- `DialogueManager.IniciarDialogoInformacao(titulo, texto)` mostra uma fala avulsa
+  (`npcEmConversa = null`): ao encerrar, nenhum NPC é notificado.
+- Montagem: adicionar `PlacaInformativa` num objeto com um **Collider Is Trigger**;
+  preencher `titulo` e `texto`. O `raio` do trigger define a área de interação.
+
+## 14. Persistência de missões e ciclo de vida
+
+- `QuestManager` agora é `DontDestroyOnLoad` e fica no **mesmo objeto do `GameManager`**
+  (que também é persistente) — o estado sobrevive à troca de cena junto da fachada.
+- `SaveManager` persiste `missoesCompletas` (JSON via `QuestManager.SerializarMissoes`
+  / `RestaurarMissoes`) junto de pontos e colecionáveis; `ApagarJogo` limpa tudo.
+- `GameManager.CompletarMissao` faz **auto-save** (`SaveManager.SalvarJogo()`), para o
+  progresso não se perder ao sair.
+- Observação: ainda não há tela de menu chamando `CarregarJogo()`/`ApagarJogo()`; quando
+  existir, basta chamar pelo `SaveManager`.
+
+## 15. Travar câmera/cursor no diálogo
+
+- `CameraController.TravarControle(bool)`: enquanto travado, desliga órbita/zoom
+  (input de `Look`/`Zoom`) e libera o cursor; ao destravar, volta a travar o cursor.
+- O `DialogueManager` chama `PlayerController.TravarControle` **e**
+  `CameraController.TravarControle` ao abrir/encerrar (procura automaticamente se o
+  campo `cameraController` estiver vazio), então movimento e câmera ficam travados juntos.
