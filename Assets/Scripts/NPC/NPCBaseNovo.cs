@@ -31,6 +31,9 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     /// <summary>Disparado por Interagir(): o sistema de diálogo deve abrir a conversa deste NPC.</summary>
     public static event Action<NPCBaseNovo> DialogoSolicitado;
 
+    /// <summary>Disparado por IniciarMinijogo(): o sistema de minijogo deve abrir o desafio.</summary>
+    public static event Action<NPCBaseNovo> MinijogoSolicitado;
+
     // ---------- Dados configuráveis no Inspector ----------
 
     [Header("Identidade")]
@@ -104,6 +107,7 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
         JogadorEntrouNaArea = null;
         JogadorSaiuDaArea = null;
         DialogoSolicitado = null;
+        MinijogoSolicitado = null;
     }
 
     private void Awake()
@@ -234,7 +238,13 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
 
     protected virtual void IniciarMinijogo()
     {
-        Debug.Log("Iniciando minijogo padrão: " + idMissao);
+        if (MinijogoSolicitado == null)
+        {
+            Debug.LogWarning($"NPCBaseNovo '{name}': nenhum sistema de minijogo inscrito em NPCBaseNovo.MinijogoSolicitado.", this);
+            return;
+        }
+
+        MinijogoSolicitado.Invoke(this);
     }
 }
 }

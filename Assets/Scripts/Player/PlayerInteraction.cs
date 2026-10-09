@@ -71,6 +71,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         LimparInvalidos();
 
+        // Minijogo aberto: E não deve interagir com o mundo (evita reabrir diálogo).
+        if (MinijogoFios.Instancia != null && MinijogoFios.Instancia.Ativo)
+        {
+            return;
+        }
+
         DialogueManager dialogo = DialogueManager.Instancia;
 
         // Diálogo aberto: E é sempre do diálogo (avançar/fechar), nunca do alvo.

@@ -255,3 +255,22 @@ modo conversa e trava movimento/câmera).
 > **Limitação do HUD**: mostrar o **objetivo ativo** (texto da missão corrente) exige um
 > modelo de missões com etapas (`MissaoData` com `etapas[]`), ainda não implementado —
 > ver discussão de opção "B" para a missão Biblioteca.
+
+## 17. Minijogo "Ligar os 3 fios"
+
+Vertical slice de minijogo, acionado pelo mesmo gancho de NPC que antes só logava.
+
+- **Gancho**: `NPCBaseNovo.IniciarMinijogo()` dispara o evento estático
+  `NPCBaseNovo.MinijogoSolicitado`. Um NPC com `Chamar Minijogo` ativo o aciona após a
+  conversa (ex.: `NPC_Secretaria`).
+- **Componente**: `Assets\Scripts\Minijogos\MinijogoFios.cs` (namespace `IF360`), em
+  `Systems`. Assina o evento e abre o desafio.
+- **UI**: construída em **runtime** (reaproveita o `Canvas` da cena), sem prefab nem tool
+  obrigatória — 3 fios coloridos × 3 tomadas embaralhadas.
+- **Controles**: `←/→` ou `A/D` escolhem o fio; `1/2/3` ligam à tomada; `Esc` cancela.
+  Lê o teclado via `Keyboard.current` (não mexe no `PlayerInputActions`).
+- **Regras**: acertar a cor trava a ligação; as 3 certas → vitória e `+premioPontos` via
+  `GameManager.AdicionarPontos`. Enquanto aberto, trava movimento/câmera
+  (`TravarControle`) e o `PlayerInteraction` ignora o `E` (`MinijogoFios.Ativo`).
+- **Setup**: **Tools > IFNMG > Adicionar Minijogo 'Ligar Fios'** (ou o setup principal, que
+  já o garante em `Systems`). Testar com um NPC marcado com **Chamar Minijogo**.

@@ -24,6 +24,7 @@ public static class SetupSistemaDialogo
     private const string MENU = "Tools/IFNMG/Configurar Sistema de Diálogo";
     private const string MENU_NPC_MISSAO = "Tools/IFNMG/Criar NPC Diretor (teste de missão)";
     private const string MENU_HUD = "Tools/IFNMG/Criar HUD de Missão";
+    private const string MENU_MINIJOGO = "Tools/IFNMG/Adicionar Minijogo 'Ligar Fios'";
 
     [MenuItem(MENU)]
     public static void ConfigurarCena()
@@ -147,6 +148,34 @@ public static class SetupSistemaDialogo
                   "Preencha 'Nomes de Missões' no HUDMissao para exibir nomes amigáveis.");
     }
 
+    [MenuItem(MENU_MINIJOGO)]
+    public static void AdicionarMinijogoFios()
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            EditorUtility.DisplayDialog("SetupSistemaDialogo",
+                "Saia do Play Mode antes de configurar o minijogo.", "OK");
+            return;
+        }
+
+        GameObject systems = GameObject.Find("Systems");
+        if (systems == null)
+        {
+            systems = new GameObject("Systems");
+            Undo.RegisterCreatedObjectUndo(systems, "Criar Systems");
+        }
+
+        if (Object.FindAnyObjectByType<MinijogoFios>() == null)
+        {
+            Undo.AddComponent<MinijogoFios>(systems);
+        }
+
+        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        Selection.activeGameObject = systems;
+
+        Debug.Log("SetupSistemaDialogo: MinijogoFios pronto — NPCs com 'Chamar Minijogo' ativo abrem 'ligar os 3 fios'.");
+    }
+
     private static void PrepararPainelHUD(GameObject painel)
     {
         Image fundo = painel.GetComponent<Image>();
@@ -210,6 +239,7 @@ public static class SetupSistemaDialogo
     }
 
     private static DialogoData EncontrarDialogoData()
+    {
         string[] guids = AssetDatabase.FindAssets("t:DialogoData");
         foreach (string guid in guids)
         {
@@ -260,8 +290,7 @@ public static class SetupSistemaDialogo
     }
 
     private static void GarantirSistemasExtras(GameObject systems)
-    {
-        if (Object.FindAnyObjectByType<SaveManager>() == null)
+    {        if (Object.FindAnyObjectByType<SaveManager>() == null)
         {
             systems.AddComponent<SaveManager>();
             Debug.Log("SetupSistemaDialogo: SaveManager adicionado em 'Systems' (salva pontos, colecionáveis e missões).");
@@ -278,6 +307,13 @@ public static class SetupSistemaDialogo
         {
             systems.AddComponent<InventoryManager>();
             Debug.Log("SetupSistemaDialogo: InventoryManager adicionado em 'Systems'.");
+        }
+
+        if (Object.FindAnyObjectByType<MinijogoFios>() == null)
+        {
+            systems.AddComponent<MinijogoFios>();
+            Debug.Log("SetupSistemaDialogo: MinijogoFios adicionado em 'Systems' " +
+                      "(NPCs com 'Chamar Minijogo' ativo abrem o desafio 'ligar os 3 fios').");
         }
     }
 
