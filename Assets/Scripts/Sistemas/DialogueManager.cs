@@ -31,6 +31,9 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("Trava o movimento do jogador enquanto houver diálogo. Se vazio, é procurado automaticamente.")]
     [SerializeField] private PlayerController playerController;
 
+    [Tooltip("Trava a câmera/cursor enquanto houver diálogo. Se vazio, é procurado automaticamente.")]
+    [SerializeField] private CameraController cameraController;
+
     private NPCBaseNovo npcEmConversa;
     private DialogoData.FalaDialogo[] falas;
     private int indiceFala;
@@ -145,6 +148,16 @@ public class DialogueManager : MonoBehaviour
         {
             Debug.LogWarning("DialogueManager: não encontrou PlayerController para " +
                              $"{(travado ? "travar" : "destravar")} o movimento durante a conversa.", this);
+        }
+
+        if (cameraController == null)
+        {
+            cameraController = Object.FindAnyObjectByType<CameraController>();
+        }
+
+        if (cameraController != null)
+        {
+            cameraController.TravarControle(travado);
         }
     }
 

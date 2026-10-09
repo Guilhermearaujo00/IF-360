@@ -143,15 +143,32 @@ public static class SetupSistemaDialogo
             Debug.Log("SetupSistemaDialogo: DialogueManager já existe na cena. Pulando.");
         }
 
-        if (Object.FindAnyObjectByType<QuestManager>() == null)
+        GarantirQuestManager(systems);
+    }
+
+    private static void GarantirQuestManager(GameObject systems)
+    {
+        if (Object.FindAnyObjectByType<QuestManager>() != null)
         {
-            systems.AddComponent<QuestManager>();
-            Debug.Log("SetupSistemaDialogo: QuestManager adicionado em 'Systems' — sem ele as missões " +
-                      "não são registradas (GameManager. CompletarMissao não teria efeito).");
+            Debug.Log("SetupSistemaDialogo: QuestManager já existe na cena. Pulando.");
+            return;
+        }
+
+        // Fica no MESMO objeto do GameManager (que é DontDestroyOnLoad) para o
+        // estado das missões sobreviver à troca de cena, junto da fachada.
+        GameManager gameManager = Object.FindAnyObjectByType<GameManager>();
+        GameObject host = gameManager != null ? gameManager.gameObject : systems;
+
+        host.AddComponent<QuestManager>();
+
+        if (gameManager == null)
+        {
+            Debug.LogWarning("SetupSistemaDialogo: GameManager não encontrado — QuestManager foi adicionado " +
+                             "em 'Systems' e NÃO persistirá entre cenas. Coloque-o no objeto do GameManager.");
         }
         else
         {
-            Debug.Log("SetupSistemaDialogo: QuestManager já existe na cena. Pulando.");
+            Debug.Log($"SetupSistemaDialogo: QuestManager adicionado em '{host.name}' (persistente).");
         }
     }
 
@@ -337,6 +354,13 @@ public static class SetupSistemaDialogo
             PlayerController pc = player.GetComponent<PlayerController>();
             if (pc != null) so.FindProperty("playerController").objectReferenceValue = pc;
         }
+
+        CameraController cc = Object.FindAnyObjectByType<CameraController>();
+        if (cc != null)
+        {
+            so.FindProperty("cameraController").objectReferenceValue = cc;
+        }
+
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 

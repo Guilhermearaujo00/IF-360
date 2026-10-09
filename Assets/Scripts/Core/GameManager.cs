@@ -35,7 +35,12 @@ public class GameManager : MonoBehaviour
 
     public void CompletarMissao(string idMissao)
     {
-        if (QuestManager.Instancia != null) QuestManager.Instancia.CompletarMissao(idMissao);
+        if (QuestManager.Instancia == null) return;
+
+        QuestManager.Instancia.CompletarMissao(idMissao);
+
+        // Auto-save: o progresso de missões não pode se perder ao sair do jogo.
+        if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
     }
 
     public bool MissaoCompleta(string idMissao)

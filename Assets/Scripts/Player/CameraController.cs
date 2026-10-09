@@ -59,6 +59,26 @@ public class CameraController : MonoBehaviour
         transform.LookAt(alvo.position + Vector3.up * 1f);
     }
 
+    /// <summary>
+    /// Trava a órbita/zoom e libera o cursor (usado durante o diálogo, para o
+    /// jogador poder clicar em respostas futuras sem girar a câmera).
+    /// </summary>
+    public void TravarControle(bool travado)
+    {
+        if (travado)
+        {
+            if (input != null) input.Disable();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            if (input != null) input.Enable();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
     private void Orbita(Vector2 delta)
     {
         rotacaoX += delta.x * sensibilidade;

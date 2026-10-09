@@ -6,6 +6,7 @@ public class SaveManager : MonoBehaviour
 
     private const string CHAVE_PONTOS = "pontos";
     private const string CHAVE_COLECIONAVEIS = "colecionaveis";
+    private const string CHAVE_MISSOES = "missoes";
 
     private void Awake()
     {
@@ -34,6 +35,12 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt(CHAVE_PONTOS, GameManager.Instance.pontos);
             PlayerPrefs.SetInt(CHAVE_COLECIONAVEIS, GameManager.Instance.colecionaveisColetados);
         }
+
+        if (QuestManager.Instancia != null)
+        {
+            PlayerPrefs.SetString(CHAVE_MISSOES, QuestManager.Instancia.SerializarMissoes());
+        }
+
         PlayerPrefs.Save();
         Debug.Log("[SaveManager] Jogo salvo.");
     }
@@ -48,6 +55,12 @@ public class SaveManager : MonoBehaviour
 
         GameManager.Instance.pontos = PlayerPrefs.GetInt(CHAVE_PONTOS, 0);
         GameManager.Instance.colecionaveisColetados = PlayerPrefs.GetInt(CHAVE_COLECIONAVEIS, 0);
+
+        if (QuestManager.Instancia != null)
+        {
+            QuestManager.Instancia.RestaurarMissoes(PlayerPrefs.GetString(CHAVE_MISSOES, string.Empty));
+        }
+
         Debug.Log("[SaveManager] Jogo carregado.");
     }
 
@@ -55,6 +68,13 @@ public class SaveManager : MonoBehaviour
     {
         PlayerPrefs.DeleteKey(CHAVE_PONTOS);
         PlayerPrefs.DeleteKey(CHAVE_COLECIONAVEIS);
+        PlayerPrefs.DeleteKey(CHAVE_MISSOES);
+
+        if (QuestManager.Instancia != null)
+        {
+            QuestManager.Instancia.LimparMissoes();
+        }
+
         PlayerPrefs.Save();
         Debug.Log("[SaveManager] Jogo apagado.");
     }
