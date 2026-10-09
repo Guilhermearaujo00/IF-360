@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -93,4 +95,5 @@ public class QuestManager : MonoBehaviour
     {
         public List<string> ids = new List<string>();
     }
+}
 }

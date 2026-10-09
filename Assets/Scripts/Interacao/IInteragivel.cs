@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 /// <summary>
@@ -15,4 +17,5 @@ public interface IInteragivel
 
     /// <summary>Ação executada ao apertar E (ex.: abrir a conversa).</summary>
     void Interagir();
+}
 }

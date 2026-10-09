@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System;
 using UnityEngine;
 
@@ -28,4 +30,5 @@ public static class Interacao
         JogadorEntrouNaArea = null;
         JogadorSaiuDaArea = null;
     }
+}
 }

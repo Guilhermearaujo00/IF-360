@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -76,4 +78,5 @@ public class HUDMissao : MonoBehaviour
         public string idMissao;
         public string nome;
     }
+}
 }

@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -78,4 +80,5 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log("[SaveManager] Jogo apagado.");
     }
+}
 }

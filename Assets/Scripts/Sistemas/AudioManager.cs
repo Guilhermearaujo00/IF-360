@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -49,4 +51,5 @@ public class AudioManager : MonoBehaviour
     {
         TocarSom(somFechar);
     }
+}
 }

@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 /// <summary>
@@ -86,4 +88,5 @@ public class PlacaInformativa : MonoBehaviour, IInteragivel
 
         dialogo.IniciarDialogoInformacao(titulo, texto);
     }
+}
 }

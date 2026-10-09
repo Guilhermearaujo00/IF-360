@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System.Collections;
 using UnityEngine;
 
@@ -359,4 +361,5 @@ public class DialogueManager : MonoBehaviour
             encerrado.NotificarDialogoEncerrado();
         }
     }
+}
 }

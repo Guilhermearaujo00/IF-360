@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 public class Coletavel : MonoBehaviour
@@ -21,4 +23,5 @@ public class Coletavel : MonoBehaviour
         Debug.Log("Colecionável encontrado: " + nomeColecionavel);
         Destroy(gameObject);
     }
+}
 }

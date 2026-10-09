@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Dados/Diálogo", fileName = "NovoDialogo")]
@@ -19,4 +21,5 @@ public class DialogoData : ScriptableObject
     [Header("Digitação")]
     [Tooltip("Segundos por caractere usados em todas as falas. 0 = texto aparece instantâneo.")]
     public float velDigitacao = 0.03f;
+}
 }

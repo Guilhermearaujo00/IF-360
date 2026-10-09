@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System;
 using UnityEngine;
 
@@ -234,4 +236,5 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     {
         Debug.Log("Iniciando minijogo padrão: " + idMissao);
     }
+}
 }

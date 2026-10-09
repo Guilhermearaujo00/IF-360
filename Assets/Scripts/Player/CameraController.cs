@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -91,4 +93,5 @@ public class CameraController : MonoBehaviour
         distanciaAtual -= valor * 2f;
         distanciaAtual = Mathf.Clamp(distanciaAtual, distanciaMin, distanciaMax);
     }
+}
 }

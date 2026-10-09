@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,4 +44,5 @@ public class InventoryManager : MonoBehaviour
     {
         return itens.Remove(idItem);
     }
+}
 }

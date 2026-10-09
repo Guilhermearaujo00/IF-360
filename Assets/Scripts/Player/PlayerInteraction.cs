@@ -1,3 +1,5 @@
+namespace IF360
+{
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -130,4 +132,5 @@ public class PlayerInteraction : MonoBehaviour
         if (alvo == null) return true;
         return alvo is Object obj && obj == null;
     }
+}
 }

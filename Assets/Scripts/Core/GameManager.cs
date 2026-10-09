@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -52,4 +54,5 @@ public class GameManager : MonoBehaviour
     {
         return QuestManager.Instancia != null ? QuestManager.Instancia.QuantidadeMissoesCompletas() : 0;
     }
+}
 }

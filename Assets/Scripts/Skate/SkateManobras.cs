@@ -1,3 +1,5 @@
+namespace IF360
+{
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -61,4 +63,5 @@ public class SkateManobras : MonoBehaviour
 
         Debug.Log("Truque: " + nome + " → Pontos +" + pontosPorTruque);
     }
+}
 }

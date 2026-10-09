@@ -1,3 +1,5 @@
+namespace IF360
+{
 using TMPro;
 using UnityEngine;
 
@@ -54,4 +56,5 @@ public class DialogueUI : MonoBehaviour
     {
         if (dica != null) dica.SetActive(visivel);
     }
+}
 }
