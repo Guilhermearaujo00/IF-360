@@ -14,7 +14,7 @@ using UnityEngine;
 ///
 /// DEPENDÊNCIA: o tipo DialogoData precisa existir no projeto.
 /// </summary>
-public class NPCBaseNovo : MonoBehaviour
+public class NPCBaseNovo : MonoBehaviour, IInteragivel
 {
     private const string TAG_PLAYER = "Player";
 
@@ -56,6 +56,9 @@ public class NPCBaseNovo : MonoBehaviour
     private bool minijogoTentado;
 
     public bool JogadorPorPerto => jogadorPorPerto;
+
+    // IInteragivel: usado pelo PlayerInteraction para escolher o alvo mais próximo.
+    public Transform Transform => transform;
 
     public bool TemDialogoValido =>
         dialogoData != null || !string.IsNullOrWhiteSpace(falaApresentacao);
@@ -131,6 +134,7 @@ public class NPCBaseNovo : MonoBehaviour
         jogadorPorPerto = true;
         minijogoTentado = false;
         JogadorEntrouNaArea?.Invoke(this);
+        Interacao.NotificarEntrada(this);
     }
 
     private void OnTriggerExit(Collider outro)
@@ -139,6 +143,7 @@ public class NPCBaseNovo : MonoBehaviour
 
         jogadorPorPerto = false;
         JogadorSaiuDaArea?.Invoke(this);
+        Interacao.NotificarSaida(this);
     }
 
     private void OnDisable()
@@ -149,6 +154,7 @@ public class NPCBaseNovo : MonoBehaviour
 
         jogadorPorPerto = false;
         JogadorSaiuDaArea?.Invoke(this);
+        Interacao.NotificarSaida(this);
     }
 
     // ---------- Interação ----------

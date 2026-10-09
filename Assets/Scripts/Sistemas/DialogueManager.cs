@@ -112,17 +112,50 @@ public class DialogueManager : MonoBehaviour
         }
 
         DialogoData dados = npc.DialogoParaConversa;
-        if (dados != null)
+        float velocidade = dados != null ? dados.velDigitacao : 0.03f;
+
+        AbrirConversa(lista, velocidade, npc);
+    }
+
+    /// <summary>
+    /// Mostra um texto informativo (ex.: placa de prédio) na MESMA caixa de
+    /// diálogo, sem NPC associado. Ao encerrar, nenhum NPC é notificado.
+    /// </summary>
+    public void IniciarDialogoInformacao(string nomeFalante, string texto)
+    {
+        if (string.IsNullOrWhiteSpace(texto)) return;
+        if (!PodeAbrirConversa()) return;
+
+        DialogoData.FalaDialogo fala = new DialogoData.FalaDialogo
         {
-            // 0 = texto instantâneo, ou o valor escolhido no Inspector do SO.
-            velDigitacao = dados.velDigitacao;
-        }
-        else
+            nomeFalante = nomeFalante,
+            textoFala = texto
+        };
+
+        AbrirConversa(new[] { fala }, 0.03f, null);
+    }
+
+    private bool PodeAbrirConversa()
+    {
+        if (estado != Estado.NONE)
         {
-            // Fala de reserva (sem ScriptableObject): mantém a digitação padrão.
-            velDigitacao = 0.03f;
+            Debug.LogWarning("DialogueManager: já existe uma conversa ativa. Pedido ignorado.", this);
+            return false;
         }
 
+        if (ui == null)
+        {
+            Debug.LogError("DialogueManager: referência 'ui' vazia. Atribua a DialogueUI no Inspector " +
+                           "(ou rode Tools > IFNMG > Configurar Sistema de Diálogo).", this);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void AbrirConversa(DialogoData.FalaDialogo[] lista, float velocidade, NPCBaseNovo npc)
+    {
+        velDigitacao = velocidade;
         npcEmConversa = npc;
         falas = lista;
         indiceFala = 0;

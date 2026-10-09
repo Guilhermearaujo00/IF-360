@@ -6,15 +6,15 @@ using UnityEngine.InputSystem;
 /// ÚNICO ouvinte da ação "Interagir" (E) de toda a cena.
 ///
 /// Não decide o que é um diálogo, não é um NPC e não possui Trigger próprio:
-///   - Os NPCs (NPCBaseNovo) avisam por evento estático quando o jogador sai
-///     ou entra na área de interação deles;
+///   - NPCs e placas informativas (IInteragivel) avisam pelo canal estático
+///     Interacao quando o jogador entra ou sai da área de interação deles;
 ///   - Ao apertar E com diálogo ativo -> repassa para o DialogueManager;
-///   - Ao apertar E sem diálogo ativo -> conversa com o NPC ELEGÍVEL mais
+///   - Ao apertar E sem diálogo ativo -> interage com o alvo ELEGÍVEL mais
 ///     próximo do jogador (se houver).
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
-    private readonly List<NPCBaseNovo> npcsElegiveis = new List<NPCBaseNovo>();
+    private readonly List<IInteragivel> alvosElegiveis = new List<IInteragivel>();
     private PlayerInputActions input;
 
     private void Awake()
@@ -25,19 +25,19 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnEnable()
     {
-        NPCBaseNovo.JogadorEntrouNaArea += AdicionarNpc;
-        NPCBaseNovo.JogadorSaiuDaArea += RemoverNpc;
+        Interacao.JogadorEntrouNaArea += AdicionarAlvo;
+        Interacao.JogadorSaiuDaArea += RemoverAlvo;
 
         if (input != null) input.Enable();
     }
 
     private void OnDisable()
     {
-        NPCBaseNovo.JogadorEntrouNaArea -= AdicionarNpc;
-        NPCBaseNovo.JogadorSaiuDaArea -= RemoverNpc;
+        Interacao.JogadorEntrouNaArea -= AdicionarAlvo;
+        Interacao.JogadorSaiuDaArea -= RemoverAlvo;
 
         if (input != null) input.Disable();
-        npcsElegiveis.Clear();
+        alvosElegiveis.Clear();
     }
 
     private void OnDestroy()
@@ -49,18 +49,18 @@ public class PlayerInteraction : MonoBehaviour
         input = null;
     }
 
-    // ---------- Eventos dos NPCs ----------
+    // ---------- Eventos de proximidade ----------
 
-    private void AdicionarNpc(NPCBaseNovo npc)
+    private void AdicionarAlvo(IInteragivel alvo)
     {
-        if (npc == null || npcsElegiveis.Contains(npc)) return;
-        npcsElegiveis.Add(npc);
+        if (AlvoNulo(alvo) || alvosElegiveis.Contains(alvo)) return;
+        alvosElegiveis.Add(alvo);
     }
 
-    private void RemoverNpc(NPCBaseNovo npc)
+    private void RemoverAlvo(IInteragivel alvo)
     {
-        if (npc == null) return;
-        npcsElegiveis.Remove(npc);
+        if (alvo == null) return;
+        alvosElegiveis.Remove(alvo);
     }
 
     // ---------- Input ----------
@@ -71,17 +71,17 @@ public class PlayerInteraction : MonoBehaviour
 
         DialogueManager dialogo = DialogueManager.Instancia;
 
-        // Diálogo aberto: E é sempre do diálogo (avançar/fechar), nunca do NPC.
+        // Diálogo aberto: E é sempre do diálogo (avançar/fechar), nunca do alvo.
         if (dialogo != null && dialogo.DialogoAtivo)
         {
             dialogo.Avancar();
             return;
         }
 
-        NPCBaseNovo alvo = NpcElegivelMaisProximo();
+        IInteragivel alvo = AlvoElegivelMaisProximo();
         if (alvo == null)
         {
-            Debug.Log("Não há NPC próximo para interagir.");
+            Debug.Log("Não há nada próximo para interagir.");
             return;
         }
 
@@ -92,34 +92,42 @@ public class PlayerInteraction : MonoBehaviour
 
     private void LimparInvalidos()
     {
-        for (int i = npcsElegiveis.Count - 1; i >= 0; i--)
+        for (int i = alvosElegiveis.Count - 1; i >= 0; i--)
         {
-            if (npcsElegiveis[i] == null || !npcsElegiveis[i].JogadorPorPerto)
+            if (AlvoNulo(alvosElegiveis[i]) || !alvosElegiveis[i].JogadorPorPerto)
             {
-                npcsElegiveis.RemoveAt(i);
+                alvosElegiveis.RemoveAt(i);
             }
         }
     }
 
-    private NPCBaseNovo NpcElegivelMaisProximo()
+    private IInteragivel AlvoElegivelMaisProximo()
     {
-        if (npcsElegiveis.Count == 0) return null;
+        if (alvosElegiveis.Count == 0) return null;
 
-        NPCBaseNovo maisProximo = null;
+        IInteragivel maisProximo = null;
         float menorDistancia = float.MaxValue;
 
-        foreach (NPCBaseNovo npc in npcsElegiveis)
+        foreach (IInteragivel alvo in alvosElegiveis)
         {
-            if (npc == null) continue;
+            if (AlvoNulo(alvo)) continue;
 
-            float delta = Vector3.Distance(transform.position, npc.transform.position);
+            float delta = Vector3.Distance(transform.position, alvo.Transform.position);
             if (delta < menorDistancia)
             {
                 menorDistancia = delta;
-                maisProximo = npc;
+                maisProximo = alvo;
             }
         }
 
         return maisProximo;
+    }
+
+    // Interface não usa a sobrecarga de == do UnityEngine.Object; um MonoBehaviour
+    // destruído ainda "não seria null" via interface, então checamos explicitamente.
+    private static bool AlvoNulo(IInteragivel alvo)
+    {
+        if (alvo == null) return true;
+        return alvo is Object obj && obj == null;
     }
 }
