@@ -144,6 +144,29 @@ public static class SetupSistemaDialogo
         }
 
         GarantirQuestManager(systems);
+        GarantirSistemasExtras(systems);
+    }
+
+    private static void GarantirSistemasExtras(GameObject systems)
+    {
+        if (Object.FindAnyObjectByType<SaveManager>() == null)
+        {
+            systems.AddComponent<SaveManager>();
+            Debug.Log("SetupSistemaDialogo: SaveManager adicionado em 'Systems' (salva pontos, colecionáveis e missões).");
+        }
+
+        if (Object.FindAnyObjectByType<AudioManager>() == null)
+        {
+            // RequireComponent adiciona o AudioSource automaticamente; atribua os AudioClips no Inspector.
+            systems.AddComponent<AudioManager>();
+            Debug.Log("SetupSistemaDialogo: AudioManager adicionado em 'Systems' (atribua os AudioClips: digitar/confirmar/fechar).");
+        }
+
+        if (Object.FindAnyObjectByType<InventoryManager>() == null)
+        {
+            systems.AddComponent<InventoryManager>();
+            Debug.Log("SetupSistemaDialogo: InventoryManager adicionado em 'Systems'.");
+        }
     }
 
     private static void GarantirQuestManager(GameObject systems)

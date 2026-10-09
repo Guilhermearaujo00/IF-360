@@ -7,13 +7,18 @@ public class Coletavel : MonoBehaviour
 
     private void OnTriggerEnter(Collider outro)
     {
-        if (outro.CompareTag("Player"))
-        {
-            if (GameManager.Instance != null)
-                GameManager.Instance.RegistrarColecionavel();
+        if (!outro.CompareTag("Player")) return;
 
-            Debug.Log("Colecionável encontrado: " + nomeColecionavel);
-            Destroy(gameObject);
-        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.RegistrarColecionavel();
+
+        if (InventoryManager.Instancia != null)
+            InventoryManager.Instancia.AdicionarItem(nomeColecionavel);
+
+        if (AudioManager.Instancia != null)
+            AudioManager.Instancia.TocarConfirmar();
+
+        Debug.Log("Colecionável encontrado: " + nomeColecionavel);
+        Destroy(gameObject);
     }
 }

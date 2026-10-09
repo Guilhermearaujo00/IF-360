@@ -231,6 +231,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (estado == Estado.NONE) return;
 
+        AudioManager.Instancia?.TocarConfirmar();
+
         switch (estado)
         {
             case Estado.TYPING:
@@ -275,6 +277,7 @@ public class DialogueManager : MonoBehaviour
 
         DialogoData.FalaDialogo falaAgora = falas[indiceFala];
         ui.DefinirNome(NomeDoFalante(falaAgora));
+        AudioManager.Instancia?.TocarDigitar();
         coroutineDigitacao = StartCoroutine(DigitarTexto(falaAgora.textoFala));
     }
 
@@ -337,6 +340,7 @@ public class DialogueManager : MonoBehaviour
 
         ui.Esconder();
         ui.MostrarIndicador(false);
+        AudioManager.Instancia?.TocarFechar();
 
         NPCBaseNovo encerrado = npcEmConversa;
         npcEmConversa = null;
