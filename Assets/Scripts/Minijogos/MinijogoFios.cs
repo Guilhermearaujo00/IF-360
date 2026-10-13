@@ -107,9 +107,15 @@ public class MinijogoFios : MonoBehaviour
         else if (teclado.digit3Key.wasPressedThisFrame) Conectar(2);
     }
 
+    private NPCBaseNovo npcOrigem;
+
     // ---------- Entrada/saída do minijogo ----------
 
-    private void Abrir(NPCBaseNovo npc) => Abrir();
+    private void Abrir(NPCBaseNovo npc)
+    {
+        npcOrigem = npc;
+        Abrir();
+    }
 
     public void Abrir()
     {
@@ -143,8 +149,15 @@ public class MinijogoFios : MonoBehaviour
         if (vitoria && recompensaConcedida)
         {
             GameManager.Instance?.AdicionarPontos(premioPontos);
+
+            // Conclui a etapa da missão associada ao NPC que abriu o minijogo
+            if (npcOrigem != null && GameManager.Instance != null)
+            {
+                GameManager.Instance.ConcluirEtapa(npcOrigem.idMissao);
+            }
         }
 
+        npcOrigem = null;
         TravarJogador(false);
     }
 

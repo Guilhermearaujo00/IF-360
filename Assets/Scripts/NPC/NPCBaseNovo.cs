@@ -55,6 +55,14 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     [Header("Ação após o diálogo")]
     public bool chamarMinijogo = true;
 
+    [Tooltip("Se true, o minijogo é chamado como PARTE da missão (antes de completá-la). " +
+             "Se false (padrão), o minijogo só é chamado APÓS a missão estar completa (ex.: Secretaria).")]
+    public bool minijogoComoParteDaMissao = false;
+
+    [Header("Modelo de missões por etapas (opcional)")]
+    [Tooltip("Se true, ao terminar o diálogo conclui uma ETAPA da missão (GameManager.ConcluirEtapa) em vez de completar a missão inteira.")]
+    public bool usarModeloEtapas = false;
+
     // ---------- Estado interno ----------
 
     private bool jogadorPorPerto;
@@ -215,7 +223,15 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     {
         bool missaoCompleta = MissaoCompletaNoJogo;
 
-        // Só dispara o minigame quando a missão já foi entregue (conversa do pós).
+        // 1) Minijogo como PARTE da missão (antes de completá-la) — ex.: Administração, Núcleo.
+        if (minijogoComoParteDaMissao && !missaoCompleta && !minijogoTentado)
+        {
+            minijogoTentado = true;
+            IniciarMinijogo();
+            return;
+        }
+
+        // 2) Minijogo pós-missão (padrão anterior) — ex.: Secretaria.
         if (chamarMinijogo && missaoCompleta && !minijogoTentado)
         {
             minijogoTentado = true;
@@ -231,7 +247,14 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
 
         if (completarMissaoAoTerminar && !missaoCompleta && emEntrega)
         {
-            GameManager.Instance?.CompletarMissao(idMissao);
+            if (usarModeloEtapas)
+            {
+                GameManager.Instance?.ConcluirEtapa(idMissao);
+            }
+            else
+            {
+                GameManager.Instance?.CompletarMissao(idMissao);
+            }
             minijogoTentado = false;
         }
     }

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Colecionável: " + colecionaveisColetados + "/" + colecionaveisTotal);
     }
 
+    /// <summary>Completa uma missão inteira (modelo flat — retrocompatível).</summary>
     public void CompletarMissao(string idMissao)
     {
         if (QuestManager.Instancia == null) return;
@@ -45,6 +46,23 @@ public class GameManager : MonoBehaviour
         if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
     }
 
+    /// <summary>Conclui uma etapa de uma missão (modelo por etapas).</summary>
+    public void ConcluirEtapa(string idMissao)
+    {
+        if (QuestManager.Instancia == null) return;
+
+        QuestManager.Instancia.ConcluirEtapa(idMissao);
+
+        if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
+    }
+
+    /// <summary>Define explicitamente o passo de uma missão (útil para save/restore).</summary>
+    public void DefinirPassoMissao(string idMissao, int passo)
+    {
+        if (QuestManager.Instancia == null) return;
+        QuestManager.Instancia.DefinirPasso(idMissao, passo);
+    }
+
     public bool MissaoCompleta(string idMissao)
     {
         return QuestManager.Instancia != null && QuestManager.Instancia.MissaoCompleta(idMissao);
@@ -53,6 +71,12 @@ public class GameManager : MonoBehaviour
     public int QuantidadeMissoesCompletas()
     {
         return QuestManager.Instancia != null ? QuestManager.Instancia.QuantidadeMissoesCompletas() : 0;
+    }
+
+    /// <summary>Quantas etapas já foram concluídas dessa missão (modelo por etapas).</summary>
+    public int ObterPassoMissao(string idMissao)
+    {
+        return QuestManager.Instancia != null ? QuestManager.Instancia.ObterPassoAtual(idMissao) : 0;
     }
 }
 }

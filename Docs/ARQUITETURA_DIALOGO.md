@@ -253,10 +253,87 @@ modo conversa e trava movimento/câmera).
   de Editor referenciam o runtime via `using IF360;`. Ainda **não** há `asmdef` (opcional).
 
 > **Limitação do HUD**: mostrar o **objetivo ativo** (texto da missão corrente) exige um
-> modelo de missões com etapas (`MissaoData` com `etapas[]`), ainda não implementado —
-> ver discussão de opção "B" para a missão Biblioteca.
+> modelo de missões com etapas (`MissaoData` com `etapas[]`). **IMPLEMENTADO** — ver §18.
 
 ## 17. Minijogo "Ligar os 3 fios"
+
+Vertical slice de minijogo, acionado pelo mesmo gancho de NPC que antes só logava.
+
+- **Gancho**: `NPCBaseNovo.IniciarMinijogo()` dispara o evento estático
+  `NPCBaseNovo.MinijogoSolicitado`. Um NPC com **Chamar Minijogo Como Parte da Missão** ativo o aciona **durante** a missão (ex.: `NPC_Roney` na Administração); `Chamar Minijogo` (padrão) aciona **após** a missão completa (ex.: `NPC_Secretaria`).
+- **Componente**: `Assets\Scripts\Minijogos\MinijogoFios.cs` (namespace `IF360`), em
+  `Systems`. Assina o evento e abre o desafio.
+- **UI**: construída em **runtime** (reaproveita o `Canvas` da cena), sem prefab nem tool
+  obrigatória — 3 fios coloridos × 3 tomadas embaralhadas.
+- **Controles**: `←/→` ou `A/D` escolhem o fio; `1/2/3` ligam à tomada; `Esc` cancela.
+  Lê o teclado via `Keyboard.current` (não mexe no `PlayerInputActions`).
+- **Regras**: acertar a cor trava a ligação; as 3 certas → vitória, `+premioPontos` via
+  `GameManager.AdicionarPontos` **e** `GameManager.ConcluirEtapa(idMissao)` para a missão do NPC que abriu o minijogo. Enquanto aberto, trava movimento/câmera
+  (`TravarControle`) e o `PlayerInteraction` ignora o `E` (`MinijogoFios.Ativo`).
+- **Setup**: **Tools > IFNMG > Adicionar Minijogo 'Ligar Fios'** (ou o setup principal, que
+  já o garante em `Systems`). Configurar NPC com `minijogoComoParteDaMissao = true`
+  e `idMissao` correspondente (ex.: `missao_administracao`).
+
+## 18. Modelo de missões por etapas (`MissaoData` + `QuestManager` etapas)
+
+Agora o jogo suporta missões compostas por múltiplas etapas, cada uma com id, nome
+e descrição. O sistema é **retrocompatível**: missões antigas (modelo flat `List<string> missoesCompletas`) continuam funcionando; missões novas usam o modelo por etapas.
+
+### Novos arquivos
+
+- `Assets\Scripts\Dados\MissaoData.cs` — ScriptableObject com `idMissao`, `nome`,
+  `descricao` e `etapas[]` (`EtapaMissao` com `idEtapa`, `nome`, `descricao`).
+- Assets criados em `Assets/Resources/Missoes/` via **Tools > IFNMG > Criar MissaoData Assets**:
+  - `Missao_EnsinoMedio` (`missao_ensino_medio`) — 3 etapas.
+  - `Missao_Administracao` (`missao_administracao`) — 3 etapas (explicação, minijogo 3 fios, retornar a Ananda).
+  - `Missao_Biblioteca` (`missao_biblioteca`) — 4 etapas (cadastro, 3 livros).
+  - `Missao_Nucleo` (`missao_nucleo`) — 5 etapas (apresentação, Bridge, Tetris 1/2/3).
+  - `Missao_Refeitorio` (`missao_refeitorio`) — 2 etapas.
+  - `Missao_Assistencia` (`missao_assistencia`) — 1 etapa.
+
+### Mudanças no `QuestManager`
+
+- Novo dicionário interno `_passoPorMissao: Dictionary<string, int>` que guarda o
+  índice da etapa atual por `idMissao`.
+- Evento estático `EtapaConcluida(string idMissao, int passoAtual)` disparado a
+  cada `ConcluirEtapa`.
+- Métodos públicos:
+  - `ConcluirEtapa(string idMissao)` — avança uma etapa, dispara evento e auto-save.
+  - `DefinirPasso(string idMissao, int passo)` — define passo explicitamente (restore).
+  - `ObterPassoAtual(string idMissao)` — lê o passo atual (0 = nenhuma etapa concluída).
+- Serialização expandida: JSON agora guarda `missoesCompletas` (flat) + `missaoIds[]` + `passoAtual[]`.
+
+### Mudanças no `GameManager`
+
+- `ConcluirEtapa(string idMissao)` — proxy para `QuestManager.ConcluirEtapa` + auto-save.
+- `DefinirPassoMissao(string idMissao, int passo)` — proxy para `QuestManager.DefinirPasso`.
+- `ObterPassoMissao(string idMissao)` — lê passo atual.
+
+### Mudanças no `HUDMissao`
+
+- Novo campo `textoEtapaAtual` (TMP_Text) para exibir a etapa corrente.
+- Assina `QuestManager.EtapaConcluida` e atualiza o texto com:
+  `"Nome da Missão — Etapa X: Nome da Etapa"` (busca o `MissaoData` em `Resources/Missoes`).
+
+### NPCBaseNovo — novos campos
+
+| Campo | Tipo | Função |
+|-------|------|--------|
+| `usarModeloEtapas` | `bool` | Se true, `completarMissaoAoTerminar` chama `GameManager.ConcluirEtapa` em vez de `CompletarMissao`. |
+| `minijogoComoParteDaMissao` | `bool` | Se true, dispara o minijogo **durante** a missão (antes de completá-la). Se false (padrão), dispara apenas **após** a missão completa (`chamarMinijogo`). |
+
+### Fluxo de configuração recomendado
+
+1. Rode **Tools > IFNMG > Criar MissaoData Assets** (cria os 6 assets em `Resources/Missoes`).
+2. No Inspector de cada NPC, preencha:
+   - `idMissao` igual ao `idMissao` do asset (ex.: `missao_administracao`).
+   - `usarModeloEtapas = true` para NPCs que devem avançar etapas.
+   - `minijogoComoParteDaMissao = true` para NPCs que disparam minijogo **durante** a missão (Roney, Josy).
+   - `chamarMinijogo = true` (padrão) para NPCs que disparam minijogo **após** missão completa (Secretaria).
+   - `completarMissaoAoTerminar = true` + `usarModeloEtapas = true` para NPCs que finalizam uma etapa ao fim do diálogo.
+3. No HUD, atribua o campo `Texto Etapa Atual` para ver o progresso em tempo real.
+
+> **Nota**: O sistema aceita misturar missões flat (modelo antigo) e missões por etapas no mesmo jogo. O `QuestManager` guarda ambos os formatos simultaneamente.
 
 Vertical slice de minijogo, acionado pelo mesmo gancho de NPC que antes só logava.
 
