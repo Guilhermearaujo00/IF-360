@@ -85,11 +85,11 @@ public static class CriarMissaoDataAssets
         missao.idMissao = idMissao;
         missao.nome = nome;
         missao.descricao = descricao;
-        missao.etapas = new MissaoData.EtapaMissao[etapas.Length];
+        missao.etapas = new EtapaMissao[etapas.Length];
 
         for (int i = 0; i < etapas.Length; i++)
         {
-            missao.etapas[i] = new MissaoData.EtapaMissao
+            missao.etapas[i] = new EtapaMissao
             {
                 idEtapa = etapas[i].id,
                 nome = etapas[i].nome,
