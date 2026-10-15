@@ -39,11 +39,26 @@ public class TelaCarregamento : MonoBehaviour
         if (canvas != null) ConstruirUI();
     }
 
-    private void OnLevelWasLoaded(int level)
+    private void OnEnable()
     {
-        // Reencontra canvas ao trocar de cena
+        SceneManager.sceneLoaded += AoCarregarCena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AoCarregarCena;
+    }
+
+    private void AoCarregarCena(Scene cena, LoadSceneMode modo)
+    {
+        // O painel é filho do Canvas da cena anterior, que é destruído no load.
+        // Limpa a referência e reconstrói no novo Canvas.
+        painel = null;
+        textoStatus = null;
+        textoProgresso = null;
+
         canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
-        if (canvas != null && painel == null) ConstruirUI();
+        if (canvas != null) ConstruirUI();
     }
 
     private void ConstruirUI()
