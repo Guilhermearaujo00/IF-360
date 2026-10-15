@@ -88,6 +88,7 @@ public class TelaCarregamento : MonoBehaviour
         txt.fontSize = 48f;
         txt.alignment = TextAlignmentOptions.Center;
         txt.color = Color.white;
+        textoStatus = txt;
 
         // Progresso / Dicas
         var goProg = new GameObject("Progresso", typeof(RectTransform));
@@ -122,6 +123,14 @@ public class TelaCarregamento : MonoBehaviour
         {
             canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
             ConstruirUI();
+        }
+
+        // Sem Canvas na cena, não há como mostrar a tela: carrega direto.
+        if (painel == null)
+        {
+            Debug.LogWarning("[TelaCarregamento] Sem Canvas na cena; carregando sem tela de loading.");
+            SceneManager.LoadScene(nomeCena);
+            yield break;
         }
 
         painel.SetActive(true);
@@ -160,12 +169,10 @@ public class TelaCarregamento : MonoBehaviour
     {
         string[] frames = { "CARREGANDO", "CARREGANDO.", "CARREGANDO..", "CARREGANDO..." };
         int idx = 0;
-        var txtObj = painel?.transform.Find("TextoCarregando")?.GetComponent<TMP_Text>();
 
         while (painel != null && painel.activeSelf)
         {
-            if (txtObj != null)
-                txtObj.text = frames[idx];
+            if (textoStatus != null) textoStatus.text = frames[idx];
             idx = (idx + 1) % frames.Length;
             yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -173,7 +180,17 @@ public class TelaCarregamento : MonoBehaviour
 
     public static void Carregar(string cena, float tempoMinimo = 1f)
     {
-        if (Instancia != null) Instancia.CarregarCena(cena, tempoMinimo);
+        ObterInstancia().CarregarCena(cena, tempoMinimo);
+    }
+
+    private static TelaCarregamento ObterInstancia()
+    {
+        if (Instancia == null)
+        {
+            var go = new GameObject("TelaCarregamento");
+            Instancia = go.AddComponent<TelaCarregamento>();
+        }
+        return Instancia;
     }
 }
 }
