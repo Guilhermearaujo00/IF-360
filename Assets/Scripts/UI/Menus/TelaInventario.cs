@@ -1,9 +1,7 @@
 namespace IF360
 {
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 /// <summary>
 /// Tela de inventário - mostra itens coletados via InventoryManager.
@@ -11,8 +9,6 @@ using TMPro;
 public class TelaInventario : MenuBase
 {
     public Action AoFechar;
-
-    private List<string> cacheItens;
 
     protected override void Awake()
     {
@@ -43,30 +39,23 @@ public class TelaInventario : MenuBase
         // Remove itens dinâmicos anteriores (mantém apenas "Voltar")
         while (itens.Count > 1) itens.RemoveAt(1);
 
-        var itensInventario = InventoryManager.Instancia.itens;
+        var itensInventario = InventoryManager.Instancia.Itens;
         if (itensInventario == null || itensInventario.Count == 0)
         {
-            // Item informativo vazio
             AdicionarItem("(vazio)", null);
-            ConstruirUI();
-            indiceSelecionado = 0;
-            AtualizarVisualSelecao();
-            return;
+        }
+        else
+        {
+            foreach (var item in itensInventario)
+            {
+                AdicionarItem(FormatarNomeItem(item), null);
+            }
         }
 
-        foreach (var item in itensInventario)
+        // Reconstrói a UI com a lista atualizada
+        if (painel != null)
         {
-            string nomeExibicao = FormatarNomeItem(item);
-            AdicionarItem(nomeExibicao, null);
-        }
-
-        // Reconstrui UI se já aberta
-        if (ativo && painel != null)
-        {
-            painel = null;
-            ConstruirUI();
-            indiceSelecionado = 0;
-            AtualizarVisualSelecao();
+            RecriarPainel();
         }
     }
 

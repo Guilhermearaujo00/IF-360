@@ -3,6 +3,7 @@ namespace IF360
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -34,14 +35,14 @@ public class TelaCarregamento : MonoBehaviour
 
     private void Start()
     {
-        canvas = Object.FindAnyObjectByType<Canvas>();
+        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
         if (canvas != null) ConstruirUI();
     }
 
     private void OnLevelWasLoaded(int level)
     {
         // Reencontra canvas ao trocar de cena
-        canvas = Object.FindAnyObjectByType<Canvas>();
+        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
         if (canvas != null && painel == null) ConstruirUI();
     }
 
@@ -104,7 +105,7 @@ public class TelaCarregamento : MonoBehaviour
         // Garante UI construída
         if (painel == null)
         {
-            canvas = Object.FindAnyObjectByType<Canvas>();
+            canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
             ConstruirUI();
         }
 

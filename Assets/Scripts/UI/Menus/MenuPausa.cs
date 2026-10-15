@@ -1,6 +1,7 @@
 namespace IF360
 {
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -128,10 +129,10 @@ public class MenuPausa : MenuBase
 
     private void TravarJogador(bool travar)
     {
-        var player = Object.FindAnyObjectByType<PlayerController>();
+        var player = UnityEngine.Object.FindAnyObjectByType<PlayerController>();
         if (player != null) player.TravarControle(travar);
 
-        var camera = Object.FindAnyObjectByType<CameraController>();
+        var camera = UnityEngine.Object.FindAnyObjectByType<CameraController>();
         if (camera != null) camera.TravarControle(travar);
     }
 

@@ -27,6 +27,8 @@ public class InventoryManager : MonoBehaviour
 
     public int QuantidadeItens => itens.Count;
 
+    public IReadOnlyList<string> Itens => itens;
+
     public void AdicionarItem(string idItem)
     {
         if (string.IsNullOrEmpty(idItem) || itens.Contains(idItem)) return;

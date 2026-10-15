@@ -42,7 +42,7 @@ public abstract class MenuBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        canvas = Object.FindAnyObjectByType<Canvas>();
+        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
         if (canvas == null)
         {
             Debug.LogError($"[{GetType().Name}] Nenhum Canvas encontrado na cena.");
@@ -155,6 +155,24 @@ public abstract class MenuBase : MonoBehaviour
     }
 
     protected abstract void ConstruirConteudo();
+
+    protected void DestruirPainel()
+    {
+        if (painel != null) Destroy(painel);
+        painel = null;
+        textoTitulo = null;
+        textoAviso = null;
+    }
+
+    protected void RecriarPainel()
+    {
+        DestruirPainel();
+        ConstruirUI();
+        indiceSelecionado = 0;
+        AtualizarVisualSelecao();
+        AtualizarValores();
+        if (painel != null) painel.SetActive(ativo);
+    }
 
     protected virtual void ConstruirUI()
     {

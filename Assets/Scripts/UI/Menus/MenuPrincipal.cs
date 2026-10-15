@@ -1,6 +1,7 @@
 namespace IF360
 {
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
