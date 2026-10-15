@@ -1,5 +1,6 @@
 namespace IF360
 {
+using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -26,7 +27,7 @@ public class TelaConfiguracoes : MenuBase
         CarregarPreferencias();
     }
 
-    protected override void ConstruirConteudo()
+    protected virtual void ConstruirConteudo()
     {
         AdicionarItem("Volume Geral", null,
             () => $"{(volumeMaster * 100f):F0}%",

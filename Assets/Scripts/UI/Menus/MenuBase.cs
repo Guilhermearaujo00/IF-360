@@ -154,7 +154,7 @@ public abstract class MenuBase : MonoBehaviour
         return item;
     }
 
-    // --- Construção de UI ---
+    protected abstract void ConstruirConteudo();
 
     protected virtual void ConstruirUI()
     {
@@ -258,6 +258,7 @@ public abstract class MenuBase : MonoBehaviour
     public virtual void Abrir()
     {
         if (ativo) return;
+        ConstruirConteudo();
         ConstruirUI();
         indiceSelecionado = 0;
         ativo = true;

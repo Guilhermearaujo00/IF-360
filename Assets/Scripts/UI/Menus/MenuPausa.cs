@@ -77,7 +77,7 @@ public class MenuPausa : MenuBase
         subMenuAberto = false;
     }
 
-    protected override void ConstruirConteudo()
+    protected virtual void ConstruirConteudo()
     {
         // Itens do menu pausa
         AdicionarItem("Continuar", Fechar);

@@ -1,5 +1,6 @@
 namespace IF360
 {
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -27,7 +28,7 @@ public class TelaInventario : MenuBase
         AtualizarListaItens();
     }
 
-    protected override void ConstruirConteudo()
+    protected virtual void ConstruirConteudo()
     {
         // Item "Voltar" fixo
         AdicionarItem("Voltar", Fechar);
@@ -47,6 +48,9 @@ public class TelaInventario : MenuBase
         {
             // Item informativo vazio
             AdicionarItem("(vazio)", null);
+            ConstruirUI();
+            indiceSelecionado = 0;
+            AtualizarVisualSelecao();
             return;
         }
 
@@ -59,7 +63,7 @@ public class TelaInventario : MenuBase
         // Reconstrui UI se já aberta
         if (ativo && painel != null)
         {
-            DestruirPainel();
+            painel = null;
             ConstruirUI();
             indiceSelecionado = 0;
             AtualizarVisualSelecao();

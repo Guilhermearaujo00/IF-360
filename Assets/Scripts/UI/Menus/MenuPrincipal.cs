@@ -15,7 +15,7 @@ public class MenuPrincipal : MenuBase
         MenuPausa.Instancia?.Fechar();
     }
 
-    protected override void ConstruirConteudo()
+    protected virtual void ConstruirConteudo()
     {
         AdicionarItem("Iniciar Jogo", IniciarJogo);
         AdicionarItem("Continuar", ContinuarJogo);
