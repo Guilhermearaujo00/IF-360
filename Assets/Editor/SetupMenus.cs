@@ -1,7 +1,9 @@
+using IF360;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// Ferramenta de configuração dos menus do jogo.
