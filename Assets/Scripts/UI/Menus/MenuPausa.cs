@@ -29,7 +29,7 @@ public class MenuPausa : MenuBase
         Instancia = this;
     }
 
-    protected override void OnDestroy()
+    private void OnDestroy()
     {
         if (Instancia == this) Instancia = null;
     }
@@ -50,6 +50,12 @@ public class MenuPausa : MenuBase
         TravarJogador(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        base.OnFechar();
+        // Garante que sub-menus estão fechados
+        if (telaConfig != null && telaConfig.Ativo) telaConfig.Fechar();
+        if (telaInventario != null && telaInventario.Ativo) telaInventario.Fechar();
+        subMenuAberto = false;
     }
 
     protected override void Update()
@@ -68,16 +74,7 @@ public class MenuPausa : MenuBase
         }
     }
 
-    protected override void OnFechar()
-    {
-        base.OnFechar();
-        // Garante que sub-menus estão fechados
-        if (telaConfig != null && telaConfig.Ativo) telaConfig.Fechar();
-        if (telaInventario != null && telaInventario.Ativo) telaInventario.Fechar();
-        subMenuAberto = false;
-    }
-
-    protected virtual void ConstruirConteudo()
+    protected override void ConstruirConteudo()
     {
         // Itens do menu pausa
         AdicionarItem("Continuar", Fechar);

@@ -28,7 +28,7 @@ public class TelaInventario : MenuBase
         AtualizarListaItens();
     }
 
-    protected virtual void ConstruirConteudo()
+    protected override void ConstruirConteudo()
     {
         // Item "Voltar" fixo
         AdicionarItem("Voltar", Fechar);

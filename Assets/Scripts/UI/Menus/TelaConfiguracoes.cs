@@ -27,7 +27,7 @@ public class TelaConfiguracoes : MenuBase
         CarregarPreferencias();
     }
 
-    protected virtual void ConstruirConteudo()
+    protected override void ConstruirConteudo()
     {
         AdicionarItem("Volume Geral", null,
             () => $"{(volumeMaster * 100f):F0}%",
