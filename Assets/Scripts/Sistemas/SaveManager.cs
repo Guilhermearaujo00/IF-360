@@ -30,6 +30,11 @@ public class SaveManager : MonoBehaviour
         return PlayerPrefs.HasKey(CHAVE_PONTOS);
     }
 
+    public bool TemSave()
+    {
+        return PlayerPrefs.HasKey(CHAVE_PONTOS) || PlayerPrefs.HasKey(CHAVE_MISSOES);
+    }
+
     public void SalvarJogo()
     {
         if (GameManager.Instance != null)
@@ -79,6 +84,11 @@ public class SaveManager : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("[SaveManager] Jogo apagado.");
+    }
+
+    public void LimparSave()
+    {
+        ApagarJogo();
     }
 }
 }
