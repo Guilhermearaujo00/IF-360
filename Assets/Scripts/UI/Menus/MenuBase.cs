@@ -177,6 +177,7 @@ public abstract class MenuBase : MonoBehaviour
     protected virtual void ConstruirUI()
     {
         if (painel != null) return;
+        if (canvas == null) canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
         if (canvas == null) return;
 
         painel = new GameObject("Painel_" + GetType().Name, typeof(RectTransform), typeof(Image));
@@ -276,8 +277,17 @@ public abstract class MenuBase : MonoBehaviour
     public virtual void Abrir()
     {
         if (ativo) return;
+
+        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
         ConstruirConteudo();
         ConstruirUI();
+
+        if (painel == null)
+        {
+            Debug.LogWarning($"[{GetType().Name}] Abrir ignorado: nenhum Canvas na cena.");
+            return;
+        }
+
         indiceSelecionado = 0;
         ativo = true;
         painel.SetActive(true);

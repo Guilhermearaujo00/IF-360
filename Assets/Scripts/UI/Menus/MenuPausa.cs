@@ -61,6 +61,26 @@ public class MenuPausa : MenuBase
 
     protected override void Update()
     {
+        bool esc = Keyboard.current?.escapeKey.wasPressedThisFrame == true;
+
+        if (esc && subMenuAberto)
+        {
+            // ESC fecha o sub-menu e devolve o controle ao menu de pausa
+            if (telaConfig != null && telaConfig.Ativo) telaConfig.Fechar();
+            if (telaInventario != null && telaInventario.Ativo) telaInventario.Fechar();
+            subMenuAberto = false;
+            ativo = true;
+            if (painel != null) painel.SetActive(true);
+            return;
+        }
+
+        // Só o gameplay pausa; na cena Menu quem trata o ESC é o MenuPrincipal
+        if (esc && !ativo && SceneManager.GetActiveScene().name != "Menu")
+        {
+            Abrir();
+            return;
+        }
+
         if (!ativo) return;
 
         // Se sub-menu aberto, não processa navegação do menu pausa
@@ -69,7 +89,7 @@ public class MenuPausa : MenuBase
         base.Update();
 
         // ESC fecha o menu de pausa
-        if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+        if (esc)
         {
             Fechar();
         }

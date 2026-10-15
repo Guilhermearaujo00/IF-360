@@ -12,8 +12,12 @@ public class MenuPrincipal : MenuBase
     protected override void Awake()
     {
         base.Awake();
-        // Desabilita pausa automática via ESC no menu principal
         MenuPausa.Instancia?.Fechar();
+    }
+
+    private void Start()
+    {
+        Abrir();
     }
 
     protected override void ConstruirConteudo()

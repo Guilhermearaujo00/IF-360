@@ -1,3 +1,4 @@
+using System;
 using IF360;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -6,145 +7,125 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// Ferramenta de configuração dos menus do jogo.
-/// Menu: Tools > IFNMG > Configurar Menus
+/// Configura os menus do jogo nas cenas Campus e Menu.
+/// Menu: Tools > IFNMG > ...
 /// </summary>
 public static class SetupMenus
 {
-    private const string MENU = "Tools/IFNMG/Configurar Menus";
-    private const string MENU_PAUSA = "Tools/IFNMG/Adicionar Menu Pausa";
+    private const string MENU_TUDO = "Tools/IFNMG/Configurar Menus (Tudo)";
+    private const string MENU_PAUSA = "Tools/IFNMG/Configurar Menu Pausa";
     private const string MENU_PRINCIPAL = "Tools/IFNMG/Configurar Menu Principal";
 
-    [MenuItem(MENU)]
+    private const string PATH_CAMPUS = "Assets/Scenes/Campus.unity";
+    private const string PATH_MENU = "Assets/Scenes/Menu.unity";
+
+    [MenuItem(MENU_TUDO, priority = 0)]
     public static void ConfigurarTudo()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        if (!PodeEditar()) return;
+
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
-            EditorUtility.DisplayDialog("SetupMenus", "Saia do Play Mode antes de configurar.", "OK");
+            EditorUtility.DisplayDialog("SetupMenus", "Salve ou descarte as alterações abertas antes de continuar.", "OK");
             return;
         }
 
-        ConfigurarMenuPausa();
-        ConfigurarMenuPrincipal();
+        ConfigurarCena(PATH_CAMPUS, AplicarMenuPausa);
+        ConfigurarCena(PATH_MENU, AplicarMenuPrincipal);
 
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log("SetupMenus: menus configurados.");
+        AssetDatabase.SaveAssets();
+        EditorUtility.DisplayDialog("SetupMenus", "Cenas Menu e Campus configuradas e salvas.", "OK");
     }
+
+    [MenuItem(MENU_TUDO, validate = true)]
+    private static bool ValidarConfigurarTudo() => !EditorApplication.isPlayingOrWillChangePlaymode;
 
     [MenuItem(MENU_PAUSA)]
     public static void ConfigurarMenuPausa()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
-        {
-            EditorUtility.DisplayDialog("SetupMenus", "Saia do Play Mode antes de configurar.", "OK");
-            return;
-        }
-
-        // Garante objeto Systems
-        GameObject systems = GameObject.Find("Systems");
-        if (systems == null)
-        {
-            systems = new GameObject("Systems");
-            Undo.RegisterCreatedObjectUndo(systems, "Criar Systems");
-        }
-
-        // Adiciona MenuPausa se não existe
-        if (systems.GetComponent<MenuPausa>() == null)
-        {
-            Undo.AddComponent<MenuPausa>(systems);
-            Debug.Log("SetupMenus: MenuPausa adicionado em 'Systems'.");
-        }
-        else
-        {
-            Debug.Log("SetupMenus: MenuPausa já existe.");
-        }
-
-        // Garante TelaCarregamento
-        if (Object.FindAnyObjectByType<TelaCarregamento>() == null)
-        {
-            var go = new GameObject("TelaCarregamento");
-            Undo.RegisterCreatedObjectUndo(go, "Criar TelaCarregamento");
-            go.AddComponent<TelaCarregamento>();
-            Debug.Log("SetupMenus: TelaCarregamento criado (DontDestroyOnLoad).");
-        }
-
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        if (!PodeEditar()) return;
+        ConfigurarCena(PATH_CAMPUS, AplicarMenuPausa);
     }
 
     [MenuItem(MENU_PRINCIPAL)]
     public static void ConfigurarMenuPrincipal()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        if (!PodeEditar()) return;
+        ConfigurarCena(PATH_MENU, AplicarMenuPrincipal);
+    }
+
+    private static bool PodeEditar()
+    {
+        if (!EditorApplication.isPlayingOrWillChangePlaymode) return true;
+
+        EditorUtility.DisplayDialog("SetupMenus", "Saia do Play Mode antes de configurar.", "OK");
+        return false;
+    }
+
+    /// <summary>
+    /// Abre a cena, aplica a configuracao, marca como suja e salva em disco.
+    /// </summary>
+    private static void ConfigurarCena(string caminho, Action configurar)
+    {
+        Scene cena = EditorSceneManager.OpenScene(caminho, OpenSceneMode.Single);
+        configurar();
+        EditorSceneManager.MarkSceneDirty(cena);
+        EditorSceneManager.SaveScene(cena);
+        Debug.Log($"[SetupMenus] Cena '{cena.name}' configurada e salva.");
+    }
+
+    // --- Configuracoes por cena ---
+
+    private static void AplicarMenuPausa()
+    {
+        GameObject systems = GameObject.Find("Systems") ?? new GameObject("Systems");
+
+        if (systems.GetComponent<MenuPausa>() == null)
         {
-            EditorUtility.DisplayDialog("SetupMenus", "Saia do Play Mode antes de configurar.", "OK");
-            return;
+            systems.AddComponent<MenuPausa>();
+            Debug.Log("[SetupMenus] MenuPausa adicionado em 'Systems'.");
         }
 
-        // Deve estar na cena Menu
-        var cenaAtiva = SceneManager.GetActiveScene();
-        if (cenaAtiva.name != "Menu")
-        {
-            EditorUtility.DisplayDialog("SetupMenus", "Abra a cena 'Menu' antes de configurar o menu principal.", "OK");
-            return;
-        }
+        GarantirTelaCarregamento();
+    }
 
-        // Garante Canvas
-        Canvas canvas = Object.FindAnyObjectByType<Canvas>();
-        if (canvas == null)
-        {
-            var canvasGo = new GameObject("Canvas");
-            Undo.RegisterCreatedObjectUndo(canvasGo, "Criar Canvas");
-            canvas = canvasGo.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGo.AddComponent<UnityEngine.UI.GraphicRaycaster>();
-            var scaler = canvasGo.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.matchWidthOrHeight = 0.5f;
-            Debug.Log("SetupMenus: Canvas criado para Menu Principal.");
-        }
+    private static void AplicarMenuPrincipal()
+    {
+        GarantirCanvas();
+        GarantirTelaCarregamento();
 
-        // Adiciona MenuPrincipal
-        GameObject menuGo = GameObject.Find("MenuPrincipal");
-        if (menuGo == null)
-        {
-            menuGo = new GameObject("MenuPrincipal");
-            Undo.RegisterCreatedObjectUndo(menuGo, "Criar MenuPrincipal");
-        }
+        GameObject menuGo = GameObject.Find("MenuPrincipal") ?? new GameObject("MenuPrincipal");
 
         if (menuGo.GetComponent<MenuPrincipal>() == null)
         {
-            Undo.AddComponent<MenuPrincipal>(menuGo);
-            Debug.Log("SetupMenus: MenuPrincipal adicionado.");
+            menuGo.AddComponent<MenuPrincipal>();
+            Debug.Log("[SetupMenus] MenuPrincipal adicionado.");
         }
-        else
-        {
-            Debug.Log("SetupMenus: MenuPrincipal já existe.");
-        }
-
-        EditorSceneManager.MarkSceneDirty(cenaAtiva);
     }
 
-    // Helper para encontrar/criar filho (mesmo padrão do SetupSistemaDialogo)
-    private static Transform BuscarFilho(Transform pai, string nome)
+    private static void GarantirCanvas()
     {
-        foreach (Transform filho in pai)
-        {
-            if (filho.name == nome) return filho;
-            Transform neto = BuscarFilho(filho, nome);
-            if (neto != null) return neto;
-        }
-        return null;
+        if (UnityEngine.Object.FindAnyObjectByType<Canvas>() != null) return;
+
+        var canvasGo = new GameObject("Canvas");
+        var canvas = canvasGo.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasGo.AddComponent<GraphicRaycaster>();
+
+        var scaler = canvasGo.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.matchWidthOrHeight = 0.5f;
+
+        Debug.Log("[SetupMenus] Canvas criado.");
     }
 
-    private static GameObject ObterOuCriarFilho(GameObject pai, string nome)
+    private static void GarantirTelaCarregamento()
     {
-        Transform existente = BuscarFilho(pai.transform, nome);
-        if (existente != null) return existente.gameObject;
+        if (UnityEngine.Object.FindAnyObjectByType<TelaCarregamento>() != null) return;
 
-        GameObject go = new GameObject(nome);
-        Undo.RegisterCreatedObjectUndo(go, "Criar " + nome);
-        go.transform.SetParent(pai.transform, false);
-        return go;
+        var go = new GameObject("TelaCarregamento");
+        go.AddComponent<TelaCarregamento>();
+        Debug.Log("[SetupMenus] TelaCarregamento criado.");
     }
 }
