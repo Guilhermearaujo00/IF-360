@@ -127,10 +127,14 @@ public abstract class MenuBase : MonoBehaviour
             {
                 itens[i].textoRotulo.text = (selecionado ? "▶ " : "  ") + ObterRotuloBase(i);
                 itens[i].textoRotulo.color = selecionado ? new Color(1f, 0.9f, 0.3f) : Color.white;
+                itens[i].textoRotulo.fontSize = selecionado ? 30f : 26f;
+                itens[i].textoRotulo.transform.localScale = selecionado ? Vector3.one * 1.04f : Vector3.one;
             }
             if (itens[i].textoValor != null)
             {
                 itens[i].textoValor.color = selecionado ? new Color(1f, 0.9f, 0.3f) : new Color(0.8f, 0.8f, 0.8f);
+                itens[i].textoValor.fontSize = selecionado ? 28f : 24f;
+                itens[i].textoValor.transform.localScale = selecionado ? Vector3.one * 1.02f : Vector3.one;
             }
         }
     }
