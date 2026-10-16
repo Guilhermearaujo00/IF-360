@@ -125,7 +125,7 @@ public abstract class MenuBase : MonoBehaviour
             bool selecionado = i == indiceSelecionado;
             if (itens[i].textoRotulo != null)
             {
-                itens[i].textoRotulo.text = (selecionado ? "▶ " : "  ") + ObterRotuloBase(i);
+                itens[i].textoRotulo.text = (selecionado ? "> " : "  ") + ObterRotuloBase(i);
                 itens[i].textoRotulo.color = selecionado ? new Color(1f, 0.9f, 0.3f) : Color.white;
                 itens[i].textoRotulo.fontSize = selecionado ? 30f : 26f;
                 itens[i].textoRotulo.transform.localScale = selecionado ? Vector3.one * 1.04f : Vector3.one;
@@ -216,7 +216,7 @@ public abstract class MenuBase : MonoBehaviour
         rtAviso.anchoredPosition = new Vector2(0f, 30f);
         rtAviso.sizeDelta = new Vector2(largura - 40f, 40f);
         textoAviso = goAviso.AddComponent<TextMeshProUGUI>();
-        textoAviso.text = "↑/↓ ou W/S navega  •  Enter/Espaço seleciona  •  ←/→ ou A/D ajusta  •  Esc fecha";
+        textoAviso.text = "Setas ou W/S navega - Enter/Espaço seleciona - A/D ajusta - Esc fecha";
         textoAviso.fontSize = 18f;
         textoAviso.alignment = TextAlignmentOptions.Center;
         textoAviso.color = new Color(0.7f, 0.7f, 0.7f);

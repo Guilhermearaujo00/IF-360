@@ -64,10 +64,10 @@ public class TelaInventario : MenuBase
         // Mapeia IDs internos para nomes amigáveis
         return id switch
         {
-            "livro_quimica" => "📚 Livro de Química",
-            "livro_fisica" => "📚 Livro de Física",
-            "livro_biologia" => "📚 Livro de Biologia",
-            "componentes_pc" => "🔧 Componentes do PC",
+            "livro_quimica" => "Livro de Química",
+            "livro_fisica" => "Livro de Física",
+            "livro_biologia" => "Livro de Biologia",
+            "componentes_pc" => "Componentes do PC",
             _ => id.Replace("_", " ")
         };
     }
