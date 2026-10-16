@@ -33,8 +33,15 @@ public abstract class MenuBase : MonoBehaviour
     protected readonly List<ItemMenu> itens = new List<ItemMenu>();
     protected int indiceSelecionado;
     protected bool ativo;
-    private bool diagTecladoNull;
-    private bool diagPrimeiraTecla;
+    private bool inputPronto;
+    private bool diagPrimeiraAcao;
+
+    private InputAction acaoCima;
+    private InputAction acaoBaixo;
+    private InputAction acaoConfirmar;
+    private InputAction acaoEsquerda;
+    private InputAction acaoDireita;
+    private InputAction acaoCancelar;
     protected GameObject painel;
     protected TMP_Text textoTitulo;
     protected TMP_Text textoAviso;
@@ -49,53 +56,91 @@ public abstract class MenuBase : MonoBehaviour
         {
             Debug.LogError($"[{GetType().Name}] Nenhum Canvas encontrado na cena.");
         }
+        ConfigurarInput();
     }
 
-    protected virtual void Update()
+    private void ConfigurarInput()
+    {
+        if (inputPronto) return;
+        inputPronto = true;
+
+        acaoCima = CriarAcao("MenuCima", "<Keyboard>/upArrow", "<Keyboard>/w");
+        acaoCima.performed += _ => AoNavegar(-1);
+
+        acaoBaixo = CriarAcao("MenuBaixo", "<Keyboard>/downArrow", "<Keyboard>/s");
+        acaoBaixo.performed += _ => AoNavegar(1);
+
+        acaoConfirmar = CriarAcao("MenuConfirmar", "<Keyboard>/enter", "<Keyboard>/numpadEnter", "<Keyboard>/space");
+        acaoConfirmar.performed += _ => AoConfirmar();
+
+        acaoEsquerda = CriarAcao("MenuEsquerda", "<Keyboard>/leftArrow", "<Keyboard>/a");
+        acaoEsquerda.performed += _ => AoAjustar(-1);
+
+        acaoDireita = CriarAcao("MenuDireita", "<Keyboard>/rightArrow", "<Keyboard>/d");
+        acaoDireita.performed += _ => AoAjustar(1);
+
+        acaoCancelar = CriarAcao("MenuCancelar", "<Keyboard>/escape");
+        acaoCancelar.performed += _ => TratarCancelar();
+
+        acaoCima.Enable();
+        acaoBaixo.Enable();
+        acaoConfirmar.Enable();
+        acaoEsquerda.Enable();
+        acaoDireita.Enable();
+        acaoCancelar.Enable();
+    }
+
+    private static InputAction CriarAcao(string nome, params string[] bindings)
+    {
+        var acao = new InputAction(nome, InputActionType.Button);
+        foreach (string b in bindings) acao.AddBinding(b);
+        return acao;
+    }
+
+    private void AoNavegar(int direcao)
     {
         if (!ativo) return;
+        RegistrarDiagnosticoInput();
+        MoverSelecao(direcao);
+    }
 
-        Keyboard kb = Keyboard.current;
-        if (kb == null)
-        {
-            if (!diagTecladoNull)
-            {
-                diagTecladoNull = true;
-                Debug.LogError($"[{GetType().Name}] Input System: Keyboard.current == null (teclado não detectado).");
-            }
-            return;
-        }
+    private void AoConfirmar()
+    {
+        if (!ativo) return;
+        RegistrarDiagnosticoInput();
+        ExecutarAcao();
+    }
 
-        if (!diagPrimeiraTecla && kb.anyKey.wasPressedThisFrame)
-        {
-            diagPrimeiraTecla = true;
-            Debug.Log($"[{GetType().Name}] Input System OK: tecla recebida ({kb.displayName}).");
-        }
+    private void AoAjustar(int direcao)
+    {
+        if (!ativo) return;
+        RegistrarDiagnosticoInput();
+        if (direcao < 0) ExecutarEsquerda();
+        else ExecutarDireita();
+    }
 
-        if (kb.upArrowKey.wasPressedThisFrame || kb.wKey.wasPressedThisFrame)
-        {
-            MoverSelecao(-1);
-        }
-        else if (kb.downArrowKey.wasPressedThisFrame || kb.sKey.wasPressedThisFrame)
-        {
-            MoverSelecao(1);
-        }
+    private void RegistrarDiagnosticoInput()
+    {
+        if (diagPrimeiraAcao) return;
+        diagPrimeiraAcao = true;
+        Debug.Log($"[{GetType().Name}] Input OK: as ações do menu estão recebendo teclado.");
+    }
 
-        if (kb.enterKey.wasPressedThisFrame || kb.spaceKey.wasPressedThisFrame)
-        {
-            ExecutarAcao();
-        }
+    protected virtual void TratarCancelar()
+    {
+        if (ativo) Fechar();
+    }
 
-        if (kb.leftArrowKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame)
-        {
-            ExecutarEsquerda();
-        }
-        else if (kb.rightArrowKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame)
-        {
-            ExecutarDireita();
-        }
+    protected virtual void Update() { }
 
-        AtualizarValores();
+    protected virtual void OnDestroy()
+    {
+        acaoCima?.Dispose();
+        acaoBaixo?.Dispose();
+        acaoConfirmar?.Dispose();
+        acaoEsquerda?.Dispose();
+        acaoDireita?.Dispose();
+        acaoCancelar?.Dispose();
     }
 
     protected virtual void MoverSelecao(int direcao)
@@ -116,12 +161,14 @@ public abstract class MenuBase : MonoBehaviour
     {
         if (itens.Count == 0) return;
         itens[indiceSelecionado].esquerda?.Invoke();
+        AtualizarValores();
     }
 
     protected virtual void ExecutarDireita()
     {
         if (itens.Count == 0) return;
         itens[indiceSelecionado].direita?.Invoke();
+        AtualizarValores();
     }
 
     protected virtual void AtualizarValores()

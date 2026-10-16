@@ -1,7 +1,6 @@
 namespace IF360
 {
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -30,8 +29,9 @@ public class MenuPausa : MenuBase
         Instancia = this;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (Instancia == this) Instancia = null;
     }
 
@@ -59,39 +59,22 @@ public class MenuPausa : MenuBase
         subMenuAberto = false;
     }
 
-    protected override void Update()
+    protected override void TratarCancelar()
     {
-        bool esc = Keyboard.current?.escapeKey.wasPressedThisFrame == true;
-
-        if (esc && subMenuAberto)
-        {
-            // ESC fecha o sub-menu e devolve o controle ao menu de pausa
-            if (telaConfig != null && telaConfig.Ativo) telaConfig.Fechar();
-            if (telaInventario != null && telaInventario.Ativo) telaInventario.Fechar();
-            subMenuAberto = false;
-            ativo = true;
-            if (painel != null) painel.SetActive(true);
-            return;
-        }
-
-        // Só o gameplay pausa; na cena Menu quem trata o ESC é o MenuPrincipal
-        if (esc && !ativo && SceneManager.GetActiveScene().name != "Menu")
-        {
-            Abrir();
-            return;
-        }
-
-        if (!ativo) return;
-
-        // Se sub-menu aberto, não processa navegação do menu pausa
+        // Sub-menu aberto: ele mesmo trata o ESC (fechando-se).
         if (subMenuAberto) return;
 
-        base.Update();
-
-        // ESC fecha o menu de pausa
-        if (esc)
+        // Menu de pausa aberto: fecha.
+        if (ativo)
         {
             Fechar();
+            return;
+        }
+
+        // Menu fechado: abre a pausa (somente no gameplay, não na cena Menu).
+        if (SceneManager.GetActiveScene().name != "Menu")
+        {
+            Abrir();
         }
     }
 
@@ -110,7 +93,7 @@ public class MenuPausa : MenuBase
         if (telaConfig == null)
         {
             telaConfig = gameObject.AddComponent<TelaConfiguracoes>();
-            telaConfig.AoFechar += () => subMenuAberto = false;
+            telaConfig.AoFechar += RestaurarAposSubMenu;
         }
         subMenuAberto = true;
         this.ativo = false; // Desativa navegação deste menu
@@ -123,12 +106,19 @@ public class MenuPausa : MenuBase
         if (telaInventario == null)
         {
             telaInventario = gameObject.AddComponent<TelaInventario>();
-            telaInventario.AoFechar += () => subMenuAberto = false;
+            telaInventario.AoFechar += RestaurarAposSubMenu;
         }
         subMenuAberto = true;
         this.ativo = false;
         painel.SetActive(false);
         telaInventario.Abrir();
+    }
+
+    private void RestaurarAposSubMenu()
+    {
+        subMenuAberto = false;
+        this.ativo = true;
+        if (painel != null) painel.SetActive(true);
     }
 
     private void VoltarMenuPrincipal()

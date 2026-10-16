@@ -1,7 +1,6 @@
 namespace IF360
 {
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -9,6 +8,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MenuPrincipal : MenuBase
 {
+    private TelaConfiguracoes telaConfig;
+
     protected override void Awake()
     {
         base.Awake();
@@ -52,11 +53,14 @@ public class MenuPrincipal : MenuBase
 
     private void AbrirConfiguracoes()
     {
-        var config = gameObject.AddComponent<TelaConfiguracoes>();
-        config.AoFechar += () => { this.ativo = true; painel.SetActive(true); };
+        if (telaConfig == null)
+        {
+            telaConfig = gameObject.AddComponent<TelaConfiguracoes>();
+            telaConfig.AoFechar += () => { this.ativo = true; if (painel != null) painel.SetActive(true); };
+        }
         this.ativo = false;
-        painel.SetActive(false);
-        config.Abrir();
+        if (painel != null) painel.SetActive(false);
+        telaConfig.Abrir();
     }
 
     private void MostrarCreditos()
@@ -74,15 +78,9 @@ public class MenuPrincipal : MenuBase
         #endif
     }
 
-    protected override void Update()
+    protected override void TratarCancelar()
     {
-        if (!ativo) return;
-        base.Update();
-
-        if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
-        {
-            SairJogo();
-        }
+        if (ativo) SairJogo();
     }
 }
 }
