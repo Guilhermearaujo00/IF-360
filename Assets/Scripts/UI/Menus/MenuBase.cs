@@ -13,7 +13,7 @@ using UnityEngine.UI;
 /// </summary>
 public abstract class MenuBase : MonoBehaviour
 {
-    protected struct ItemMenu
+    protected class ItemMenu
     {
         public string rotulo;
         public Func<string> valorAtual;
