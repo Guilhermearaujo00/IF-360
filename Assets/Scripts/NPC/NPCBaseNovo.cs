@@ -4,6 +4,27 @@ using System;
 using UnityEngine;
 
 /// <summary>
+/// Uma variante de conversa com condições. O NPC usa a PRIMEIRA variante cujas
+/// condições forem satisfeitas. Deixe uma variante sem condições no fim para
+/// servir de "fallback" (o diálogo que se repete).
+/// </summary>
+[Serializable]
+public class VarianteDialogo
+{
+    [Tooltip("Diálogo mostrado quando as condições abaixo forem satisfeitas.")]
+    public DialogoData dialogo;
+
+    [Tooltip("Missão que precisa estar COMPLETA. Vazio = ignora esta condição.")]
+    public string requisitoMissao = "";
+
+    [Tooltip("Flag que precisa estar marcada (ex.: conversou_com_diretor). Vazio = ignora.")]
+    public string requisitoFlag = "";
+
+    [Tooltip("Passo mínimo exigido na missão (a 'requisitoMissao' ou o idMissao do NPC). -1 = ignora.")]
+    public int requisitoEtapaMinima = -1;
+}
+
+/// <summary>
 /// Representa UM NPC: quem ele é, qual é o seu diálogo, se ele está
 /// disponível para interação e o que ele faz quando a conversa termina.
 ///
@@ -52,6 +73,18 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     [Tooltip("Fala de reserva, usada enquanto o NPC ainda não tem DialogoData.")]
     [TextArea] public string falaApresentacao = "Olá!";
 
+    [Header("Variantes de diálogo por condição (avaliadas em ordem)")]
+    [Tooltip("Cada variante tem um diálogo + condições (missão/flag/etapa). " +
+             "Vence a PRIMEIRA cujas condições baterem. Use uma última sem condições como fallback.")]
+    public VarianteDialogo[] variantes;
+
+    [Header("Registro de conversa (flags)")]
+    [Tooltip("Ao terminar uma conversa, marca automaticamente a flag 'conversou_<idMissao>' " +
+             "(ou o idFlagConversa abaixo). Outros NPCs podem exigir essa flag.")]
+    public bool registrarConversa = true;
+    [Tooltip("Nome da flag gravada ao conversar. Vazio = 'conversou_' + idMissao (ou nomeNPC).")]
+    public string idFlagConversa = "";
+
     [Header("Ação após o diálogo")]
     public bool chamarMinijogo = true;
 
@@ -74,17 +107,28 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     public Transform Transform => transform;
 
     public bool TemDialogoValido =>
-        dialogoData != null || !string.IsNullOrWhiteSpace(falaApresentacao);
+        DialogoParaConversa != null || !string.IsNullOrWhiteSpace(falaApresentacao);
 
     /// <summary>
-    /// Conversa que o NPC deve mostrar AGORA, conforme o estado da missão:
-    /// se existe DialogoData pós-missão e a missão já foi completada, usa a
-    /// conversa do pós; caso contrário, usa o DialogoData normal.
+    /// Conversa que o NPC deve mostrar AGORA, conforme o estado do jogo.
+    /// Ordem de prioridade:
+    ///   1) Primeira variante (de 'variantes') cujas condições estejam satisfeitas;
+    ///   2) Retrocompatível: 'dialogoDataPosMissao' se a missão requisito estiver completa;
+    ///   3) 'dialogoData' (fallback).
     /// </summary>
     public DialogoData DialogoParaConversa
     {
         get
         {
+            if (variantes != null)
+            {
+                foreach (VarianteDialogo v in variantes)
+                {
+                    if (v == null || v.dialogo == null) continue;
+                    if (CondicoesSatisfeitas(v)) return v.dialogo;
+                }
+            }
+
             if (dialogoDataPosMissao != null && MissaoRequisitoCompletaNoJogo)
             {
                 return dialogoDataPosMissao;
@@ -92,6 +136,49 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
 
             return dialogoData;
         }
+    }
+
+    /// <summary>Flag gravada quando o jogador termina uma conversa com este NPC.</summary>
+    public string IdFlagConversa
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(idFlagConversa)) return idFlagConversa;
+            string baseId = !string.IsNullOrWhiteSpace(idMissao) ? idMissao : nomeNPC;
+            return "conversou_" + baseId;
+        }
+    }
+
+    private bool CondicoesSatisfeitas(VarianteDialogo v)
+    {
+        if (!string.IsNullOrWhiteSpace(v.requisitoMissao) && !MissaoCompletaJogo(v.requisitoMissao))
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(v.requisitoFlag) && !FlagMarcadaNoJogo(v.requisitoFlag))
+        {
+            return false;
+        }
+
+        if (v.requisitoEtapaMinima >= 0)
+        {
+            string idEtapa = !string.IsNullOrWhiteSpace(v.requisitoMissao) ? v.requisitoMissao : idMissao;
+            int passo = GameManager.Instance != null ? GameManager.Instance.ObterPassoMissao(idEtapa) : 0;
+            if (passo < v.requisitoEtapaMinima) return false;
+        }
+
+        return true;
+    }
+
+    private static bool MissaoCompletaJogo(string id)
+    {
+        return GameManager.Instance != null && GameManager.Instance.MissaoCompleta(id);
+    }
+
+    private static bool FlagMarcadaNoJogo(string id)
+    {
+        return GameManager.Instance != null && GameManager.Instance.TemFlag(id);
     }
 
     /// <summary>Requisito para a conversa do "pós". Sem missaoRequisito, usa o próprio idMissao.</summary>
@@ -215,6 +302,13 @@ public class NPCBaseNovo : MonoBehaviour, IInteragivel
     /// </summary>
     public void NotificarDialogoEncerrado()
     {
+        // Registra o "já conversei com este NPC" como flag do mundo, para que
+        // outras variantes de outros NPCs possam exigir isso como condição.
+        if (registrarConversa)
+        {
+            GameManager.Instance?.MarcarFlag(IdFlagConversa);
+        }
+
         AoEncerrarDialogo();
     }
 

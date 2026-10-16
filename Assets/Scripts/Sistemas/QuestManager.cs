@@ -21,10 +21,15 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private List<string> missaoIds = new List<string>();
     [SerializeField] private List<int> passoAtual = new List<int>();
 
+    [Header("Flags do mundo (ex.: conversou_com_ananda)")]
+    [SerializeField] private List<string> flags = new List<string>();
+
     // Dicionários de runtime para acesso rápido
     private Dictionary<string, int> _passoPorMissao = new Dictionary<string, int>();
+    private HashSet<string> _flags = new HashSet<string>();
 
     public IReadOnlyList<string> MissoesCompletas => missoesCompletas;
+    public IReadOnlyCollection<string> Flags => _flags;
 
     // Reset defensivo do singleton/evento para "Enter Play Mode" sem Domain Reload.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -51,6 +56,7 @@ public class QuestManager : MonoBehaviour
 
         // Reconstrói dicionário a partir das listas serializadas
         ReconstruirDicionario();
+        ReconstruirFlags();
     }
 
     private void OnDestroy()
@@ -131,6 +137,30 @@ public class QuestManager : MonoBehaviour
         return ObterPassoAtual(idMissao);
     }
 
+    // ---------- API pública (flags do mundo) ----------
+
+    /// <summary>Marca uma flag. Retorna true se foi marcada agora (false se já existia ou id vazio).</summary>
+    public bool MarcarFlag(string idFlag)
+    {
+        if (string.IsNullOrWhiteSpace(idFlag)) return false;
+        if (!_flags.Add(idFlag)) return false;
+
+        SincronizarFlagsSerializadas();
+        Debug.Log("[QuestManager] Flag marcada: " + idFlag);
+        return true;
+    }
+
+    public bool TemFlag(string idFlag)
+    {
+        return !string.IsNullOrWhiteSpace(idFlag) && _flags.Contains(idFlag);
+    }
+
+    public void LimparFlag(string idFlag)
+    {
+        if (string.IsNullOrWhiteSpace(idFlag)) return;
+        if (_flags.Remove(idFlag)) SincronizarFlagsSerializadas();
+    }
+
     // ---------- Persistência ----------
 
     [Serializable]
@@ -139,6 +169,7 @@ public class QuestManager : MonoBehaviour
         public List<string> idsCompletas = new List<string>();
         public List<string> missaoIds = new List<string>();
         public List<int> passoAtual = new List<int>();
+        public List<string> idsFlags = new List<string>();
     }
 
     public string SerializarMissoes()
@@ -147,7 +178,8 @@ public class QuestManager : MonoBehaviour
         {
             idsCompletas = missoesCompletas,
             missaoIds = missaoIds,
-            passoAtual = passoAtual
+            passoAtual = passoAtual,
+            idsFlags = flags
         };
         return JsonUtility.ToJson(estado);
     }
@@ -157,7 +189,9 @@ public class QuestManager : MonoBehaviour
         missoesCompletas.Clear();
         missaoIds.Clear();
         passoAtual.Clear();
+        flags.Clear();
         _passoPorMissao.Clear();
+        _flags.Clear();
 
         if (string.IsNullOrEmpty(json)) return;
 
@@ -173,7 +207,11 @@ public class QuestManager : MonoBehaviour
             passoAtual.AddRange(estado.passoAtual);
         }
 
+        if (estado.idsFlags != null)
+            flags.AddRange(estado.idsFlags);
+
         ReconstruirDicionario();
+        ReconstruirFlags();
     }
 
     public void LimparMissoes()
@@ -181,7 +219,9 @@ public class QuestManager : MonoBehaviour
         missoesCompletas.Clear();
         missaoIds.Clear();
         passoAtual.Clear();
+        flags.Clear();
         _passoPorMissao.Clear();
+        _flags.Clear();
     }
 
     // ---------- Helpers internos ----------
@@ -204,6 +244,21 @@ public class QuestManager : MonoBehaviour
             missaoIds.Add(kvp.Key);
             passoAtual.Add(kvp.Value);
         }
+    }
+
+    private void ReconstruirFlags()
+    {
+        _flags.Clear();
+        foreach (string f in flags)
+        {
+            if (!string.IsNullOrWhiteSpace(f)) _flags.Add(f);
+        }
+    }
+
+    private void SincronizarFlagsSerializadas()
+    {
+        flags.Clear();
+        flags.AddRange(_flags);
     }
 }
 }

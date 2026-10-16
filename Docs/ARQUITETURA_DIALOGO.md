@@ -167,6 +167,7 @@ Sem EventSystem: o E é lido pelo **Input System**, não por raycast de UI.
       missões — ver seção 12.
 - [x] **Liberar o cursor durante a conversa**: implementado — `CameraController.TravarControle`
       libera o cursor e desliga órbita/zoom enquanto há diálogo (ver seção 13).
+- [x] **Diálogo condicional (flags + variantes com condições)**: implementado — ver seção 19.
 
 ## 12. Integração com missões (protótipo)
 
@@ -351,3 +352,56 @@ Vertical slice de minijogo, acionado pelo mesmo gancho de NPC que antes só loga
   (`TravarControle`) e o `PlayerInteraction` ignora o `E` (`MinijogoFios.Ativo`).
 - **Setup**: **Tools > IFNMG > Adicionar Minijogo 'Ligar Fios'** (ou o setup principal, que
   já o garante em `Systems`). Testar com um NPC marcado com **Chamar Minijogo**.
+
+## 19. Diálogo condicional — flags do mundo + variantes com condições
+
+Resolve o problema "o NPC só mostra a fala final se o jogador já conversou com outro NPC
+X; senão, repete a fala de espera". É o padrão de mercado (gating condicional), usado por
+Ink / Yarn Spinner / Dialogic / Fungus.
+
+### Flags do mundo (`QuestManager`)
+
+- `HashSet<string> _flags` + lista serializada `flags` — estado do mundo (ex.:
+  `conversou_missao_administracao`).
+- `MarcarFlag(id)` (retorna true se mudou), `TemFlag(id)`, `LimparFlag(id)`; exposição
+  `Flags` (IReadOnlyCollection).
+- Persistidas no mesmo JSON de save (`EstadoMissoes.idsFlags`). Saves antigos (sem
+  `idsFlags`) são lidos sem erro.
+- Facade no `GameManager`: `MarcarFlag(id)` (com auto-save) e `TemFlag(id)`.
+
+### Variantes de diálogo (`NPCBaseNovo` + `VarianteDialogo`)
+
+- Novo tipo `VarianteDialogo` (`dialogo`, `requisitoMissao`, `requisitoFlag`,
+  `requisitoEtapaMinima = -1`).
+- Novo campo no NPC: `VarianteDialogo[] variantes` — avaliadas **em ordem**; vence a
+  **primeira** cujas condições forem satisfeitas. Coloque a variante sem condições **no
+  fim** como "fallback" (o diálogo que se repete).
+- `DialogoParaConversa` agora tem 3 níveis de prioridade:
+  1. primeira variante com condições satisfeitas;
+  2. retrocompatível: `dialogoDataPosMissao` se `missaoRequisito` completa;
+  3. `dialogoData` (fallback).
+- Condições por variante: missão completa (`requisitoMissao`), flag marcada
+  (`requisitoFlag`) e/ou etapa mínima (`requisitoEtapaMinima`).
+
+### Registro automático "já conversei"
+
+- Novos campos no NPC: `registrarConversa` (true) e `idFlagConversa` (opcional).
+- Ao fim de qualquer conversa (`NotificarDialogoEncerrado`), o NPC marca a flag
+  `conversou_<idMissao>` (ou `idFlagConversa`). Outros NPCs podem exigir essa flag.
+
+### Exemplo (Secretaria espera o Diretor sem missão formal)
+
+No `NPC_Secretaria`:
+
+| # | Variante | requisitoMissao | requisitoFlag | Efeito |
+|---|---|---|---|---|
+| 1 | `Dialogo_Secretaria_Pos` | `missao_diretor` | | só depois que a missão do Diretor está completa |
+| 2 | `Dialogo_Secretaria_Aguardando` | | `conversou_npc_diretor` | repete até o jogador falar com o Diretor |
+| 3 | `Dialogo_Secretaria_Pre` | | | fallback — sempre repete |
+
+### Configuração
+
+1. Deixe `registrarConversa = true` no NPC que você quer que seja "visitado" (o padrão).
+2. No NPC que condiciona, adicione variantes em **ordem** (mais específica primeiro).
+3. Para exigir flag manual (não "conversou"), preencha `requisitoFlag` de uma variante e
+   marque a flag por outro sistema (ex.: `GameManager.Instance.TemFlag` / `MarcarFlag`).

@@ -78,5 +78,21 @@ public class GameManager : MonoBehaviour
     {
         return QuestManager.Instancia != null ? QuestManager.Instancia.ObterPassoAtual(idMissao) : 0;
     }
+
+    /// <summary>Marca uma flag do mundo (ex.: conversou_com_ananda). Auto-save se mudou.</summary>
+    public void MarcarFlag(string idFlag)
+    {
+        if (QuestManager.Instancia == null) return;
+
+        if (QuestManager.Instancia.MarcarFlag(idFlag))
+        {
+            if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
+        }
+    }
+
+    public bool TemFlag(string idFlag)
+    {
+        return QuestManager.Instancia != null && QuestManager.Instancia.TemFlag(idFlag);
+    }
 }
 }
