@@ -33,6 +33,8 @@ public abstract class MenuBase : MonoBehaviour
     protected readonly List<ItemMenu> itens = new List<ItemMenu>();
     protected int indiceSelecionado;
     protected bool ativo;
+    private bool diagTecladoNull;
+    private bool diagPrimeiraTecla;
     protected GameObject painel;
     protected TMP_Text textoTitulo;
     protected TMP_Text textoAviso;
@@ -54,7 +56,21 @@ public abstract class MenuBase : MonoBehaviour
         if (!ativo) return;
 
         Keyboard kb = Keyboard.current;
-        if (kb == null) return;
+        if (kb == null)
+        {
+            if (!diagTecladoNull)
+            {
+                diagTecladoNull = true;
+                Debug.LogError($"[{GetType().Name}] Input System: Keyboard.current == null (teclado não detectado).");
+            }
+            return;
+        }
+
+        if (!diagPrimeiraTecla && kb.anyKey.wasPressedThisFrame)
+        {
+            diagPrimeiraTecla = true;
+            Debug.Log($"[{GetType().Name}] Input System OK: tecla recebida ({kb.displayName}).");
+        }
 
         if (kb.upArrowKey.wasPressedThisFrame || kb.wKey.wasPressedThisFrame)
         {
@@ -92,6 +108,7 @@ public abstract class MenuBase : MonoBehaviour
     protected virtual void ExecutarAcao()
     {
         if (itens.Count == 0) return;
+        Debug.Log($"[{GetType().Name}] Executando ação: '{itens[indiceSelecionado].rotulo}'");
         itens[indiceSelecionado].acao?.Invoke();
     }
 
@@ -299,6 +316,7 @@ public abstract class MenuBase : MonoBehaviour
         AtualizarValores();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Debug.Log($"[{GetType().Name}] Menu aberto. Keyboard.current = {(Keyboard.current == null ? "NULL" : Keyboard.current.displayName)}");
         OnAbrir();
     }
 
