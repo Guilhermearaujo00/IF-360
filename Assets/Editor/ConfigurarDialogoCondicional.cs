@@ -36,14 +36,19 @@ public static class ConfigurarDialogoCondicional
             return;
         }
 
-        NPCBaseNovo diretor = EncontrarNPC("NPC_Diretor");
-        NPCBaseNovo secretaria = EncontrarNPC("NPC_Secretaria");
+        NPCBaseNovo diretor = EncontrarNPC("NPC_Diretor", "Diretor");
+        NPCBaseNovo secretaria = EncontrarNPC("NPC_Secretaria", "Secretaria");
 
         if (diretor == null && secretaria == null)
         {
+            string cena = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             EditorUtility.DisplayDialog("Dialogo Condicional",
-                "Não encontrei 'NPC_Diretor' nem 'NPC_Secretaria' na cena aberta.\n" +
-                "Abra a cena Campus e tente de novo.", "OK");
+                "Não encontrei 'NPC_Diretor' nem 'NPC_Secretaria' na cena ativa ('" + cena + "').\n\n" +
+                "Como resolver:\n" +
+                "1) Saia do Play Mode (botão Play / Esc).\n" +
+                "2) Abra Assets/Scenes/Campus.unity (duplo clique no Project).\n" +
+                "   Obs.: a cena 'Menu' parece vazia porque o menu é montado em runtime.\n" +
+                "3) Rode este menu de novo.", "OK");
             return;
         }
 
@@ -96,10 +101,22 @@ public static class ConfigurarDialogoCondicional
                   "  Salve a cena (Ctrl+S) para gravar.");
     }
 
-    private static NPCBaseNovo EncontrarNPC(string nome)
+    private static NPCBaseNovo EncontrarNPC(string nomeObjeto, string nomeNPC)
     {
-        GameObject go = GameObject.Find(nome);
-        return go != null ? go.GetComponent<NPCBaseNovo>() : null;
+        // Busca ampla na cena ativa (independente de hierarquia/objeto renomeado).
+        NPCBaseNovo[] todos = Object.FindObjectsByType<NPCBaseNovo>(FindObjectsSortMode.None);
+
+        foreach (NPCBaseNovo npc in todos)
+        {
+            if (npc.gameObject.name == nomeObjeto) return npc;
+        }
+
+        foreach (NPCBaseNovo npc in todos)
+        {
+            if (npc.nomeNPC == nomeNPC) return npc;
+        }
+
+        return null;
     }
 
     private static DialogoData EncontrarDialogoDataPorNome(string nome)
