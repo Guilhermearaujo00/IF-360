@@ -58,3 +58,29 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+
+# ============ Documentacao (nao e asset de jogo) ============
+*.pdf
+
+# ============ Packs de ambiente grandes (nao versionados no LFS) ============
+# Ficam no disco e continuam usaveis no Unity; apenas nao entram no Git.
+Assets/Rowlan/
+Assets/Rowlan.meta
+Assets/Holotna/
+Assets/Holotna.meta
+Assets/Dzeruza/
+Assets/Dzeruza.meta
+Assets/3D_Game_Assets_Flora/
+Assets/3D_Game_Assets_Flora.meta
+Assets/Arabic Neoclassical/
+Assets/Arabic Neoclassical.meta
+Assets/BigRookGames/
+Assets/BigRookGames.meta
+Assets/ModularLowpolyStreetsFree/
+Assets/ModularLowpolyStreetsFree.meta
+Assets/3D set of stylized nature - GHIBLI style/
+Assets/3D set of stylized nature - GHIBLI style.meta
+Assets/Fantasy Skybox FREE/
+Assets/Fantasy Skybox FREE.meta
+Assets/ithappy/
+Assets/ithappy.meta
