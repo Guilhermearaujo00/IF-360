@@ -48,6 +48,7 @@ public static class IFNMGPrototypeMapGenerator
     {
         public string category;
         public string[] paths;
+        public float tileSizeMeters;
     }
     [Serializable] private class ZoneData
     {
@@ -219,18 +220,24 @@ public static class IFNMGPrototypeMapGenerator
             if (zr.data.category == "trees") treeZones.Add(zr);
         }
 
-        // Continuous categorical patches are drawn first; base plane remains beneath them.
-        foreach (ZoneRuntime zr in zones)
+        System.Random rngTiles = new System.Random((data.generation != null ? data.generation.seed : 3602026) ^ 0x7A17);
+
+        if (data.generation == null || data.generation.spawnRoadMeshes || true)
         {
-            if (!zr.data.enabled || zr.data.geometryType != "polygon") continue;
-            if (zr.data.category == "grass")
-                CreatePolygonSurface(zr.data.id, zr.worldPoints, data.world.baseY - 0.06f, GetMaterial("IFNMG_Grama_Regional", GrassColor), terrainRoot, false);
-            else if (zr.data.category == "soil")
-                CreatePolygonSurface(zr.data.id, zr.worldPoints, data.world.baseY - 0.035f, GetMaterial("IFNMG_Terra", SoilColor), terrainRoot, false);
-            else if (zr.data.category == "trees")
-                CreatePolygonSurface(zr.data.id, zr.worldPoints, data.world.baseY - 0.04f, GetMaterial("IFNMG_Mata_Base", ForestColor), terrainRoot, false);
-            else if (zr.data.category == "paved")
-                CreatePolygonSurface(zr.data.id, zr.worldPoints, data.world.baseY + 0.025f, GetMaterial("IFNMG_Pavimento", RoadColor), roadRoot, false);
+            // Superfícies agora são preenchidas com PREFABS reais (ladrilhamento), em vez de malhas de cor sólida.
+            // A malha de mata (trees) permanece como base escura sob a vegetação densa.
+            foreach (ZoneRuntime zr in zones)
+            {
+                if (!zr.data.enabled || zr.data.geometryType != "polygon") continue;
+                if (zr.data.category == "grass")
+                    TilePolygon(zr.data.id, zr.worldPoints, "grassSurface", data.world.baseY, terrainRoot, rngTiles);
+                else if (zr.data.category == "soil")
+                    TilePolygon(zr.data.id, zr.worldPoints, "soilSurface", data.world.baseY, terrainRoot, rngTiles);
+                else if (zr.data.category == "trees")
+                    CreatePolygonSurface(zr.data.id, zr.worldPoints, data.world.baseY - 0.04f, GetMaterial("IFNMG_Mata_Base", ForestColor), terrainRoot, false);
+                else if (zr.data.category == "paved")
+                    TilePolygon(zr.data.id, zr.worldPoints, "pavementSurface", data.world.baseY, roadRoot, rngTiles);
+            }
         }
 
         if (data.generation == null || data.generation.spawnRoadMeshes)
@@ -496,6 +503,69 @@ public static class IFNMGPrototypeMapGenerator
             point = p; return true;
         }
         return false;
+    }
+
+    // Preenche um polígono com prefabs de superfície numa grade, mantendo só os tiles cujo CENTRO cai
+    // dentro do polígono. Usa o tamanho real do prefab (tileSizeMeters); se ausente no JSON, tenta o bounds
+    // do prefab; senão, cai para uma malha de cor sólida (fallback) e registra aviso.
+    private static void TilePolygon(string id, Vector2[] points, string group, float baseY, Transform parent, System.Random rng)
+    {
+        if (points == null || points.Length < 3) return;
+        GameObject prefab = GetRandomPrefab(group, rng);
+        if (prefab == null)
+        {
+            Debug.LogWarning("[IFNMG Prototype] Sem prefab de superfície para '" + group + "'; usando malha sólida em " + id);
+            Color c = group == "soilSurface" ? SoilColor : (group == "pavementSurface" ? RoadColor : GrassColor);
+            CreatePolygonSurface(id, points, baseY - 0.02f, GetMaterial("IFNMG_Fallback_" + group, c), parent, false);
+            return;
+        }
+
+        float tile = GetTileSize(group, prefab);
+        if (tile <= 0.01f) tile = 10f;
+
+        Bounds2 b = GetBounds(points);
+        Transform container = MakeGroup(id, parent);
+
+        // Fase do ladrilhamento: alinhado ao mínimo do polígono, com passo = tamanho do tile (encosta sem vão).
+        // Rejeita o quadrado do tile se nenhum canto estiver dentro do polígono (aproximação rápida).
+        int placed = 0;
+        for (float x = b.minX; x < b.maxX; x += tile)
+        {
+            for (float z = b.minY; z < b.maxY; z += tile)
+            {
+                Vector2 centro = new Vector2(x + tile * 0.5f, z + tile * 0.5f);
+                if (!PointInPolygon(centro, points)) continue;
+
+                GameObject instance = PrefabUtility.InstantiatePrefab(prefab, container) as GameObject;
+                if (instance == null) continue;
+                instance.name = id + "_Tile_" + placed.ToString("000") + "__" + prefab.name;
+                instance.transform.SetParent(container, true);
+                instance.transform.position = new Vector3(centro.x, baseY, centro.y);
+                instance.transform.rotation = Quaternion.identity;
+                PlacePrefabBottomAtGround(instance, baseY);
+                placed++;
+            }
+        }
+        Debug.Log("[IFNMG Prototype] Superfície '" + id + "' ladrilhada com " + placed + " tiles de " + tile.ToString("0.#") + " m (" + prefab.name + ").");
+    }
+
+    private static float GetTileSize(string group, GameObject prefab)
+    {
+        if (CurrentData != null && CurrentData.assetGroups != null)
+        {
+            foreach (AssetGroup g in CurrentData.assetGroups)
+            {
+                if (g.category == group && g.tileSizeMeters > 0.01f) return g.tileSizeMeters;
+            }
+        }
+        Renderer[] rs = prefab.GetComponentsInChildren<Renderer>();
+        if (rs != null && rs.Length > 0)
+        {
+            Bounds b = rs[0].bounds;
+            for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
+            return Mathf.Max(b.size.x, b.size.z);
+        }
+        return 0f;
     }
 
     private static void SpawnAssetOrFallback(string group, Vector2 p, Transform parent, System.Random rng, HashSet<string> missing, string instanceName)

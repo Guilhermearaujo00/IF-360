@@ -1,6 +1,6 @@
 # Auditoria do terreno — cena Campus (somente leitura)
 
-- Data: 2026-10-20 23:56
+- Data: 2026-10-21 00:58
 - Cena: `Assets/Scenes/Campus.unity`
 - Nenhum objeto foi criado/movido/removido; a cena não foi salva.
 - Escala de trabalho: 1 unidade Unity = 1 m (provisório, não confirmado).

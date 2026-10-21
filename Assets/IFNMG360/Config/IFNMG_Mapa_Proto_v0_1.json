@@ -87,6 +87,49 @@
       ]
     },
     {
+      "category": "grassSurface",
+      "tileSizeMeters": 20.0,
+      "paths": [
+        "Assets/SimplePoly City - Low Poly Assets/Prefab/Natures/Natures_Grass Tile.prefab"
+      ]
+    },
+    {
+      "category": "grassDetailTile",
+      "tileSizeMeters": 8.0,
+      "paths": [
+        "Assets/Park/Prefabs/GrassTile.prefab"
+      ]
+    },
+    {
+      "category": "pavementSurface",
+      "tileSizeMeters": 20.0,
+      "paths": [
+        "Assets/SimplePoly City - Low Poly Assets/Prefab/Roads/Road Concrete Tile.prefab"
+      ]
+    },
+    {
+      "category": "pavementSurfaceSmall",
+      "tileSizeMeters": 10.0,
+      "paths": [
+        "Assets/SimplePoly City - Low Poly Assets/Prefab/Roads/Road Concrete Tile Small.prefab"
+      ]
+    },
+    {
+      "category": "soilSurface",
+      "tileSizeMeters": 13.0,
+      "paths": [
+        "Assets/CubexCube - Free City Pack I/Prefabs/Roads/Road_Sand.prefab"
+      ]
+    },
+    {
+      "category": "roadSurface",
+      "tileSizeMeters": 13.0,
+      "paths": [
+        "Assets/CubexCube - Free City Pack I/Prefabs/Roads/Road_Path_Sand.prefab",
+        "Assets/CubexCube - Free City Pack I/Prefabs/Roads/Road_Sand.prefab"
+      ]
+    },
+    {
       "category": "tree",
       "paths": [
         "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_TreeBroadleafMature_01.prefab",
