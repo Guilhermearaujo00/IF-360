@@ -8,7 +8,10 @@
 - Data: 2026-10-20
 - Cena: `Assets/Scenes/Campus.unity`
 - Origem da auditoria: `Docs/MontagemCena/AUDITORIA_CENA_ASSETS.md` + `auditoria_assets.json`
-- Status geral: **sem nenhuma zona do campus validada com dados atuais** → geração em larga escala bloqueada.
+- Fonte de zoneamento recebida: `Docs/MontagemCena/IFNMG_Januaria_zonas_para_Unity.json` (37 zonas,
+  classificação visual) — revisada em `Docs/MontagemCena/REVISAO_JSON_Zonas_Januaria.md`.
+- Status geral: **zoneamento (o quê) disponível; coordenadas em metro (onde) ainda indefinidas** →
+  geração em larga escala continua bloqueada.
 
 ## 1. Convenção de coordenadas
 
@@ -34,8 +37,14 @@ Não foi aplicada nenhuma rotação/espelhamento de mapa. Não existe transforma
 
 ### 3.1 Zonas do campus
 
-**Nenhuma.** Não há fonte espacial atual (JSON/mapa ou descrição ancorada) que permita delimitar zonas do
-campus com confiança. Todas as regiões estão `pendente_de_localizacao`.
+A **classificação** das zonas existe agora no JSON recebido (37 zonas em `points_uv`: 15 `building`, 7 `paved`,
+6 `grass`, 6 `trees`, 3 `soil`). Porém a **transformação `u,v → mundo` não está definida** (escala, origem e
+rotação indefinidas) e o JSON não é GIS. Logo cada zona permanece `pendente_de_localizacao` **para efeito de
+posicionamento em metros** e **não** receberá objetos até o checklist de
+`REVISAO_JSON_Zonas_Januaria.md §6` ser fechado.
+
+> Regra ativa: o zoneamento pode orientar *o que* colocar em cada área, mas **não** autoriza gerar coordenadas
+> no campus enquanto a escala real não for confirmada por medida no terreno.
 
 ### 3.2 Zona de teste (sandbox)
 
@@ -81,13 +90,16 @@ referência atual. Não serão usados para gerar novas áreas.
 
 ## 6. O que falta para liberar a geração (pendências humanas)
 
-1. JSON/mapa atual com coordenadas, dimensão da imagem-base e sistema de referência — **ou** descrições
-   textuais ancoradas em objetos reais da cena (ex.: “gramado ao sul do prédio identificado como X”).
-2. Coordenadas/descrição do traçado vermelho que é **via**.
-3. Lista das áreas azuis que são **prédios** (para excluí-las de qualquer piso/vegetação).
-4. Um marco real com distância conhecida, para confirmar que 1 unidade = 1 m.
-5. Definição de qual eixo é o norte, se houver mapa georreferenciado.
-6. Uma única zona inicial para a área de teste de verdade (a atual é sandbox sintético).
+Revisão detalhada em `REVISAO_JSON_Zonas_Januaria.md`. Pendências que continuam abertas:
+
+1. **Escala real (crítica):** 1 medida conhecida no terreno (comprimento de prédio, distância entre blocos) para
+   definir `worldWidth/worldDepth`. Sem isso a transformação `u,v → mundo` é indefinida e nada pode ser gerado.
+2. **Ancoragem:** qual objeto real da cena `Campus` corresponde a um canto do perímetro (ou ao centro) — define
+   origem e rotação do mapa.
+3. **Norte:** qual eixo é o norte, se o mapa é georreferenciado (o JSON não informa).
+4. **De-para visual↔ID:** confirmar as 15 `building` como prédios e as 8 `line` como vias; decidir tratamento de
+   `grass` ambíguo, `soil` (solo x talude x via) e das massas `trees`.
+5. **Zona inicial real:** uma única área de alta confiança para o primeiro teste de verdade (substitui o sandbox).
 
 ## 7. Enquanto isso (trabalho permitido pelo v3)
 
