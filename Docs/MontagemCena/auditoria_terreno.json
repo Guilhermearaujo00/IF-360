@@ -1,0 +1,10 @@
+{
+  "dimensao_piso_m": { "x": 512.05, "z": 355.606 },
+  "piso_min": { "x": -256.453, "y": -1.256, "z": -185.622 },
+  "piso_max": { "x": 255.597, "y": 17.894, "z": 169.984 },
+  "canto_nw_suposto": { "x": -256.453, "z": 169.984 },
+  "renderers_totais": 1827,
+  "renderers_piso": 851,
+  "amostras": 45746,
+  "amostras_com_piso": 26623
+}
