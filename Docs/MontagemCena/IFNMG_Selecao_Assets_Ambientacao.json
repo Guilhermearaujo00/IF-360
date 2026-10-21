@@ -1,0 +1,321 @@
+{
+  "fonte": "PREFABS_TABELA.md — inventário enviado pelo usuário com 2.526 prefabs; nomes, caminhos e bounds dos renderers com escala de import.",
+  "nota": "A seleção foi feita por nomes e caminhos, sem inspeção visual dos modelos ou materiais. Confirmar escala, shader, cor e orientação dentro da Unity antes de gerar em massa.",
+  "assets": [
+    {
+      "grupo": "pavimento_base",
+      "prioridade": "alta",
+      "package": "SimplePoly City - Low Poly Assets",
+      "nome": "Road Concrete Tile",
+      "path": "Assets/SimplePoly City - Low Poly Assets/Prefab/Roads/Road Concrete Tile.prefab",
+      "bounds_m": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 20.0
+      },
+      "uso": "Candidato para grandes áreas pavimentadas; não usar automaticamente como segmento estreito de rua, pois o prefab é 20x20 m.",
+      "posicionamento": "Somente em polígonos pavimentados confirmados; conferir material e UV."
+    },
+    {
+      "grupo": "pavimento_base",
+      "prioridade": "alta",
+      "package": "SimplePoly City - Low Poly Assets",
+      "nome": "Road Concrete Tile Small",
+      "path": "Assets/SimplePoly City - Low Poly Assets/Prefab/Roads/Road Concrete Tile Small.prefab",
+      "bounds_m": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "uso": "Alternativa menor para pátios ou zonas pavimentadas; validar visualmente.",
+      "posicionamento": "Não sobrepor aos edifícios ou a outra malha de rua existente."
+    },
+    {
+      "grupo": "calcadas",
+      "prioridade": "alta",
+      "package": "SimplePoly City - Low Poly Assets",
+      "nome": "Road Sidewalk",
+      "path": "Assets/SimplePoly City - Low Poly Assets/Prefab/Roads/Road Sidewalk.prefab",
+      "bounds_m": {
+        "x": 3.0,
+        "y": 0.2,
+        "z": 10.0
+      },
+      "uso": "Trechos de passeio, bordas de caminhos e áreas de circulação de pedestres.",
+      "posicionamento": "Alinhar à rua/passeio já mapeado; encaixar peças sem sobreposições ou frestas."
+    },
+    {
+      "grupo": "calcadas",
+      "prioridade": "alta",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Ground_WalkPavingPlain_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/05_Ground_Paving/SM_LPC_Ground_WalkPavingPlain_01.prefab",
+      "bounds_m": {
+        "x": 4.0,
+        "y": 0.35,
+        "z": 2.0
+      },
+      "uso": "Pavimentação modular para caminhos menores e ligações a entradas.",
+      "posicionamento": "Usar após verificar se a aparência combina com a rua/cena; não misturar módulos de estilos diferentes no mesmo trecho sem revisão."
+    },
+    {
+      "grupo": "calcadas",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Ground_WalkCornerExternal_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/05_Ground_Paving/SM_LPC_Ground_WalkCornerExternal_01.prefab",
+      "bounds_m": {
+        "x": 2.0,
+        "y": 0.35,
+        "z": 2.0
+      },
+      "uso": "Curvas e cantos de passeios modulares."
+    },
+    {
+      "grupo": "base_gramado",
+      "prioridade": "alta",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Ground_GroundGrassFlat_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/05_Ground_Paving/SM_LPC_Ground_GroundGrassFlat_01.prefab",
+      "bounds_m": {
+        "x": 4.0,
+        "y": 0.23,
+        "z": 4.0
+      },
+      "uso": "Base de gramado em pequenos trechos onde o terreno atual não cobre a superfície.",
+      "posicionamento": "Usar somente em polígonos verdes confirmados; se o cenário já possui Terrain contínuo, preferir o Terrain existente em vez de empilhar placas."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "alta",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_TreeBroadleafMature_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_TreeBroadleafMature_01.prefab",
+      "bounds_m": {
+        "x": 5.0,
+        "y": 7.5,
+        "z": 5.03
+      },
+      "uso": "Árvores principais para preencher massas arbóreas confirmadas e bordas verdes."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "alta",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_TreeBroadleafSpreading_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_TreeBroadleafSpreading_01.prefab",
+      "bounds_m": {
+        "x": 6.09,
+        "y": 5.7,
+        "z": 6.09
+      },
+      "uso": "Copa larga; alternar com a árvore madura para evitar repetição visual."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_TreeBroadleafYoung_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_TreeBroadleafYoung_01.prefab",
+      "bounds_m": {
+        "x": 1.4,
+        "y": 4.0,
+        "z": 1.37
+      },
+      "uso": "Árvores jovens espaçadas perto de gramados e bordas de edifícios, desde que haja espaço real."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_BushRoundMedium_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_BushRoundMedium_01.prefab",
+      "bounds_m": {
+        "x": 1.17,
+        "y": 0.84,
+        "z": 1.19
+      },
+      "uso": "Arbustos para preencher canteiros, contornar árvores ou quebrar linhas vazias sem bloquear passagens."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_HedgeRunLow_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_HedgeRunLow_01.prefab",
+      "bounds_m": {
+        "x": 4.0,
+        "y": 1.0,
+        "z": 0.92
+      },
+      "uso": "Canteiros lineares e limites verdes; usar em pequenos segmentos onde uma cerca viva fizer sentido."
+    },
+    {
+      "grupo": "vegetacao_urbana",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_FlowerBedRound_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_FlowerBedRound_01.prefab",
+      "bounds_m": {
+        "x": 1.95,
+        "y": 0.45,
+        "z": 2.0
+      },
+      "uso": "Canteiros pontuais perto de acessos, áreas de convivência ou espaços ajardinados."
+    },
+    {
+      "grupo": "vegetacao_de_detalhe",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Park_GrassTuftClump_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/08_Parks_Plants/SM_LPC_Park_GrassTuftClump_01.prefab",
+      "bounds_m": {
+        "x": 0.23,
+        "y": 0.32,
+        "z": 0.27
+      },
+      "uso": "Pequenos tufos para reduzir a aparência artificial nas bordas dos gramados e sob árvores; agrupar de forma irregular."
+    },
+    {
+      "grupo": "vegetacao_natural_complementar",
+      "prioridade": "media",
+      "package": "BluBlu Games — Low Poly Forest Mini Pack",
+      "nome": "SM_Grass_01",
+      "path": "Assets/BluBlu Games/Low Poly Forest Mini Pack/Prefabs/SM_Grass_01.prefab",
+      "bounds_m": {
+        "x": 0.54,
+        "y": 0.54,
+        "z": 0.37
+      },
+      "uso": "Variação natural de capim; usar apenas se o estilo visual combinar com o conjunto urbano principal."
+    },
+    {
+      "grupo": "vegetacao_natural_complementar",
+      "prioridade": "media",
+      "package": "BluBlu Games — Low Poly Forest Mini Pack",
+      "nome": "SM_FoliageBush_01",
+      "path": "Assets/BluBlu Games/Low Poly Forest Mini Pack/Prefabs/SM_FoliageBush_01.prefab",
+      "bounds_m": {
+        "x": 1.82,
+        "y": 1.41,
+        "z": 1.56
+      },
+      "uso": "Massa de folhagem mais cheia para transição entre campus e mata."
+    },
+    {
+      "grupo": "vegetacao_natural_complementar",
+      "prioridade": "media",
+      "package": "BluBlu Games — Low Poly Forest Mini Pack",
+      "nome": "SM_Flower_01",
+      "path": "Assets/BluBlu Games/Low Poly Forest Mini Pack/Prefabs/SM_Flower_01.prefab",
+      "bounds_m": {
+        "x": 0.29,
+        "y": 0.4,
+        "z": 0.29
+      },
+      "uso": "Detalhe floral em canteiros e clareiras, em baixa densidade."
+    },
+    {
+      "grupo": "rochas",
+      "prioridade": "media",
+      "package": "Pandazole_Ultimate_Pack — Pandazole Nature Environment Pack",
+      "nome": "HardRock_01",
+      "path": "Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Prefabs/HardRock_01.prefab",
+      "bounds_m": {
+        "x": 0.65,
+        "y": 1.17,
+        "z": 0.77
+      },
+      "uso": "Rocha pequena/média em bordas de mata, taludes e transições naturais; verificar material e escala."
+    },
+    {
+      "grupo": "rochas",
+      "prioridade": "media",
+      "package": "Pandazole_Ultimate_Pack — Pandazole Nature Environment Pack",
+      "nome": "SoftRock_01",
+      "path": "Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Prefabs/SoftRock_01.prefab",
+      "bounds_m": {
+        "x": 0.84,
+        "y": 0.39,
+        "z": 0.87
+      },
+      "uso": "Rocha baixa para formar pequenos grupos junto a terreno natural."
+    },
+    {
+      "grupo": "fungos",
+      "prioridade": "baixa",
+      "package": "BluBlu Games — Low Poly Forest Mini Pack",
+      "nome": "SM_Mushroom_01",
+      "path": "Assets/BluBlu Games/Low Poly Forest Mini Pack/Prefabs/SM_Mushroom_01.prefab",
+      "bounds_m": {
+        "x": 0.26,
+        "y": 0.24,
+        "z": 0.27
+      },
+      "uso": "Microdetalhe de mata; usar em grupos muito pequenos sob vegetação e na borda da mata, nunca espalhado por gramados de circulação."
+    },
+    {
+      "grupo": "arvore_de_mata",
+      "prioridade": "media",
+      "package": "BluBlu Games — Low Poly Forest Mini Pack",
+      "nome": "SM_Tree_Green",
+      "path": "Assets/BluBlu Games/Low Poly Forest Mini Pack/Prefabs/SM_Tree_Green.prefab",
+      "bounds_m": {
+        "x": 4.38,
+        "y": 7.62,
+        "z": 3.87
+      },
+      "uso": "Complemento de copa em áreas de mata/árvores, se o modelo combinar visualmente com as árvores principais."
+    },
+    {
+      "grupo": "mobiliario_urbano",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Street_BenchStreetSlat_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/06_Street_Furniture/SM_LPC_Street_BenchStreetSlat_01.prefab",
+      "bounds_m": {
+        "x": 1.8,
+        "y": 0.9,
+        "z": 0.53
+      },
+      "uso": "Bancos em áreas de convivência e perto de entradas, sem bloquear passagem."
+    },
+    {
+      "grupo": "mobiliario_urbano",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Street_LampStreetColumn_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/06_Street_Furniture/SM_LPC_Street_LampStreetColumn_01.prefab",
+      "bounds_m": {
+        "x": 0.31,
+        "y": 6.0,
+        "z": 1.87
+      },
+      "uso": "Iluminação ao longo de caminhos de pedestres, se a cena tiver iluminação noturna prevista."
+    },
+    {
+      "grupo": "mobiliario_urbano",
+      "prioridade": "media",
+      "package": "LowPolyCityFree",
+      "nome": "SM_LPC_Street_StreetBinRound_01",
+      "path": "Assets/LowPolyCityFree/Prefabs/06_Street_Furniture/SM_LPC_Street_StreetBinRound_01.prefab",
+      "bounds_m": {
+        "x": 0.56,
+        "y": 1.0,
+        "z": 0.56
+      },
+      "uso": "Lixeiras em acessos, locais de permanência e áreas de bancos."
+    }
+  ],
+  "regras_de_geracao": [
+    "Preservar todos os edifícios reais já posicionados; não substituir o campus por prédios genéricos de pacotes urbanos.",
+    "Não cobrir lacunas com vegetação antes de garantir uma superfície contínua de terreno/gramado ou pavimentação.",
+    "Classificar regiões permitidas por tipo: gramado, mata, via, passeio, footprint de prédio e área de acesso.",
+    "Nunca posicionar assets naturais em vias, calçadas, estacionamento, dentro de edifícios, entradas ou corredores de circulação.",
+    "Usar raycast para colocar a base do prefab sobre o terreno; aplicar rotação aleatória no eixo vertical e variação de escala discreta, preservando escala plausível.",
+    "Usar colliders/bounds e distâncias mínimas para evitar árvores e rochas sobrepostas; agrupar vegetação de maneira irregular, não em grade uniforme.",
+    "Distribuição sugerida: árvores só nas manchas arbóreas do mapa; arbustos/tufos nas transições; rochas em bordas naturais; fungos muito esparsos na sombra da mata; bancos/lixeiras/luminárias em áreas de circulação.",
+    "Gerar primeiro uma prévia editável em uma hierarquia separada, com seed fixa, contagem por classe, opção de limpar somente objetos gerados e sem apagar objetos da cena original.",
+    "Antes de aplicar em toda a cena, criar uma área-piloto e validar materiais, escala, normais, rotação, colliders e compatibilidade visual dos pacotes."
+  ]
+}

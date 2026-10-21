@@ -104,7 +104,7 @@ public static class ConfigurarDialogoCondicional
     private static NPCBaseNovo EncontrarNPC(string nomeObjeto, string nomeNPC)
     {
         // Busca ampla na cena ativa (independente de hierarquia/objeto renomeado).
-        NPCBaseNovo[] todos = Object.FindObjectsByType<NPCBaseNovo>(FindObjectsSortMode.None);
+        NPCBaseNovo[] todos = Object.FindObjectsByType<NPCBaseNovo>();
 
         foreach (NPCBaseNovo npc in todos)
         {
