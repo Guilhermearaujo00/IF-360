@@ -454,9 +454,7 @@ public static class AmbientacaoIFNMG
 
     private static float PisoLocal(float x, float z)
     {
-        if (Physics.Raycast(new Vector3(x, 5f, z), Vector3.down, out RaycastHit hit, 20f))
-            return hit.point.y;
-        return 0f;
+        return BaseY(x, z);
     }
 
     private static bool ParecePiso(string path)
@@ -585,18 +583,60 @@ public static class AmbientacaoIFNMG
             return null;
         }
         var go = (GameObject)PrefabUtility.InstantiatePrefab(p, pai != null ? pai : _sub);
-        go.transform.position = new Vector3(pos.x, BaseY(pos.x, pos.z), pos.z);
         go.transform.rotation = Quaternion.Euler(0, yaw, 0);
         go.transform.localScale = Vector3.one * escala;
+        float baseLocal = BaseY(pos.x, pos.z);
+        go.transform.position = new Vector3(pos.x, baseLocal, pos.z);
+        AjustarBaseAoPiso(go, baseLocal);
         go.name = p.name;
         return go;
     }
 
+    // Ancorar pela BASE do bounds (não pelo pivô): sub-prefabs como o poste
+    // têm pivô no topo/meio e por isso flutuavam.
+    private static void AjustarBaseAoPiso(GameObject go, float pisoY)
+    {
+        if (!ObterBounds(go, out Bounds b)) return;
+        float delta = pisoY - b.min.y;
+        if (Mathf.Abs(delta) < 0.001f) return;
+        go.transform.position += new Vector3(0f, delta, 0f);
+    }
+
+    private static bool ObterBounds(GameObject go, out Bounds bounds)
+    {
+        bounds = new Bounds(go.transform.position, Vector3.zero);
+        bool tem = false;
+        foreach (var r in go.GetComponentsInChildren<Renderer>(true))
+        {
+            if (r is ParticleSystemRenderer || r is TrailRenderer || r is LineRenderer) continue;
+            if (!tem) { bounds = r.bounds; tem = true; } else bounds.Encapsulate(r.bounds);
+        }
+        return tem;
+    }
+
     private static float BaseY(float x, float z)
     {
-        if (Physics.Raycast(new Vector3(x, 50, z), Vector3.down, out RaycastHit hit, 200f))
-            return hit.point.y;
-        return 0f;
+        float piso = -0.03f;
+        var hits = Physics.RaycastAll(new Vector3(x, 50, z), Vector3.down, 200f);
+        float melhor = float.NegativeInfinity;
+        bool achou = false;
+        foreach (var h in hits)
+        {
+            if (!EhPiso(h.collider.gameObject)) continue;
+            if (h.point.y > melhor) { melhor = h.point.y; achou = true; }
+        }
+        return achou ? melhor : piso;
+    }
+
+    // Apenas superfícies de chão/pavimentação contam para ancoragem vertical.
+    private static bool EhPiso(GameObject go)
+    {
+        var n = go.name;
+        if (n == "Base_Gramado_Continua") return true;
+        if (n.StartsWith("Grama_")) return true;
+        if (n.StartsWith("Praca_")) return true;
+        if (n.StartsWith("Calcada_")) return true;
+        return false;
     }
 
     private static void ScatterTufos()

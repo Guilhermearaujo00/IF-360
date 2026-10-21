@@ -1,6 +1,6 @@
 # Validação geométrica da área de teste (v3)
 
-- Data: 2026-10-20 23:28
+- Data: 2026-10-20 23:37
 - Raiz: `IFNMG_Ambientacao_GERADA` na cena `Assets/Scenes/IFNMG_AmbientacaoPreview.unity`
 - Zona do sandbox: centro (0, 1, 0), tamanho 40 × 4 × 30 m (**sintética, não é local do campus**).
 - Objetos gerados (prefab instances): **150**.
