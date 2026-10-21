@@ -6,6 +6,12 @@
 - Modo: trabalho por JSON/coordenadas/caminhos/bounds/logs. **Nenhuma imagem foi interpretada.**
 - A cena principal (`Assets/Scenes/Campus.unity`) **não foi alterada** (mtime 2026-10-20 21:16, anterior à execução).
 
+> **Os edifícios deste protótipo são PLACEHOLDERS (blockouts).** Não são a geometria final:
+> são volumes simplificados por footprint (`Walls` + `Roof`) apenas para marcar ocupação no espaço.
+> Os prédios finais serão adicionados posteriormente em outra etapa. Portanto, forma, altura,
+> material e telhado dos volumes gerados **não** devem ser tratados como definitivos nem refinados
+> na v0.1 — o valor desta versão está em **escala, posição, vias, terrenos e vegetação**.
+
 ## 1. Arquivos instalados
 
 | Arquivo | Caminho no projeto | Status |
