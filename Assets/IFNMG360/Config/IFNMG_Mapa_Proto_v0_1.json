@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "title": "IFNMG Campus Januária — mapa protótipo v0.1 (editável)",
-  "status": "PROTOTIPO_NAO_CALIBRADO",
+  "status": "PROTOTIPO_CALIBRADO_PRELIMINAR",
   "purpose": "Blockout espacial inicial para a Unity; pode ser corrigido durante o desenvolvimento.",
   "sourceImage": "Captura de tela 2026-10-20 144000.png",
   "sourceImageSizePx": {
@@ -27,17 +27,30 @@
     ]
   },
   "world": {
-    "worldWidthMeters": 440.0,
-    "worldDepthMeters": 310.0,
+    "worldWidthMeters": 499.6,
+    "worldDepthMeters": 364.5,
     "metersPerUnityUnit": 1.0,
     "baseY": 0.0,
     "northAxis": "+Z",
     "origin": "centro do perímetro branco; origem local da raiz gerada",
     "mapping": "worldX = (u - 0.5) * worldWidthMeters; worldZ = (0.5 - v) * worldDepthMeters; worldY = 0 no terreno.",
-    "scaleStatus": "PROVISORIA. Dimensões 440x310 m adotadas para protótipo, ainda não calibradas pela medição do prédio Jogos Analógicos.",
+    "scaleStatus": "CALIBRADO_PRELIMINAR. Duas âncoras independentes convergiram para ~0,8466 m/px: (1) perímetro do mapa (590,1 x 430,6 px) = bounds da cena real Campus (512,1 x 355,6 m); (2) prédio Jogos Analógicos medido (39,31 x 36,53 m) = bbox 52 x 39 px do poligono edificio_noroeste_bloco_3. As duas deram 0,8468 e 0,8463 m/px (concordância de 0,06%). Ainda sujeito a revisão humana; incerteza de tracing ±10-15 px.",
+    "scaleCalibration": {
+      "metersPerPixel": 0.8466,
+      "anchor1_perimeterVersusScene": 0.8468,
+      "anchor2_jogosVersusBbox": 0.8463,
+      "sceneBoundsXZ": [512.1, 355.6],
+      "perimeterPxAverage": [590.1, 430.6],
+      "jogosAnalagicosMeters": [39.31, 36.53],
+      "jogosAnalogicosBboxPx": [52, 39],
+      "jogosAnalogicosZoneId": "edificio_noroeste_bloco_3",
+      "north": "+Z (topo do mapa), confirmado pelo usuário"
+    },
     "referenceMetrics": {
       "jogosAnalogicosAreaM2": 1480.14,
       "jogosAnalogicosPerimeterM": 154.8,
+      "jogosAnalogicosFrontalM": 39.31,
+      "jogosAnalogicosLateralM": 36.53,
       "usageNote": "A medição real serve como referência futura, mas ainda falta o polígono numérico do mesmo contorno para validar a escala."
     }
   },
