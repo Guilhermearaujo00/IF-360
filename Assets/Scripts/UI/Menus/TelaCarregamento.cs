@@ -31,12 +31,27 @@ public class TelaCarregamento : MonoBehaviour
         }
         Instancia = this;
         DontDestroyOnLoad(gameObject);
+        CriarCanvasPersistente();
+        ConstruirUI();
+    }
+
+    private void CriarCanvasPersistente()
+    {
+        if (canvas != null) return;
+        var go = new GameObject("LoadingCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        go.transform.SetParent(transform, false);
+        canvas = go.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 1000;
+        var scaler = go.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
     }
 
     private void Start()
     {
-        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
-        if (canvas != null) ConstruirUI();
+        if (canvas == null) CriarCanvasPersistente();
+        if (painel == null) ConstruirUI();
     }
 
     private void OnEnable()
@@ -51,14 +66,10 @@ public class TelaCarregamento : MonoBehaviour
 
     private void AoCarregarCena(Scene cena, LoadSceneMode modo)
     {
-        // O painel é filho do Canvas da cena anterior, que é destruído no load.
-        // Limpa a referência e reconstrói no novo Canvas.
-        painel = null;
-        textoStatus = null;
-        textoProgresso = null;
-
-        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
-        if (canvas != null) ConstruirUI();
+        // O canvas de loading é persistente (DontDestroyOnLoad), então o painel sobrevive.
+        // Apenas garante que a UI exista.
+        if (canvas == null) CriarCanvasPersistente();
+        if (painel == null) ConstruirUI();
     }
 
     private void ConstruirUI()
@@ -121,14 +132,14 @@ public class TelaCarregamento : MonoBehaviour
         // Garante UI construída
         if (painel == null)
         {
-            canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
+            if (canvas == null) CriarCanvasPersistente();
             ConstruirUI();
         }
 
-        // Sem Canvas na cena, não há como mostrar a tela: carrega direto.
+        // Sem painel, carrega direto.
         if (painel == null)
         {
-            Debug.LogWarning("[TelaCarregamento] Sem Canvas na cena; carregando sem tela de loading.");
+            Debug.LogWarning("[TelaCarregamento] Sem painel de loading; carregando sem tela de loading.");
             SceneManager.LoadScene(nomeCena);
             yield break;
         }
@@ -140,12 +151,19 @@ public class TelaCarregamento : MonoBehaviour
         var rotinaTexto = StartCoroutine(AnimarTextoCarregando());
 
         AsyncOperation async = SceneManager.LoadSceneAsync(nomeCena);
+        if (async == null)
+        {
+            Debug.LogWarning($"[TelaCarregamento] Cena '{nomeCena}' não encontrada no Build Settings.");
+            if (rotinaTexto != null) StopCoroutine(rotinaTexto);
+            if (painel != null) painel.SetActive(false);
+            yield break;
+        }
         async.allowSceneActivation = false;
 
         while (!async.isDone)
         {
             float progresso = Mathf.Clamp01(async.progress / 0.9f);
-            textoProgresso.text = $"Progresso: {progresso * 100f:F0}%";
+            if (textoProgresso != null) textoProgresso.text = $"Progresso: {progresso * 100f:F0}%";
 
             if (async.progress >= 0.9f)
             {
@@ -159,10 +177,10 @@ public class TelaCarregamento : MonoBehaviour
             yield return null;
         }
 
-        StopCoroutine(rotinaTexto);
-        textoProgresso.text = "Concluído!";
+        if (rotinaTexto != null) StopCoroutine(rotinaTexto);
+        if (textoProgresso != null) textoProgresso.text = "Concluído!";
         yield return new WaitForSecondsRealtime(0.3f);
-        painel.SetActive(false);
+        if (painel != null) painel.SetActive(false);
     }
 
     private IEnumerator AnimarTextoCarregando()

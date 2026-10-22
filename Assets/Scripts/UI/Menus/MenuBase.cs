@@ -51,12 +51,33 @@ public abstract class MenuBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
-        if (canvas == null)
-        {
-            Debug.LogError($"[{GetType().Name}] Nenhum Canvas encontrado na cena.");
-        }
+        canvas = ObterCanvas();
         ConfigurarInput();
+    }
+
+    protected Canvas ObterCanvas()
+    {
+        if (canvas != null) return canvas;
+        var cenaAtiva = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        var canvases = UnityEngine.Object.FindObjectsByType<Canvas>(UnityEngine.FindObjectsInactive.Include);
+        foreach (var c in canvases)
+        {
+            if (c != null && c.gameObject.scene == cenaAtiva)
+            {
+                canvas = c;
+                return canvas;
+            }
+        }
+        var go = new GameObject("Canvas");
+        go.AddComponent<RectTransform>();
+        canvas = go.AddComponent<Canvas>();
+        go.AddComponent<CanvasScaler>();
+        go.AddComponent<GraphicRaycaster>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        var scaler = go.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        return canvas;
     }
 
     private void ConfigurarInput()
@@ -245,7 +266,7 @@ public abstract class MenuBase : MonoBehaviour
     protected virtual void ConstruirUI()
     {
         if (painel != null) return;
-        if (canvas == null) canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
+        if (canvas == null) canvas = ObterCanvas();
         if (canvas == null) return;
 
         painel = new GameObject("Painel_" + GetType().Name, typeof(RectTransform), typeof(Image));
@@ -346,9 +367,16 @@ public abstract class MenuBase : MonoBehaviour
     {
         if (ativo) return;
 
-        canvas = UnityEngine.Object.FindAnyObjectByType<Canvas>();
+        canvas = ObterCanvas();
         ConstruirConteudo();
         ConstruirUI();
+
+        if (painel == null)
+        {
+            canvas = null;
+            canvas = ObterCanvas();
+            ConstruirUI();
+        }
 
         if (painel == null)
         {
