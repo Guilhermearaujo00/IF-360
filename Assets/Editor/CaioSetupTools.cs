@@ -22,6 +22,44 @@ public static class CaioSetupTools
         AtribuirNaCena();
     }
 
+    [MenuItem("Tools/IFNMG/Restaurar visual do Caio no Player")]
+    public static void RestaurarVisualNoPlayer()
+    {
+        UnityEngine.SceneManagement.Scene scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/Campus.unity", UnityEditor.SceneManagement.OpenSceneMode.Single);
+        GameObject player = GameObject.FindGameObjectWithTag("Player") ?? GameObject.Find("Player");
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(CaminhoModelo);
+        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(CaminhoController);
+
+        if (player == null) { Debug.LogError("Player nao encontrado na cena."); return; }
+        if (prefab == null) { Debug.LogError("Modelo do Caio nao encontrado: " + CaminhoModelo); return; }
+
+        foreach (Transform child in player.transform.GetComponentsInChildren<Transform>(true))
+        {
+            if (child != player.transform && child.GetComponentInChildren<Renderer>(true) != null)
+                UnityEngine.Object.DestroyImmediate(child.gameObject);
+        }
+
+        GameObject visual = PrefabUtility.InstantiatePrefab(prefab, player.transform) as GameObject;
+        if (visual == null) { Debug.LogError("Nao foi possivel instanciar o visual do Caio."); return; }
+        visual.name = "Caio_LowPoly_Corrigido";
+        visual.transform.localPosition = new Vector3(0f, 0.18f, 0f);
+        visual.transform.localRotation = Quaternion.identity;
+        visual.transform.localScale = Vector3.one;
+
+        Animator animator = visual.GetComponent<Animator>();
+        if (animator == null) animator = visual.GetComponentInChildren<Animator>(true);
+        if (animator != null && controller != null)
+        {
+            animator.runtimeAnimatorController = controller;
+            animator.applyRootMotion = false;
+        }
+
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
+        UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+        AssetDatabase.SaveAssets();
+        Debug.Log("Visual do Caio restaurado no Player sem alterar mapa ou predios.");
+    }
+
     [MenuItem("Tools/IFNMG/Adicionar 'Empurrar' (Shift)")]
     public static void AdicionarEmpurrar()
     {
