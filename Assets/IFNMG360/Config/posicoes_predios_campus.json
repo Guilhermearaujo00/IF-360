@@ -1,0 +1,24 @@
+{
+  "scene": "Assets/Scenes/Campus.unity",
+  "group": "Modelos_IFNMG",
+  "coordinateSystem": "Unity world coordinates (X, Y, Z)",
+  "capturedAt": "2026-11-06",
+  "buildings": [
+    { "name": "academia", "position": { "x": 374.0, "y": 0.34, "z": -258.0 }, "scale": { "x": 0.19, "y": 0.19, "z": 0.19 } },
+    { "name": "Administração", "position": { "x": 233.0, "y": -7.30, "z": -140.0 }, "scale": { "x": 0.07, "y": 0.08, "z": 0.07 } },
+    { "name": "almoxarifado", "position": { "x": 279.0, "y": 0.62, "z": -308.0 }, "scale": { "x": 0.77, "y": 0.90, "z": 0.77 } },
+    { "name": "Assistência_Estudantil (1)", "position": { "x": 936.0, "y": -0.20, "z": -538.0 }, "scale": { "x": 2.51, "y": 2.51, "z": 2.51 } },
+    { "name": "Biblioteca", "position": { "x": 69.60, "y": 4.70, "z": 53.20 }, "scale": { "x": 0.54, "y": 0.41, "z": 0.54 } },
+    { "name": "EAD", "position": { "x": 498.0, "y": 9.40, "z": -585.0 }, "scale": { "x": 0.79, "y": 0.86, "z": 0.79 } },
+    { "name": "GINASIO", "position": { "x": 756.0, "y": 3.30, "z": -509.0 }, "scale": { "x": 0.39, "y": 0.34, "z": 0.29 } },
+    { "name": "MANÁ(completo)", "position": { "x": 495.0, "y": -5.70, "z": -318.0 }, "scale": { "x": 0.21, "y": 0.21, "z": 0.21 } },
+    { "name": "ensino_medio", "position": { "x": 118.0, "y": 0.0, "z": -542.0 }, "scale": { "x": 0.51, "y": 0.43, "z": 0.47 } },
+    { "name": "Nucleo Melhorado (Modelo Pesado)", "position": { "x": -15.0, "y": 0.70, "z": -53.0 }, "scale": { "x": 1.18, "y": 1.18, "z": 1.18 } },
+    { "name": "Posto de Vendas", "position": { "x": 361.0, "y": 8.27, "z": -369.70 }, "scale": { "x": 3.16, "y": 3.16, "z": 2.35 } },
+    { "name": "Predio de Fisica", "position": { "x": -55.91, "y": -1.63, "z": 141.77 }, "scale": { "x": 1.13, "y": 1.13, "z": 1.13 } },
+    { "name": "Predio do Superior", "position": { "x": 536.0, "y": -12.60, "z": -221.0 }, "scale": { "x": 2.24, "y": 2.24, "z": 2.53 } },
+    { "name": "Refeitorio", "position": { "x": 705.0, "y": 4.0, "z": -743.0 }, "scale": { "x": 1.56, "y": 1.56, "z": 1.56 } },
+    { "name": "estrura biologia pronto", "position": { "x": -135.70, "y": -0.20, "z": 128.20 }, "scale": { "x": 0.59, "y": 1.28, "z": 1.21 } },
+    { "name": "secretaria", "position": { "x": 164.90, "y": 4.60, "z": -195.40 }, "scale": { "x": 1.74, "y": 1.43, "z": 1.74 } }
+  ]
+}
