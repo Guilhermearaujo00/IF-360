@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "unityMCP": {
+      "command": "cmd",
+      "args": ["/c", "uvx", "--from", "mcpforunityserver", "mcp-for-unity", "--transport", "stdio"]
+    },
+    "blender": {
+      "command": "cmd",
+      "args": ["/c", "uvx", "mcp-for-blender"]
+    }
+  }
+}

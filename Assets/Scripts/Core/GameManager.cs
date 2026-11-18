@@ -1,6 +1,7 @@
 namespace IF360
 {
 using UnityEngine;
+using IF360.Missoes;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
         if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
     }
 
-    /// <summary>Conclui uma etapa de uma missão (modelo por etapas).</summary>
+    /// <summary>DEPRECADO: progresso de etapa agora vive no QuestManager central.</summary>
     public void ConcluirEtapa(string idMissao)
     {
         if (QuestManager.Instancia == null) return;
@@ -54,6 +55,42 @@ public class GameManager : MonoBehaviour
         QuestManager.Instancia.ConcluirEtapa(idMissao);
 
         if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
+    }
+
+    /// <summary>
+    /// Registra o encerramento de um diálogo com um NPC do catálogo central
+    /// (única via de progressão por conversa) e salva quando algo avançou.
+    /// </summary>
+    public ResultadoEncerramento RegistrarDialogoEncerrado(string npcId)
+    {
+        var quest = QuestManager.Instancia;
+        if (quest == null) return null;
+
+        ResultadoEncerramento resultado = quest.RegistrarEncerramentoDialogo(npcId);
+        if (resultado != null &&
+            (resultado.MissaoIniciada || resultado.ObjetivoRegistrado || resultado.MissaoFinalizada))
+        {
+            if (SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
+        }
+        return resultado;
+    }
+
+    /// <summary>
+    /// Reporta o resultado de um minijogo à autoridade central (vitória registra
+    /// o objetivo da etapa de minijogo) e salva quando o objetivo é aceito.
+    /// </summary>
+    public bool RegistrarResultadoMinijogo(string missionId, string objectiveId, bool sucesso, out string motivo)
+    {
+        var quest = QuestManager.Instancia;
+        if (quest == null)
+        {
+            motivo = "QuestManager ausente.";
+            return false;
+        }
+
+        bool aceito = quest.RegistrarResultadoMinijogo(missionId, objectiveId, sucesso, out motivo);
+        if (aceito && SaveManager.Instancia != null) SaveManager.Instancia.SalvarJogo();
+        return aceito;
     }
 
     /// <summary>Define explicitamente o passo de uma missão (útil para save/restore).</summary>

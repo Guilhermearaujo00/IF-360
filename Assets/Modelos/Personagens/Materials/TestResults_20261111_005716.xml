@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="23" result="Failed(Child)" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0,246602">
+  <test-suite type="TestSuite" id="1034" name="IF 360" fullname="IF 360" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.246602" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1025" name="IF360.Missoes.Tests.dll" fullname="C:/projetos/IF 360/Library/ScriptAssemblies/IF360.Missoes.Tests.dll" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.205279" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="5372" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1026" name="IF360" fullname="IF360" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.203494" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1027" name="Missoes" fullname="IF360.Missoes" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.202897" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1028" name="Tests" fullname="IF360.Missoes.Tests" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.202278" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="MotorRegrasMissaoTests" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.196129" total="23" passed="21" failed="2" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1002" name="Cenario01_SubordinadoNaoIniciaMissao" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario01_SubordinadoNaoIniciaMissao" methodname="Cenario01_SubordinadoNaoIniciaMissao" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="2062234240" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.071948" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="Cenario02_IniciadorIniciaMissao" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario02_IniciadorIniciaMissao" methodname="Cenario02_IniciadorIniciaMissao" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="444934447" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.003402" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="Cenario03_UmaMissaoAtivaPorVez" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario03_UmaMissaoAtivaPorVez" methodname="Cenario03_UmaMissaoAtivaPorVez" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1473874390" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.001027" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="Cenario04_CadeiaDeMissoes" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario04_CadeiaDeMissoes" methodname="Cenario04_CadeiaDeMissoes" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="581164332" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.002852" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="Cenario05_EtapasEmSequenciaSemPular" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario05_EtapasEmSequenciaSemPular" methodname="Cenario05_EtapasEmSequenciaSemPular" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1183507465" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.001347" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="Cenario06_ObjetivosParalelosQualquerOrdem" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario06_ObjetivosParalelosQualquerOrdem" methodname="Cenario06_ObjetivosParalelosQualquerOrdem" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="2114073222" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.005165" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="Cenario07_NpcInformativoNuncaAlteraProgresso" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario07_NpcInformativoNuncaAlteraProgresso" methodname="Cenario07_NpcInformativoNuncaAlteraProgresso" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1629600692" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.000723" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="Cenario08_NpcForaDoCatalogoEhNeutro" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario08_NpcForaDoCatalogoEhNeutro" methodname="Cenario08_NpcForaDoCatalogoEhNeutro" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1546901410" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.005031" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="Cenario09_EtapaDeMinijogoSoRegistraComVitoriaAutorizada" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario09_EtapaDeMinijogoSoRegistraComVitoriaAutorizada" methodname="Cenario09_EtapaDeMinijogoSoRegistraComVitoriaAutorizada" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1935740132" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.000893" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="Cenario09b_AutorizacaoDeMinijogoNegadaNosCasosErrados" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario09b_AutorizacaoDeMinijogoNegadaNosCasosErrados" methodname="Cenario09b_AutorizacaoDeMinijogoNegadaNosCasosErrados" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1860984314" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.001248" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="Cenario10_SoFinalizadorConcluiMissao" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario10_SoFinalizadorConcluiMissao" methodname="Cenario10_SoFinalizadorConcluiMissao" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1483821019" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.001331" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="Cenario11_MissaoJaConcluidaNaoReabre" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Cenario11_MissaoJaConcluidaNaoReabre" methodname="Cenario11_MissaoJaConcluidaNaoReabre" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="2096614465" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:31Z" duration="0.000779" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="Consistencia_MissaoAtivaInvalidaOuJaCompletaEhLiberada" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Consistencia_MissaoAtivaInvalidaOuJaCompletaEhLiberada" methodname="Consistencia_MissaoAtivaInvalidaOuJaCompletaEhLiberada" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="439328126" result="Passed" start-time="2026-11-11 03:53:31Z" end-time="2026-11-11 03:53:32Z" duration="0.002764" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="Consistencia_MissaoCompletaPreencheObjetivosObrigatorios" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Consistencia_MissaoCompletaPreencheObjetivosObrigatorios" methodname="Consistencia_MissaoCompletaPreencheObjetivosObrigatorios" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1762355930" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001336" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="Consistencia_TodosObjetivosConcluidosCompletaAMissao" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Consistencia_TodosObjetivosConcluidosCompletaAMissao" methodname="Consistencia_TodosObjetivosConcluidosCompletaAMissao" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="260530294" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001863" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="EstadosDoFluxoCompletoDaQ01" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.EstadosDoFluxoCompletoDaQ01" methodname="EstadosDoFluxoCompletoDaQ01" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="199259001" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001468" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="EventosDoMotorDisparamNaOrdemEsperada" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.EventosDoMotorDisparamNaOrdemEsperada" methodname="EventosDoMotorDisparamNaOrdemEsperada" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="706450878" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001453" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="ExportarImportar_RoundTripPreservaEstado" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.ExportarImportar_RoundTripPreservaEstado" methodname="ExportarImportar_RoundTripPreservaEstado" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="2076058094" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001976" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="Legado_CompletarMissaoFlatPreservaIdsLegados" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Legado_CompletarMissaoFlatPreservaIdsLegados" methodname="Legado_CompletarMissaoFlatPreservaIdsLegados" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="429926271" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.002444" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="Legado_PassoDoNucleoNaCompilacao" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Legado_PassoDoNucleoNaCompilacao" methodname="Legado_PassoDoNucleoNaCompilacao" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="3844301" result="Failed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.016219" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 1
+  But was:  2
+]]></message>
+                  <stack-trace><![CDATA[at IF360.Missoes.Tests.MotorRegrasMissaoTests.Legado_PassoDoNucleoNaCompilacao () [0x00017] in C:\projetos\IF 360\Assets\Scripts\Missoes\Tests\Editor\MotorRegrasMissaoTests.cs:436
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1016" name="Legado_PassoEMissaoCompleta" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Legado_PassoEMissaoCompleta" methodname="Legado_PassoEMissaoCompleta" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1384438960" result="Failed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001332" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: 1
+  But was:  2
+]]></message>
+                  <stack-trace><![CDATA[at IF360.Missoes.Tests.MotorRegrasMissaoTests.Legado_PassoEMissaoCompleta () [0x00031] in C:\projetos\IF 360\Assets\Scripts\Missoes\Tests\Editor\MotorRegrasMissaoTests.cs:406
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1019" name="Migracao_PreservaProgressoDoFormatoAntigo" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Migracao_PreservaProgressoDoFormatoAntigo" methodname="Migracao_PreservaProgressoDoFormatoAntigo" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="135477109" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.006038" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="Migracao_SemDadosMantemEstadoZerado" fullname="IF360.Missoes.Tests.MotorRegrasMissaoTests.Migracao_SemDadosMantemEstadoZerado" methodname="Migracao_SemDadosMantemEstadoZerado" classname="IF360.Missoes.Tests.MotorRegrasMissaoTests" runstate="Runnable" seed="1312546396" result="Passed" start-time="2026-11-11 03:53:32Z" end-time="2026-11-11 03:53:32Z" duration="0.001212" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/guilh/AppData/LocalLow/DefaultCompany/IF 360\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

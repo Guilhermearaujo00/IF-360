@@ -113,6 +113,9 @@ public class MinijogoFios : MonoBehaviour
 
     private void Abrir(NPCBaseNovo npc)
     {
+        // Roteamento: este minijogo só abre para NPCs que pedem o desafio 'fios'.
+        if (npc == null || npc.idMinijogo != "fios") return;
+
         npcOrigem = npc;
         Abrir();
     }
@@ -146,14 +149,29 @@ public class MinijogoFios : MonoBehaviour
         concluido = false;
         fimConclusao = -1f;
 
-        if (vitoria && recompensaConcedida)
+        if (vitoria && recompensaConcedida && GameManager.Instance != null)
         {
-            GameManager.Instance?.AdicionarPontos(premioPontos);
-
-            // Conclui a etapa da missão associada ao NPC que abriu o minijogo
-            if (npcOrigem != null && GameManager.Instance != null)
+            // REPORTE CENTRAL (Etapa 9): a vitória é registrada na autoridade
+            // central (QuestManager/motor) — pontos só se o objetivo for aceito.
+            // O minijogo NÃO conclui etapas nem missões por conta própria.
+            var autorizacao = npcOrigem != null ? npcOrigem.AutorizacaoMinijogoAtual : null;
+            if (autorizacao != null && autorizacao.Autorizado)
             {
-                GameManager.Instance.ConcluirEtapa(npcOrigem.idMissao);
+                string motivo;
+                if (GameManager.Instance.RegistrarResultadoMinijogo(
+                        autorizacao.MissionId, autorizacao.ObjectiveId, true, out motivo))
+                {
+                    GameManager.Instance.AdicionarPontos(premioPontos);
+                }
+                else
+                {
+                    Debug.Log("[MISSION] Vitória dos fios não registrada: " + motivo);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[MISSION] MinijogoFios fechado com vitória sem autorização central — " +
+                                 "pontos não concedidos.");
             }
         }
 
@@ -319,7 +337,7 @@ public class MinijogoFios : MonoBehaviour
             return false;
         }
 
-        painel = new GameObject("MinijogoFios", typeof(RectTransform), typeof(Image));
+        painel = new GameObject("MinijogoFios", typeof(RectTransform), typeof(Image), typeof(Outline));
         painel.transform.SetParent(canvas.transform, false);
 
         RectTransform rt = painel.GetComponent<RectTransform>();
@@ -327,7 +345,14 @@ public class MinijogoFios : MonoBehaviour
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = Vector2.zero;
         rt.sizeDelta = new Vector2(760f, 480f);
-        painel.GetComponent<Image>().color = new Color(0.07f, 0.07f, 0.11f, 0.98f);
+        var painelImg = painel.GetComponent<Image>();
+        painelImg.color = new Color(0.10f, 0.10f, 0.14f, 0.95f); // #1A1A24F2
+        painelImg.raycastTarget = false;
+
+        var outline = painel.GetComponent<Outline>();
+        outline.effectColor = new Color(0.19f, 0.19f, 0.27f, 0.90f); // #303045E6
+        outline.effectDistance = new Vector2(1.5f, -1.5f);
+        outline.useGraphicAlpha = true;
 
         CriarTexto(painel.transform, "Titulo", "Ligue os 3 fios",
             new Vector2(0f, 196f), new Vector2(700f, 54f), 38f, TextAlignmentOptions.Center);
@@ -375,7 +400,9 @@ public class MinijogoFios : MonoBehaviour
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = pos;
         rt.sizeDelta = new Vector2(96f, 60f);
-        go.GetComponent<Image>().color = cor;
+        var img = go.GetComponent<Image>();
+        img.color = cor;
+        img.raycastTarget = false;
         return rt;
     }
 
@@ -396,6 +423,21 @@ public class MinijogoFios : MonoBehaviour
         texto.fontSize = fontSize;
         texto.alignment = alinhamento;
         texto.color = Color.white;
+        texto.raycastTarget = false;
+
+        if (texto.fontSharedMaterial != null)
+        {
+            var mat = new Material(texto.fontSharedMaterial);
+            mat.name = texto.fontSharedMaterial.name + "_Underlay";
+            mat.EnableKeyword("UNDERLAY_ON");
+            mat.SetColor("_UnderlayColor", new Color(0f, 0f, 0f, 0.6f));
+            mat.SetFloat("_UnderlayOffsetX", 1f);
+            mat.SetFloat("_UnderlayOffsetY", -1f);
+            mat.SetFloat("_UnderlayDilate", 0.15f);
+            mat.SetFloat("_UnderlaySoftness", 0.25f);
+            texto.fontMaterial = mat;
+        }
+
         return texto;
     }
 }

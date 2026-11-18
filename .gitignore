@@ -84,3 +84,10 @@ Assets/Fantasy Skybox FREE/
 Assets/Fantasy Skybox FREE.meta
 Assets/ithappy/
 Assets/ithappy.meta
+
+# ============ Backups locais de cena (nao versionar) ============
+# Copias de seguranca grandes ficam apenas no disco; o historico fica no Git.
+Backups/
+Assets/Scenes/Campus.before-*.unity
+Assets/Scenes/Campus.before-*.unity.meta
+Packages/*.bak-*

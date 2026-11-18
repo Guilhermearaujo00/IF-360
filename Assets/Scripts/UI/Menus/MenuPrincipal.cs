@@ -32,15 +32,17 @@ public class MenuPrincipal : MenuBase
 
     private void IniciarJogo()
     {
-        // Limpa save anterior para novo jogo
-        if (SaveManager.Instancia != null) SaveManager.Instancia.LimparSave();
+        // Novo jogo: apaga o save SEM depender do SaveManager da cena Campus
+        // (no menu ele não existe — antes o save antigo sobrevivia e voltava
+        // junto com o "novo jogo").
+        SaveManager.ApagarSaveEstatico();
         TelaCarregamento.Carregar("Campus");
     }
 
     private void ContinuarJogo()
     {
-        // Verifica se existe save
-        if (SaveManager.Instancia != null && SaveManager.Instancia.TemSave())
+        // Verifica se existe save (estático: o menu não tem SaveManager na cena)
+        if (SaveManager.TemSaveEstatico())
         {
             TelaCarregamento.Carregar("Campus");
         }

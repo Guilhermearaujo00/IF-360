@@ -20,6 +20,20 @@ public class SaveManager : MonoBehaviour
         Instancia = this;
     }
 
+    /// <summary>
+    /// AUTO-RESTORE: o save volta ao entrar na cena sem depender de alguém
+    /// chamar CarregarJogo manualmente (correção do bug "Continuar não carregava").
+    /// Usa RestaurarSeNecessario: restaura apenas uma vez por sessão (o
+    /// QuestManager é DontDestroyOnLoad e mantém o progresso vivo em memória).
+    /// </summary>
+    private void Start()
+    {
+        if (TemSave())
+        {
+            CarregarJogo();
+        }
+    }
+
     private void OnDestroy()
     {
         if (Instancia == this) Instancia = null;
@@ -65,10 +79,37 @@ public class SaveManager : MonoBehaviour
 
         if (QuestManager.Instancia != null)
         {
-            QuestManager.Instancia.RestaurarMissoes(PlayerPrefs.GetString(CHAVE_MISSOES, string.Empty));
+            // Guarda de sessão: não sobrescreve o progresso vivo em memória ao
+            // recarregar a cena (voltar ao menu e continuar).
+            QuestManager.Instancia.RestaurarSeNecessario(PlayerPrefs.GetString(CHAVE_MISSOES, string.Empty));
         }
 
         Debug.Log("[SaveManager] Jogo carregado.");
+    }
+
+    /// <summary>Existe save? (estático — utilizável no menu, sem SaveManager na cena).</summary>
+    public static bool TemSaveEstatico()
+    {
+        return PlayerPrefs.HasKey(CHAVE_PONTOS) || PlayerPrefs.HasKey(CHAVE_MISSOES);
+    }
+
+    /// <summary>
+    /// Apaga o save SEM depender de um SaveManager vivo na cena (o menu
+    /// principal precisa disto para "Iniciar Jogo" sempre começar do zero).
+    /// </summary>
+    public static void ApagarSaveEstatico()
+    {
+        PlayerPrefs.DeleteKey(CHAVE_PONTOS);
+        PlayerPrefs.DeleteKey(CHAVE_COLECIONAVEIS);
+        PlayerPrefs.DeleteKey(CHAVE_MISSOES);
+
+        if (QuestManager.Instancia != null)
+        {
+            QuestManager.Instancia.LimparMissoes();
+        }
+
+        PlayerPrefs.Save();
+        Debug.Log("[SaveManager] Save apagado (estático).");
     }
 
     public void ApagarJogo()

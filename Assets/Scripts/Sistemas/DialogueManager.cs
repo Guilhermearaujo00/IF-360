@@ -7,6 +7,12 @@ using UnityEngine;
 /// Controla TODA a conversa. Não mostra nada na tela (quem desenha é a
 /// DialogueUI). Recebe os NPCs via evento estático NPCBaseNovo.DialogoSolicitado.
 ///
+/// Não participa das regras de missão: o NPC resolve o diálogo a exibir
+/// (npc.DialogoParaConversa — que pode ser um diálogo DINÂMICO gerado pela
+/// avaliação central do QuestManager) e, ao encerrar a conversa, notifica o
+/// NPC (NotificarDialogoEncerrado), que repassa o encerramento à autoridade
+/// central de missões.
+///
 /// Máquina de estados:
 ///   NONE    -> sem diálogo aberto;
 ///   TYPING  -> uma fala está sendo digitada (E completa a digitação);
@@ -93,12 +99,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (ui == null)
-        {
-            Debug.LogError("DialogueManager: referência 'ui' vazia. Atribua a DialogueUI no Inspector " +
-                           "(ou rode Tools > IFNMG > Configurar Sistema de Diálogo).", this);
-            return;
-        }
+        if (!GarantirUi()) return;
 
         if (!npc.TemDialogoValido)
         {
@@ -145,14 +146,29 @@ public class DialogueManager : MonoBehaviour
             return false;
         }
 
-        if (ui == null)
+        return GarantirUi();
+    }
+
+    /// <summary>
+    /// Fallback de auto-resolução da DialogueUI (mesmo padrão de
+    /// playerController/cameraController em TravarJogador): se a referência
+    /// serializada se perder, procura o componente na cena antes de falhar.
+    /// </summary>
+    private bool GarantirUi()
+    {
+        if (ui != null) return true;
+
+        ui = Object.FindAnyObjectByType<DialogueUI>(FindObjectsInactive.Include);
+        if (ui != null)
         {
-            Debug.LogError("DialogueManager: referência 'ui' vazia. Atribua a DialogueUI no Inspector " +
-                           "(ou rode Tools > IFNMG > Configurar Sistema de Diálogo).", this);
-            return false;
+            Debug.Log("DialogueManager: referência 'ui' vazia — DialogueUI encontrada " +
+                      "na cena e reatribuída automaticamente.", this);
+            return true;
         }
 
-        return true;
+        Debug.LogError("DialogueManager: referência 'ui' vazia. Atribua a DialogueUI no Inspector " +
+                       "(ou rode Tools > IFNMG > Configurar Sistema de Diálogo).", this);
+        return false;
     }
 
     private void AbrirConversa(DialogoData.FalaDialogo[] lista, float velocidade, NPCBaseNovo npc)

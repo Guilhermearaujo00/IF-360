@@ -3,11 +3,18 @@ namespace IF360
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using IF360.Missoes;
 
 /// <summary>
-/// HUD/jornada de missão: mostra o progresso (quantas missões já foram
-/// concluídas) e, a cada conclusão, o nome da missão concluída.
-/// Agora também exibe o passo atual da missão (modelo por etapas).
+/// HUD/jornada de missão — consome o ResumoProgresso da AUTORIDADE CENTRAL
+/// (QuestManager), sem lógica de progressão própria:
+///   - contador do catálogo central: "X de N missões concluídas" (N = Q01–Q04);
+///   - missão ativa: etapa atual (ordem/total + descrição), pendentes da etapa
+///     com o "faltam X de N" dinâmico (ex.: "Faltam 2 de 3: Gleice e Rosy.")
+///     e a próxima ação orientada;
+///   - sem missão ativa: aponta o iniciador da próxima missão do catálogo;
+///   - eventos legados mantidos (MissaoIniciada/EtapaConcluida/
+///     MissaoCompletada) — agora apenas acionam a atualização visual.
 /// </summary>
 public class HUDMissao : MonoBehaviour
 {
@@ -15,31 +22,43 @@ public class HUDMissao : MonoBehaviour
     [Tooltip("Título fixo do painel (ex.: 'Jornada').")]
     [SerializeField] private TMP_Text textoTitulo;
 
-    [Tooltip("Objetivo atual / último evento de missão.")]
+    [Tooltip("Objetivo atual / último evento de missão (pendentes + próxima ação).")]
     [SerializeField] private TMP_Text textoObjetivo;
 
-    [Tooltip("Contador de progresso (ex.: '2 missões concluídas').")]
+    [Tooltip("Contador de progresso (ex.: '2 de 4 missões concluídas').")]
     [SerializeField] private TMP_Text textoProgresso;
 
-    [Tooltip("Exibe a etapa atual da missão ativa (ex.: 'Etapa 2 de 3: Ligar 3 fios').")]
+    [Tooltip("Exibe a etapa atual da missão ativa (ex.: 'Matrícula — Etapa 2 de 4: Ligar os fios').")]
     [SerializeField] private TMP_Text textoEtapaAtual;
 
-    [Header("Nomes amigáveis por id de missão")]
-    [Tooltip("Traduz o idMissao (ex.: missao_diretor) para um nome exibido (ex.: 'Falar com o Diretor').")]
+    [Header("Nomes amigáveis por id de missão (fallback para ids legados)")]
+    [Tooltip("Traduz um idMissao para um nome exibido. O catálogo central é consultado antes.")]
     [SerializeField] private List<EntradaMissao> nomesMissoes = new List<EntradaMissao>();
 
     private void OnEnable()
     {
+        QuestManager.MissaoIniciada += AoIniciarMissao;
         QuestManager.MissaoCompletada += AoCompletarMissao;
         QuestManager.EtapaConcluida += AoConcluirEtapa;
-        AtualizarProgresso();
-        AtualizarEtapaAtual(string.Empty);
+        Atualizar();
     }
 
     private void OnDisable()
     {
+        QuestManager.MissaoIniciada -= AoIniciarMissao;
         QuestManager.MissaoCompletada -= AoCompletarMissao;
         QuestManager.EtapaConcluida -= AoConcluirEtapa;
+    }
+
+    // ---------- Eventos (apenas re-exibem o estado central) ----------
+
+    private void AoIniciarMissao(string idMissao)
+    {
+        if (textoObjetivo != null)
+        {
+            textoObjetivo.text = "Nova missão: " + NomeDe(idMissao);
+        }
+        Atualizar();
     }
 
     private void AoCompletarMissao(string idMissao)
@@ -48,64 +67,83 @@ public class HUDMissao : MonoBehaviour
         {
             textoObjetivo.text = "Concluída: " + NomeDe(idMissao);
         }
-
-        AtualizarProgresso();
-        // Ao completar missão, limpa a etapa atual
-        AtualizarEtapaAtual(string.Empty);
+        Atualizar();
     }
 
-    private void AoConcluirEtapa(string idMissao, int passoAtual)
+    private void AoConcluirEtapa(string idMissao, int ordemEtapa)
     {
-        if (textoEtapaAtual == null) return;
+        Atualizar();
+    }
 
-        string nomeMissao = NomeDe(idMissao);
-        string nomeEtapa = string.Empty;
+    // ---------- Atualização (lê o ResumoProgresso central) ----------
 
-        // Tenta buscar o nome da etapa no MissaoData se houver referência
-        var missaoData = BuscarMissaoData(idMissao);
-        if (missaoData != null && missaoData.etapas != null && passoAtual > 0 && passoAtual <= missaoData.etapas.Length)
-        {
-            var etapa = missaoData.ObterEtapaAtual(passoAtual - 1);
-            if (!string.IsNullOrEmpty(etapa.nome))
-                nomeEtapa = etapa.nome;
-        }
-
-        if (!string.IsNullOrEmpty(nomeEtapa))
-        {
-            textoEtapaAtual.text = $"{nomeMissao} — Etapa {passoAtual}: {nomeEtapa}";
-        }
-        else
-        {
-            textoEtapaAtual.text = $"{nomeMissao} — Etapa {passoAtual}";
-        }
+    private void Atualizar()
+    {
+        AtualizarProgresso();
+        AtualizarMissaoAtiva();
     }
 
     private void AtualizarProgresso()
     {
         if (textoProgresso == null) return;
 
-        int total = QuestManager.Instancia != null
-            ? QuestManager.Instancia.QuantidadeMissoesCompletas()
-            : 0;
+        var quest = QuestManager.Instancia;
+        int concluidas = quest != null ? quest.QuantidadeMissoesCompletas() : 0;
+        int total = quest != null ? quest.TotalMissoesCatalogo : 0;
 
-        textoProgresso.text = total + (total == 1 ? " missão concluída" : " missões concluídas");
+        // "X de N" — N = missões estruturadas no catálogo central (Q01–Q04).
+        textoProgresso.text = concluidas + " de " + total + " missões concluídas";
     }
 
-    private void AtualizarEtapaAtual(string idMissao)
+    private void AtualizarMissaoAtiva()
     {
-        if (textoEtapaAtual == null) return;
+        var quest = QuestManager.Instancia;
+        if (quest == null) return;
 
-        if (string.IsNullOrEmpty(idMissao))
+        var resumo = quest.ObterResumoProgresso();
+
+        if (!resumo.TemMissaoAtiva)
         {
-            textoEtapaAtual.text = string.Empty;
+            if (textoObjetivo != null) textoObjetivo.text = "Nenhuma missão ativa.";
+            if (textoEtapaAtual != null) textoEtapaAtual.text = MontarDicaProximaMissao(quest);
             return;
         }
 
-        int passo = QuestManager.Instancia != null ? QuestManager.Instancia.ObterPassoAtual(idMissao) : 0;
-        if (passo > 0)
+        if (textoEtapaAtual != null)
         {
-            AoConcluirEtapa(idMissao, passo);
+            textoEtapaAtual.text = resumo.MissionName + " — Etapa " + resumo.StepOrder +
+                                   " de " + resumo.TotalEtapas + ": " + resumo.StepDescricao;
         }
+
+        if (textoObjetivo != null)
+        {
+            string pendentes = string.IsNullOrEmpty(resumo.DescricaoPendentes)
+                ? ""
+                : resumo.DescricaoPendentes + "\n";
+            textoObjetivo.text = pendentes + resumo.ProximaAcao;
+        }
+    }
+
+    /// <summary>
+    /// Sem missão ativa: aponta o INICIADOR da próxima missão não concluída do
+    /// catálogo (a cadeia é linear Q01 → Q04, então a primeira incompleta é a
+    /// próxima). Todas concluídas → mensagem de jornada completa.
+    /// </summary>
+    private string MontarDicaProximaMissao(QuestManager quest)
+    {
+        var missoes = quest.Motor.Catalogo.Missoes;
+        for (int i = 0; i < missoes.Count; i++)
+        {
+            if (quest.ObterEstadoMissao(missoes[i].MissionId) == EstadoMissao.Completed) continue;
+
+            var perfil = quest.ObterPerfil(missoes[i].StartingNPCId);
+            string nome = perfil != null ? perfil.DisplayName : missoes[i].StartingNPCId;
+            string local = perfil != null ? perfil.LocationName : "";
+
+            return "Fale com " + nome + (string.IsNullOrEmpty(local) ? "" : " (" + local + ")") +
+                   " para começar: " + missoes[i].MissionName + ".";
+        }
+        return "Jornada completa! Todas as missões foram concluídas.";
     }
 
     private string NomeDe(string idMissao)
@@ -118,20 +156,15 @@ public class HUDMissao : MonoBehaviour
             }
         }
 
-        return idMissao;
-    }
-
-    private MissaoData BuscarMissaoData(string idMissao)
-    {
-        // Busca simples via Resources (assumindo que os assets estão em Resources/Missoes)
-        // Para evitar alocação a cada frame, cache seria melhor, mas para HUD é aceitável.
-        var all = Resources.LoadAll<MissaoData>("Missoes");
-        foreach (var md in all)
+        // Fallback: nome da missão no catálogo central.
+        var quest = QuestManager.Instancia;
+        if (quest != null)
         {
-            if (md != null && md.idMissao == idMissao)
-                return md;
+            var defM = quest.Motor.Catalogo.ObterMissao(idMissao);
+            if (defM != null) return defM.MissionName;
         }
-        return null;
+
+        return idMissao;
     }
 
     [System.Serializable]

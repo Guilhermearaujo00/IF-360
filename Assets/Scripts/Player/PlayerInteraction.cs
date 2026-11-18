@@ -71,8 +71,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         LimparInvalidos();
 
-        // Minijogo aberto: E não deve interagir com o mundo (evita reabrir diálogo).
-        if (MinijogoFios.Instancia != null && MinijogoFios.Instancia.Ativo)
+        // Minijogo aberto (fios OU compilação): E não deve interagir com o
+        // mundo (evita reabrir diálogo durante o desafio).
+        if ((MinijogoFios.Instancia != null && MinijogoFios.Instancia.Ativo) ||
+            (MinijogoCompilacao.Instancia != null && MinijogoCompilacao.Instancia.Ativo))
         {
             return;
         }

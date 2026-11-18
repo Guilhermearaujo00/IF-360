@@ -1,0 +1,4226 @@
+{
+ "meta": {
+  "titulo": "IFNMG Campus Januária — cena v2.1 (assets por papel)",
+  "mundo": {
+   "largura_x_m": 430.0,
+   "profundidade_z_m": 315.0,
+   "celula_m": 5.0,
+   "origem": "centro do retângulo branco",
+   "x": "leste (+)",
+   "z": "norte (+)",
+   "y": "altura; terreno em 0",
+   "formula_uv": "x=(u-0.5)*430 ; z=(0.5-v)*315"
+  },
+  "yaw": "graus do eixo longo, sentido horário visto de cima a partir de +X (leste); yaw da Unity = yaw se o eixo longo do prefab for X local, yaw+90 se for Z local",
+  "precisao": "posições ≈ ±4–7 m nas edificações (ajuste afim com 12 pontos de controle); dimensões ±20%; classes da faixa leste e sul vieram da leitura do satélite",
+  "fontes": [
+   "Mapa_de_Classificação_do_Campus_Januária.png (classes)",
+   "Captura_de_tela_2026-10-20_144000.png (satélite + medida 1,49 km)"
+  ],
+  "assets": "sem prefabs fixos: o Opencode escolhe modelos por papel nos assets do My Assets (ver busca_assets)"
+ },
+ "legenda": {
+  "E": {
+   "nome": "Edificações e coberturas",
+   "cor_no_mapa": "vermelho",
+   "celulas": 846,
+   "area_m2": 21150,
+   "pct": 15.6,
+   "regioes": 21
+  },
+  "V": {
+   "nome": "Vias e pavimentos",
+   "cor_no_mapa": "azul",
+   "celulas": 547,
+   "area_m2": 13675,
+   "pct": 10.1,
+   "regioes": 11
+  },
+  "A": {
+   "nome": "Copas de árvores e massas arbóreas",
+   "cor_no_mapa": "verde-escuro",
+   "celulas": 2044,
+   "area_m2": 51100,
+   "pct": 37.7,
+   "regioes": 31
+  },
+  "G": {
+   "nome": "Gramados e áreas verdes",
+   "cor_no_mapa": "verde-claro",
+   "celulas": 1371,
+   "area_m2": 34275,
+   "pct": 25.3,
+   "regioes": 27
+  },
+  "S": {
+   "nome": "Solo exposto ou terra batida",
+   "cor_no_mapa": "laranja",
+   "celulas": 378,
+   "area_m2": 9450,
+   "pct": 7.0,
+   "regioes": 8
+  },
+  "?": {
+   "nome": "Superfície incerta (necessita validação)",
+   "cor_no_mapa": "ciano",
+   "celulas": 232,
+   "area_m2": 5800,
+   "pct": 4.3,
+   "regioes": 3
+  }
+ },
+ "grade": {
+  "linhas": 63,
+  "colunas": 86,
+  "ordem": "linha 0 = norte (topo); coluna 0 = oeste; célula (r,c) cobre x=[c*5-215,(c+1)*5-215], z=[157.5-(r+1)*5,157.5-r*5]",
+  "texto": [
+   "AAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAGASSSSGGGAGAAAAGVEAAAAAAAAAAASSSAAAAGGGGGGGGGGGAAGVAAGVAAAAVAAAAAAAAAAAA????????????",
+   "AAGGGGSSGGGGGAAAAVEEEEAAAAAAAAVAGSSAAGGGGGGGGGGGAAGVAAAGVVAAASAAAAAAAAAAA?????????????",
+   "AAAGGGGGGGGGGAAAAEEEEEEEAAAAAVAAAGGSAGGGGGGGGGGAAGVAAGGVVVVASAAAAAAAAAAAA?????????????",
+   "AAAAAGGGGGGGGAAAAEEEEEEEEVAAAVAAAGGSSSGGGGGGGGAAGVVAAGVVGAAVSGAAAAAAAAAA??????????????",
+   "AAAAAAGGGGGGGGAAGEEEEEEEEVVVVVAAAAAGASSGGGGGGAAGVVAAGAVEEGAAVAGAAAAAAAAA??????????????",
+   "AAAAAAAAGGGGGGAGAAEEEEEEEVVVVAAGAAAAAAGSGGGGAAGVVAAAGVEEEEGAAVVAAAAAAAAA??????????????",
+   "GAAAAAAAAAGGAAAGAGGAEEEEEEVVVAGGGAAAAAAGSSAAAAVVAAGGVVEAEEAAEEAVAGAAAAA????AAAAAAAAAAA",
+   "GAAAAAAAAAGGAAGAEEAAAGEEEEVVVAGAAGGAAAAAAGSSSVVGAAGVVEAEEEAAEEEAASAAAAA???????????????",
+   "GAAAAAAAAGGGAVAEEEEEAGAAEVVVAAAAAEEGGAAAAAAGGVVGGGGVEAAEEGEEEEEEAGSAAA????????????????",
+   "GAAAAAAGGGGAAVAEEEEEEEAAAAAAAAAAEEEEEGVVAAAAVVAVVAEEEAEEGGEEEEEEGGGSA?????????????????",
+   "GAAAAAAGGGAAAVEEEAEEEEEEGAVAAAAAEEEEEGVV?AAAVAAGVEEEEEEEGEEEAEEEAGGGSG?????????????SSS",
+   "VVVAGGGGGAAAVVEEEEEAEEEEEAVAAAAEEEEEEVAAVAVVVAAVVEEEEEEGEEEGEEEAAGGGGSG??????????SSSSS",
+   "VVVVAAGGGAAAVEEEEEEEEAEEEVAAAAAEEEEEVVAAAVVVAAAVVEAEEEEEEEAAEEAAGGGGGGSG???AAASSSSSSSS",
+   "AAVAAVVGGAAVVEEEEEEEEEEAVVAAAAVEEEEAVAAAAVVAAAVVEAAEEEEEEEAEEEAAGGGGGGGSG?GSSSSSSSSSSS",
+   "AAAAAVAAVAAVVEEEEEEEEEEAVVVAGAVVVEEVAAGAAVVAAVVEEAEEEEEEEAEEEAAGGGGGGGGGSGGSSSSSSSSSSS",
+   "AAAAAAGAVVVEEVVEEEEEEEAVVEEEVAAVVVVVAAAAVVAGVVEEAEEEAEEEEEEEGAAGGGGGGGGGGSGSSSSSSSSSSS",
+   "AAAAAAAAGVVEEEEAVEEEEEAVVEEEAVAAGVVAAAAVVGAAVVEEAEEAAEEEEEEGAAAAGGGGGGGGGSSSSSSSSSSSSS",
+   "AAAAAAAAAGAEEEEEAAVEEEAVAEEGEEVVAVVAAAVVGGSSVVEEEEAAEEEAEEEEEAAGAGGGGGGGGGSSSSSSSSSSSS",
+   "AAAAAAAAAAAAVEEGAAAAVAVVEEAAEEEVVVAAAAVVAAGSSVVEEEAAEEAEEEEEEEGAAAGGGGGGGGGSSSSSSSSSSS",
+   "AAAAAAAAAAAAGGVVVAAAAAVEEEAAGEEEVVAAAVVAAAGGSSVEEAAEEEAEEVVEEEEAAAGGGGGGGGGGGSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAVVVGAVVEEAAAGEEAAAAVVVAAAAGGASSVVAEEEAEEEAVVEEEEAAGGGGGGGGGGGGSSSSSSSS",
+   "VVAAAAAAAAAAAAAAAGVVVVGAEAEGEEEVAAAVVVAAAAGAAASAVVEEAAEEAAAVVEEEEGGGGGGGGGGGGGSSSSSSSS",
+   "VVVVVGAAAAAAAAAAAAAAVVVVAAEEEEVGAAAVVAAEEGGAAAAAAVVAAEEAAAAAVVEEEEEGGGGGGGGGGGSSSSSSSS",
+   "AVVVVVVAAAAAAAAAAGAAAAAVVAAEEAVGAGVVVAAEEAAAAAAAGGVVEEEAAGGAAVVEEEGGGGGGGGGGGGGSSSSSSS",
+   "AAAAAAAVVVAAAAAAAGAAAAAAGVVAAVAAGVVVVEEEEEAAAAAAAAGVVEAAGGGGAAAGGGGGGGGGGGGGGGGSSSSSSS",
+   "AAAAAAAAAAVVVAAAGAAAAAAAGAVVAGAAGVVVVEEEEEEAAAAVAAGVVVAAAGGGGAAGGGGGGGGGGGGGGGGSSSSSSS",
+   "AASAEEEAAAAAVVVVAAAAAAAAGEEAAGGGVVVAVVEEAEEAAAAVAGVVVVVAGGAGGGGGGGGGGGGGGGGGGGGSSSSSSS",
+   "AAAAEEEEEEAAAAAVVVAAAAAGAEEAAAVVVVAAAVEEEAEAAAVAAGVVGGAVVAAGGGGGGGGGGGGGGGGGGGGGSSSSSS",
+   "AAAAAAEEEEEEEAAAAVVVVAAAAAAAAAVVVVAAGVVEEGGAAGVAAVVVGEAGVVVGGGAGGGGGGGGGGGGGGGGGSSSSSS",
+   "AAAAAAAAEEEEEEAEAAGAVVVVAAAAAAVVVVVVAAVGGGGAAVAAGAAGEEEEAAVVAAAAAGGGGGGGGGGGGGGGSSSSSS",
+   "AAAAAAAAAAAEEVEEEEAAAAAVVVVAAAVVVAAVVVVVVAAGAVAAAAAGGEEEGAAGVVAAAAGGGGGGGGGGGGGGSSSSSS",
+   "AAAAAASSAAAAAAEEEEEEVGAAAAVVVVVVVAAVVAVVVAAAVAAAAAAGGGGAGGEEAGVVAGGGGGGGGGGGGGGGSSSSSS",
+   "AAAAAASSSAAAAAAAAEEVVVVVAAAAGVVVVVVAAAAVVVVVVAAAAAAGGGGGAAEEEVEAVGAAGGGGGGGGSSSSSSSSSS",
+   "AAAAAAGSSSAGAAAAAAVVVAAVVAAGGVAAAAAVAAAVAAVVVVAAAAAAGEEAAAGEGVEEAVAGGGGGGGGSSSSSSSSSSS",
+   "AAAAAAAGGSSSAAGGAGAAGAAGGAAGVAAAAAAAASVVAAAVVVVVVAAAAEEEEEAGGAEEAVAAAGGGGGGGSSSSSSSSSS",
+   "AAAAAAAAGGSSSGGGGGAAGAAAGAGGVAEEEAGAAAAAAAVVAAAVVVVAAEEEEEEAAAVAVAEEEAAGGGGGSSSSSSSSSS",
+   "AAAAAAAAAGASSSGGGGGGGGEGAGGGVAEEEEEEGGGSGGGAAAAAAVVVVVGGEEEAAAGVVEEEEEEAGGGGGGGSSSSSSS",
+   "AAAAAAAAAAAGSSSGGGGGGEEEAGGVAEEEEEEEEEGGGGGGGAAAAAAAAVVVVGAAAGGVVEEEEEEEEGGGGGGSSSSSSS",
+   "AAAAAAAAAAAGSSGGGGGGGEEEAGAVAEEEEEEEEESGGGGGGGGGAVAAAAVVVVVAAGGVEEEEEEEEEAGGGGGSSSSSSG",
+   "AAAAAAAAAAAAAAGGGGGGGGAEGGSVAEEEEEEEEEGGGGGGGGGGGGAAVAVVAAVVVGVVEEEEEEEEEVGGGGGSSSSSGG",
+   "AAAAAAAAAAAAAAGGGGGGGGAAAAVAEEEEEEEEEVGGGGGGGGGGGGGGGGVVAAVVVVVVAEEEEEEEEAGGGGGSSSSGGG",
+   "AAAAAAAAAAAAAAAGGGGGGGAASSVVEEEEEEEEEVGGGGGGGGGGGGGGGGAAVAAVVAAVVVAEEEEEVAGGGGGSSSEEEE",
+   "AAAAAAAAAAAAAAAAAGGGGGGGSSGGVVAEEEEEESGGGGGGGGGGGGGGGGAAAAAVVAAAVVVVVEEEVAGGGGGSSSEEEE",
+   "AAAAAAAAAAAAAAAAAAAA?AGSSGGGGGAVVEEEVGGGGGGGGGGGGGGGGGGGAAAAEEGAAAAAVVVAVEEEGGGSSSEEEE",
+   "AAAAAAAAAAAAAAAAAAAAA?GSAGGGGGGGAAAAVGGGGGGGGGGGGGGGGGGAAAAAEEEEAAAAAAVVVAEEEEGSSSEEEE",
+   "AAAAAAAAAAAAAAAAAA??A?SSAAGGGGGGGGASGGGGGGGGGGGGGGGGGGAAAAAAEEEEEEEAAAAVVVVAEEGSSSGGGG",
+   "AAAAAAAAAAAAAAAAAA??A?SAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGAAAAGGGGEEEEEEEAAAAVVVVVGSSSGGGG",
+   "AAAAAAAAAAAAAAAAAAA???AAAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAGGGAAAAEEEEEEEAAAAVVVGGSSSGGG",
+   "AAAAAAAAAAAAAAAAAAA????AAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAAEEAAAAAAAEEEEEEAGGVVGGGSSGGG",
+   "AAAAAAAAAAAAAAAAAAAA??AAAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAGEEEEGGGAGSGEEEEEGVVVGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAA?AAAAAAAAAAAAGGGGGGGGGGGGGGGGGGGGGGASAEEEEEEGGSSGGAAEEAVVVGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGGGGASAVVEEEEEEASGEEAGAAVVVEGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGAAAEEVVVEEEEEEGEEEEAAVVEEEEGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGAAAEEEEVVVAEEEEEEEEAVVVEEEEEEEGG",
+   "AAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGAGGAAEEEEEEAVAEEEEEEAVVVEEEEEEEGG",
+   "AAAAAAAAAAAAAAAAAAA??AAAAAAAAAAAAAAAAAGGGGGGGGGSGAGGAAAGAAAAEEEEEEVVVVEEEAVVEEEEEEEEGG",
+   "AAAAAAAAAAAAAAAAG???????AAAAAAAAAAAAAAGGGGGGGGGSSAAAAAGGGAAAAAAEEEEEVVVVAVVVEEEEEEEEGG",
+   "AAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGEEEEEEEEEEEEEEEEEEGGGEEEEEGGG",
+   "AAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGEEEEEEEEEEEEEEEGGGGGEEEGGG",
+   "AAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGEEEEEEEEEEEGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGEEEEEEEEGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGEEEEEGGGGGGGGGGGG"
+  ]
+ },
+ "grade_com_margem": {
+  "margem_celulas": 8,
+  "linhas": 79,
+  "colunas": 102,
+  "obs": "mesma grade com 40 m extras em cada lado (borda repetida; E e ? viram G); a origem continua no centro",
+  "texto": [
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGGGAAAAAAAAAAASSSAAAAAGGGGGGGGGGAAAVVAGAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "AAAAAAAAAAGASSSSGGGAGAAAAGVEAAAAAAAAAAASSSAAAAGGGGGGGGGGGAAGVAAGVAAAAVAAAAAAAAAAAA????????????GGGGGGGG",
+   "AAAAAAAAAAGGGGSSGGGGGAAAAVEEEEAAAAAAAAVAGSSAAGGGGGGGGGGGAAGVAAAGVVAAASAAAAAAAAAAA?????????????GGGGGGGG",
+   "AAAAAAAAAAAGGGGGGGGGGAAAAEEEEEEEAAAAAVAAAGGSAGGGGGGGGGGAAGVAAGGVVVVASAAAAAAAAAAAA?????????????GGGGGGGG",
+   "AAAAAAAAAAAAAGGGGGGGGAAAAEEEEEEEEVAAAVAAAGGSSSGGGGGGGGAAGVVAAGVVGAAVSGAAAAAAAAAA??????????????GGGGGGGG",
+   "AAAAAAAAAAAAAAGGGGGGGGAAGEEEEEEEEVVVVVAAAAAGASSGGGGGGAAGVVAAGAVEEGAAVAGAAAAAAAAA??????????????GGGGGGGG",
+   "AAAAAAAAAAAAAAAAGGGGGGAGAAEEEEEEEVVVVAAGAAAAAAGSGGGGAAGVVAAAGVEEEEGAAVVAAAAAAAAA??????????????GGGGGGGG",
+   "GGGGGGGGGAAAAAAAAAGGAAAGAGGAEEEEEEVVVAGGGAAAAAAGSSAAAAVVAAGGVVEAEEAAEEAVAGAAAAA????AAAAAAAAAAAAAAAAAAA",
+   "GGGGGGGGGAAAAAAAAAGGAAGAEEAAAGEEEEVVVAGAAGGAAAAAAGSSSVVGAAGVVEAEEEAAEEEAASAAAAA???????????????GGGGGGGG",
+   "GGGGGGGGGAAAAAAAAGGGAVAEEEEEAGAAEVVVAAAAAEEGGAAAAAAGGVVGGGGVEAAEEGEEEEEEAGSAAA????????????????GGGGGGGG",
+   "GGGGGGGGGAAAAAAGGGGAAVAEEEEEEEAAAAAAAAAAEEEEEGVVAAAAVVAVVAEEEAEEGGEEEEEEGGGSA?????????????????GGGGGGGG",
+   "GGGGGGGGGAAAAAAGGGAAAVEEEAEEEEEEGAVAAAAAEEEEEGVV?AAAVAAGVEEEEEEEGEEEAEEEAGGGSG?????????????SSSSSSSSSSS",
+   "VVVVVVVVVVVAGGGGGAAAVVEEEEEAEEEEEAVAAAAEEEEEEVAAVAVVVAAVVEEEEEEGEEEGEEEAAGGGGSG??????????SSSSSSSSSSSSS",
+   "VVVVVVVVVVVVAAGGGAAAVEEEEEEEEAEEEVAAAAAEEEEEVVAAAVVVAAAVVEAEEEEEEEAAEEAAGGGGGGSG???AAASSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAVAAVVGGAAVVEEEEEEEEEEAVVAAAAVEEEEAVAAAAVVAAAVVEAAEEEEEEEAEEEAAGGGGGGGSG?GSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAVAAVAAVVEEEEEEEEEEAVVVAGAVVVEEVAAGAAVVAAVVEEAEEEEEEEAEEEAAGGGGGGGGGSGGSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAGAVVVEEVVEEEEEEEAVVEEEVAAVVVVVAAAAVVAGVVEEAEEEAEEEEEEEGAAGGGGGGGGGGSGSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAGVVEEEEAVEEEEEAVVEEEAVAAGVVAAAAVVGAAVVEEAEEAAEEEEEEGAAAAGGGGGGGGGSSSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAGAEEEEEAAVEEEAVAEEGEEVVAVVAAAVVGGSSVVEEEEAAEEEAEEEEEAAGAGGGGGGGGGSSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAAVEEGAAAAVAVVEEAAEEEVVVAAAAVVAAGSSVVEEEAAEEAEEEEEEEGAAAGGGGGGGGGSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAAGGVVVAAAAAVEEEAAGEEEVVAAAVVAAAGGSSVEEAAEEEAEEVVEEEEAAAGGGGGGGGGGGSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAAAAAAVVVGAVVEEAAAGEEAAAAVVVAAAAGGASSVVAEEEAEEEAVVEEEEAAGGGGGGGGGGGGSSSSSSSSSSSSSSSS",
+   "VVVVVVVVVVAAAAAAAAAAAAAAAGVVVVGAEAEGEEEVAAAVVVAAAAGAAASAVVEEAAEEAAAVVEEEEGGGGGGGGGGGGGSSSSSSSSSSSSSSSS",
+   "VVVVVVVVVVVVVGAAAAAAAAAAAAAAVVVVAAEEEEVGAAAVVAAEEGGAAAAAAVVAAEEAAAAAVVEEEEEGGGGGGGGGGGSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAVVVVVVAAAAAAAAAAGAAAAAVVAAEEAVGAGVVVAAEEAAAAAAAGGVVEEEAAGGAAVVEEEGGGGGGGGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAVVVAAAAAAAGAAAAAAGVVAAVAAGVVVVEEEEEAAAAAAAAGVVEAAGGGGAAAGGGGGGGGGGGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAVVVAAAGAAAAAAAGAVVAGAAGVVVVEEEEEEAAAAVAAGVVVAAAGGGGAAGGGGGGGGGGGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAASAEEEAAAAAVVVVAAAAAAAAGEEAAGGGVVVAVVEEAEEAAAAVAGVVVVVAGGAGGGGGGGGGGGGGGGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAEEEEEEAAAAAVVVAAAAAGAEEAAAVVVVAAAVEEEAEAAAVAAGVVGGAVVAAGGGGGGGGGGGGGGGGGGGGGSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAEEEEEEEAAAAVVVVAAAAAAAAAVVVVAAGVVEEGGAAGVAAVVVGEAGVVVGGGAGGGGGGGGGGGGGGGGGSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAEEEEEEAEAAGAVVVVAAAAAAVVVVVVAAVGGGGAAVAAGAAGEEEEAAVVAAAAAGGGGGGGGGGGGGGGSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAEEVEEEEAAAAAVVVVAAAVVVAAVVVVVVAAGAVAAAAAGGEEEGAAGVVAAAAGGGGGGGGGGGGGGSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAASSAAAAAAEEEEEEVGAAAAVVVVVVVAAVVAVVVAAAVAAAAAAGGGGAGGEEAGVVAGGGGGGGGGGGGGGGSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAASSSAAAAAAAAEEVVVVVAAAAGVVVVVVAAAAVVVVVVAAAAAAGGGGGAAEEEVEAVGAAGGGGGGGGSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAGSSSAGAAAAAAVVVAAVVAAGGVAAAAAVAAAVAAVVVVAAAAAAGEEAAAGEGVEEAVAGGGGGGGGSSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAGGSSSAAGGAGAAGAAGGAAGVAAAAAAAASVVAAAVVVVVVAAAAEEEEEAGGAEEAVAAAGGGGGGGSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAGGSSSGGGGGAAGAAAGAGGVAEEEAGAAAAAAAVVAAAVVVVAAEEEEEEAAAVAVAEEEAAGGGGGSSSSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAGASSSGGGGGGGGEGAGGGVAEEEEEEGGGSGGGAAAAAAVVVVVGGEEEAAAGVVEEEEEEAGGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAGSSSGGGGGGEEEAGGVAEEEEEEEEEGGGGGGGAAAAAAAAVVVVGAAAGGVVEEEEEEEEGGGGGGSSSSSSSSSSSSSSS",
+   "AAAAAAAAAAAAAAAAAAAGSSGGGGGGGEEEAGAVAEEEEEEEEESGGGGGGGGGAVAAAAVVVVVAAGGVEEEEEEEEEAGGGGGSSSSSSGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAGGGGGGGGAEGGSVAEEEEEEEEEGGGGGGGGGGGGAAVAVVAAVVVGVVEEEEEEEEEVGGGGGSSSSSGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAGGGGGGGGAAAAVAEEEEEEEEEVGGGGGGGGGGGGGGGGVVAAVVVVVVAEEEEEEEEAGGGGGSSSSGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAGGGGGGGAASSVVEEEEEEEEEVGGGGGGGGGGGGGGGGAAVAAVVAAVVVAEEEEEVAGGGGGSSSEEEEGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGSSGGVVAEEEEEESGGGGGGGGGGGGGGGGAAAAAVVAAAVVVVVEEEVAGGGGGSSSEEEEGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAA?AGSSGGGGGAVVEEEVGGGGGGGGGGGGGGGGGGGAAAAEEGAAAAAVVVAVEEEGGGSSSEEEEGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA?GSAGGGGGGGAAAAVGGGGGGGGGGGGGGGGGGAAAAAEEEEAAAAAAVVVAEEEEGSSSEEEEGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAA??A?SSAAGGGGGGGGASGGGGGGGGGGGGGGGGGGAAAAAAEEEEEEEAAAAVVVVAEEGSSSGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAA??A?SAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGAAAAGGGGEEEEEEEAAAAVVVVVGSSSGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAA???AAAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAGGGAAAAEEEEEEEAAAAVVVGGSSSGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAA????AAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAAEEAAAAAAAEEEEEEAGGVVGGGSSGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAA??AAAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGAAGEEEEGGGAGSGEEEEEGVVVGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAA?AAAAAAAAAAAAGGGGGGGGGGGGGGGGGGGGGGASAEEEEEEGGSSGGAAEEAVVVGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGGGGASAVVEEEEEEASGEEAGAAVVVEGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGAAAEEVVVEEEEEEGEEEEAAVVEEEEGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGGGAAAEEEEVVVAEEEEEEEEAVVVEEEEEEEGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGAGGAAEEEEEEAVAEEEEEEAVVVEEEEEEEGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAAA??AAAAAAAAAAAAAAAAAGGGGGGGGGSGAGGAAAGAAAAEEEEEEVVVVEEEAVVEEEEEEEEGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAG???????AAAAAAAAAAAAAAGGGGGGGGGSSAAAAAGGGAAAAAAEEEEEVVVVAVVVEEEEEEEEGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGEEEEEEEEEEEEEEEEEEGGGEEEEEGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGEEEEEEEEEEEEEEEGGGGGEEEGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGEEEEEEEEEEEGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGEEEEEEEEGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAA?????????AAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGEEEEEGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
+   "AAAAAAAAAAAAAAAAAAAAAAAAAGGGGGGGGGAAAAAAAAAAAAAGGGGGGGGSSAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+  ]
+ },
+ "edificacoes": [
+  {
+   "id": "B01",
+   "nome": "E16 tira de salas 1",
+   "centro_xz": [
+    -108.3,
+    130.5
+   ],
+   "comprimento_m": 47.6,
+   "largura_m": 23.5,
+   "yaw_graus": 24.0,
+   "area_m2": 900,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -128.2,
+     141.4
+    ],
+    [
+     -132.0,
+     129.8
+    ],
+    [
+     -89.5,
+     111.1
+    ],
+    [
+     -86.3,
+     121.0
+    ],
+    [
+     -94.0,
+     126.2
+    ],
+    [
+     -91.2,
+     136.0
+    ],
+    [
+     -119.0,
+     149.7
+    ],
+    [
+     -124.1,
+     141.0
+    ]
+   ],
+   "papel": "bloco_baixo_comprido",
+   "tiras_paralelas": 2
+  },
+  {
+   "id": "B02",
+   "nome": "E01 complexo principal (alas em X)",
+   "centro_xz": [
+    59.9,
+    83.9
+   ],
+   "comprimento_m": 96.2,
+   "largura_m": 58.5,
+   "yaw_graus": -55.0,
+   "area_m2": 3819,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "partes": [
+    {
+     "centro_xz": [
+      62.4,
+      115.4
+     ],
+     "comprimento_m": 29.6,
+     "largura_m": 18.8,
+     "yaw_graus": -53.0,
+     "papel": "bloco_baixo_comprido"
+    },
+    {
+     "centro_xz": [
+      88.4,
+      100.9
+     ],
+     "comprimento_m": 33.0,
+     "largura_m": 24.3,
+     "yaw_graus": -55.0,
+     "papel": "galpao_volume_grande"
+    },
+    {
+     "centro_xz": [
+      41.1,
+      88.5
+     ],
+     "comprimento_m": 48.9,
+     "largura_m": 29.7,
+     "yaw_graus": -64.0,
+     "papel": "galpao_volume_grande"
+    },
+    {
+     "centro_xz": [
+      68.9,
+      91.0
+     ],
+     "comprimento_m": 53.6,
+     "largura_m": 19.5,
+     "yaw_graus": -57.0,
+     "papel": "bloco_baixo_comprido"
+    },
+    {
+     "centro_xz": [
+      71.8,
+      67.5
+     ],
+     "comprimento_m": 41.6,
+     "largura_m": 13.8,
+     "yaw_graus": -54.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      50.3,
+      61.6
+     ],
+     "comprimento_m": 25.5,
+     "largura_m": 11.3,
+     "yaw_graus": -53.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      29.5,
+      73.9
+     ],
+     "comprimento_m": 36.5,
+     "largura_m": 20.7,
+     "yaw_graus": -53.0,
+     "papel": "bloco_baixo_comprido"
+    },
+    {
+     "centro_xz": [
+      41.1,
+      48.7
+     ],
+     "comprimento_m": 13.7,
+     "largura_m": 10.6,
+     "yaw_graus": -55.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      56.4,
+      41.8
+     ],
+     "comprimento_m": 23.9,
+     "largura_m": 9.3,
+     "yaw_graus": -53.0,
+     "papel": "casa_predio_pequeno"
+    }
+   ],
+   "poligono_xz": [
+    [
+     66.1,
+     131.7
+    ],
+    [
+     62.5,
+     130.4
+    ],
+    [
+     41.1,
+     104.2
+    ],
+    [
+     35.8,
+     107.4
+    ],
+    [
+     30.6,
+     100.7
+    ],
+    [
+     34.5,
+     97.6
+    ],
+    [
+     12.5,
+     67.7
+    ],
+    [
+     14.6,
+     63.3
+    ],
+    [
+     26.2,
+     53.4
+    ],
+    [
+     51.4,
+     83.3
+    ],
+    [
+     56.2,
+     77.7
+    ],
+    [
+     34.9,
+     48.3
+    ],
+    [
+     36.6,
+     43.8
+    ],
+    [
+     41.5,
+     41.5
+    ],
+    [
+     64.3,
+     70.5
+    ],
+    [
+     67.3,
+     67.8
+    ],
+    [
+     60.8,
+     53.3
+    ],
+    [
+     47.3,
+     36.3
+    ],
+    [
+     52.1,
+     29.9
+    ],
+    [
+     105.4,
+     104.9
+    ],
+    [
+     89.1,
+     121.6
+    ],
+    [
+     83.3,
+     112.5
+    ],
+    [
+     79.0,
+     110.8
+    ],
+    [
+     60.3,
+     88.8
+    ],
+    [
+     56.8,
+     92.8
+    ],
+    [
+     73.6,
+     115.2
+    ],
+    [
+     75.5,
+     122.1
+    ]
+   ],
+   "papel": "ver partes"
+  },
+  {
+   "id": "B03",
+   "nome": "E16 tira de salas 2",
+   "centro_xz": [
+    -115.0,
+    102.5
+   ],
+   "comprimento_m": 50.2,
+   "largura_m": 11.5,
+   "yaw_graus": 24.0,
+   "area_m2": 537,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -135.4,
+     117.9
+    ],
+    [
+     -138.3,
+     109.2
+    ],
+    [
+     -137.0,
+     106.0
+    ],
+    [
+     -94.2,
+     87.3
+    ],
+    [
+     -91.8,
+     98.0
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B04",
+   "nome": "E03 Biblioteca (provável)",
+   "centro_xz": [
+    -45.4,
+    94.8
+   ],
+   "comprimento_m": 33.6,
+   "largura_m": 20.0,
+   "yaw_graus": -61.0,
+   "area_m2": 626,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "azul-acinzentado",
+   "poligono_xz": [
+    [
+     -46.4,
+     113.3
+    ],
+    [
+     -61.9,
+     85.6
+    ],
+    [
+     -54.6,
+     80.5
+    ],
+    [
+     -52.1,
+     83.0
+    ],
+    [
+     -50.5,
+     79.3
+    ],
+    [
+     -44.0,
+     76.6
+    ],
+    [
+     -28.9,
+     103.9
+    ],
+    [
+     -35.4,
+     108.2
+    ],
+    [
+     -38.9,
+     105.7
+    ],
+    [
+     -39.1,
+     108.6
+    ]
+   ],
+   "papel": "bloco_baixo_comprido"
+  },
+  {
+   "id": "B05",
+   "nome": "E16 tira de salas 3",
+   "centro_xz": [
+    -126.4,
+    82.7
+   ],
+   "comprimento_m": 49.3,
+   "largura_m": 25.5,
+   "yaw_graus": 24.0,
+   "area_m2": 1082,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -144.6,
+     102.1
+    ],
+    [
+     -144.6,
+     94.0
+    ],
+    [
+     -148.2,
+     91.8
+    ],
+    [
+     -150.9,
+     80.7
+    ],
+    [
+     -108.4,
+     62.1
+    ],
+    [
+     -105.3,
+     73.6
+    ],
+    [
+     -116.7,
+     79.4
+    ],
+    [
+     -115.0,
+     81.9
+    ],
+    [
+     -104.0,
+     77.3
+    ],
+    [
+     -101.4,
+     84.7
+    ],
+    [
+     -138.4,
+     103.1
+    ]
+   ],
+   "papel": "bloco_baixo_comprido",
+   "tiras_paralelas": 2
+  },
+  {
+   "id": "B06",
+   "nome": "E04 Jogos Analógicos (anel, lado A)",
+   "centro_xz": [
+    -88.0,
+    62.8
+   ],
+   "comprimento_m": 36.2,
+   "largura_m": 12.6,
+   "yaw_graus": -60.0,
+   "area_m2": 318,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "partes": [
+    {
+     "centro_xz": [
+      -85.4,
+      69.9
+     ],
+     "comprimento_m": 18.3,
+     "largura_m": 12.9,
+     "yaw_graus": -62.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      -91.4,
+      55.4
+     ],
+     "comprimento_m": 22.7,
+     "largura_m": 8.9,
+     "yaw_graus": -60.0,
+     "papel": "casa_predio_pequeno"
+    }
+   ],
+   "poligono_xz": [
+    [
+     -84.5,
+     80.2
+    ],
+    [
+     -90.5,
+     73.9
+    ],
+    [
+     -88.4,
+     68.6
+    ],
+    [
+     -100.3,
+     48.7
+    ],
+    [
+     -93.7,
+     43.6
+    ],
+    [
+     -76.4,
+     73.0
+    ]
+   ],
+   "papel": "ver partes"
+  },
+  {
+   "id": "B07",
+   "nome": "E16 tira de salas 4",
+   "centro_xz": [
+    -148.2,
+    67.5
+   ],
+   "comprimento_m": 22.7,
+   "largura_m": 11.5,
+   "yaw_graus": 21.0,
+   "area_m2": 229,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -157.0,
+     76.1
+    ],
+    [
+     -159.4,
+     66.6
+    ],
+    [
+     -139.3,
+     58.9
+    ],
+    [
+     -136.7,
+     65.5
+    ],
+    [
+     -138.0,
+     68.7
+    ],
+    [
+     -154.4,
+     76.9
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B08",
+   "nome": "E04 Jogos Analógicos (anel, lado B)",
+   "centro_xz": [
+    -69.5,
+    48.8
+   ],
+   "comprimento_m": 33.3,
+   "largura_m": 19.6,
+   "yaw_graus": -54.0,
+   "area_m2": 402,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "partes": [
+    {
+     "centro_xz": [
+      -68.7,
+      53.6
+     ],
+     "comprimento_m": 23.4,
+     "largura_m": 20.5,
+     "yaw_graus": -57.0,
+     "papel": "bloco_baixo_comprido"
+    },
+    {
+     "centro_xz": [
+      -75.8,
+      40.4
+     ],
+     "comprimento_m": 17.9,
+     "largura_m": 13.8,
+     "yaw_graus": 34.0,
+     "papel": "casa_predio_pequeno"
+    }
+   ],
+   "poligono_xz": [
+    [
+     -69.9,
+     69.1
+    ],
+    [
+     -75.0,
+     61.6
+    ],
+    [
+     -66.5,
+     54.4
+    ],
+    [
+     -74.0,
+     42.4
+    ],
+    [
+     -81.7,
+     47.1
+    ],
+    [
+     -85.4,
+     41.3
+    ],
+    [
+     -73.4,
+     30.6
+    ],
+    [
+     -55.8,
+     55.1
+    ]
+   ],
+   "papel": "ver partes"
+  },
+  {
+   "id": "B09",
+   "nome": "E05 bloco IFNMG (provável)",
+   "centro_xz": [
+    -15.4,
+    24.4
+   ],
+   "comprimento_m": 29.7,
+   "largura_m": 21.8,
+   "yaw_graus": 57.0,
+   "area_m2": 492,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "partes": [
+    {
+     "centro_xz": [
+      -10.8,
+      27.6
+     ],
+     "comprimento_m": 30.1,
+     "largura_m": 11.5,
+     "yaw_graus": 58.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      -19.7,
+      20.9
+     ],
+     "comprimento_m": 28.7,
+     "largura_m": 12.6,
+     "yaw_graus": 59.0,
+     "papel": "casa_predio_pequeno"
+    }
+   ],
+   "poligono_xz": [
+    [
+     -14.6,
+     43.0
+    ],
+    [
+     -20.9,
+     37.6
+    ],
+    [
+     -17.5,
+     29.5
+    ],
+    [
+     -20.8,
+     28.6
+    ],
+    [
+     -24.8,
+     34.2
+    ],
+    [
+     -31.5,
+     29.1
+    ],
+    [
+     -16.7,
+     6.2
+    ],
+    [
+     -10.3,
+     10.9
+    ],
+    [
+     -16.8,
+     22.5
+    ],
+    [
+     -15.1,
+     25.9
+    ],
+    [
+     -11.4,
+     24.3
+    ],
+    [
+     -5.3,
+     14.3
+    ],
+    [
+     1.1,
+     18.1
+    ]
+   ],
+   "papel": "ver partes"
+  },
+  {
+   "id": "B10",
+   "nome": "E13 edifício comprido oeste",
+   "centro_xz": [
+    -172.2,
+    11.2
+   ],
+   "comprimento_m": 50.9,
+   "largura_m": 10.0,
+   "yaw_graus": 19.0,
+   "area_m2": 488,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -194.7,
+     24.0
+    ],
+    [
+     -197.2,
+     14.9
+    ],
+    [
+     -152.5,
+     -1.2
+    ],
+    [
+     -149.2,
+     -0.3
+    ],
+    [
+     -147.0,
+     7.5
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B11",
+   "nome": "prédio pequeno central",
+   "centro_xz": [
+    -84.6,
+    17.1
+   ],
+   "comprimento_m": 8.2,
+   "largura_m": 7.3,
+   "yaw_graus": 24.0,
+   "area_m2": 52,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -86.2,
+     22.1
+    ],
+    [
+     -89.2,
+     15.5
+    ],
+    [
+     -82.4,
+     12.4
+    ],
+    [
+     -80.3,
+     15.3
+    ],
+    [
+     -81.3,
+     19.4
+    ]
+   ],
+   "papel": "anexo_pequeno"
+  },
+  {
+   "id": "B12",
+   "nome": "E17 prédio pequeno",
+   "centro_xz": [
+    56.0,
+    3.3
+   ],
+   "comprimento_m": 18.4,
+   "largura_m": 6.8,
+   "yaw_graus": 18.0,
+   "area_m2": 124,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     48.4,
+     9.4
+    ],
+    [
+     46.5,
+     2.9
+    ],
+    [
+     63.8,
+     -2.8
+    ],
+    [
+     65.6,
+     3.8
+    ]
+   ],
+   "papel": "anexo_pequeno"
+  },
+  {
+   "id": "B13",
+   "nome": "E14 edifício oeste",
+   "centro_xz": [
+    -130.1,
+    -4.1
+   ],
+   "comprimento_m": 25.8,
+   "largura_m": 9.9,
+   "yaw_graus": 19.0,
+   "area_m2": 232,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -141.5,
+     2.3
+    ],
+    [
+     -143.0,
+     -4.2
+    ],
+    [
+     -119.2,
+     -12.2
+    ],
+    [
+     -117.0,
+     -5.2
+    ],
+    [
+     -118.6,
+     -3.2
+    ],
+    [
+     -137.9,
+     4.5
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B14",
+   "nome": "E17 prédio pequeno",
+   "centro_xz": [
+    81.9,
+    -8.8
+   ],
+   "comprimento_m": 10.3,
+   "largura_m": 9.3,
+   "yaw_graus": -65.0,
+   "area_m2": 89,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     80.2,
+     -2.0
+    ],
+    [
+     76.0,
+     -11.1
+    ],
+    [
+     84.3,
+     -15.3
+    ],
+    [
+     87.8,
+     -5.9
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B15",
+   "nome": "E17 prédio pequeno",
+   "centro_xz": [
+    98.9,
+    -15.6
+   ],
+   "comprimento_m": 10.9,
+   "largura_m": 7.5,
+   "yaw_graus": -67.0,
+   "area_m2": 72,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     97.5,
+     -8.9
+    ],
+    [
+     94.0,
+     -18.8
+    ],
+    [
+     100.0,
+     -21.9
+    ],
+    [
+     104.0,
+     -12.8
+    ]
+   ],
+   "papel": "anexo_pequeno"
+  },
+  {
+   "id": "B16",
+   "nome": "E17 prédio comprido fino",
+   "centro_xz": [
+    65.4,
+    -23.1
+   ],
+   "comprimento_m": 32.2,
+   "largura_m": 12.5,
+   "yaw_graus": 19.0,
+   "area_m2": 371,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     51.5,
+     -13.7
+    ],
+    [
+     49.4,
+     -23.1
+    ],
+    [
+     74.9,
+     -33.1
+    ],
+    [
+     78.9,
+     -32.6
+    ],
+    [
+     81.4,
+     -24.4
+    ],
+    [
+     78.7,
+     -21.2
+    ],
+    [
+     53.6,
+     -12.4
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B17",
+   "nome": "E07 galpão grande",
+   "centro_xz": [
+    -49.2,
+    -44.9
+   ],
+   "comprimento_m": 42.8,
+   "largura_m": 34.7,
+   "yaw_graus": 20.0,
+   "area_m2": 1407,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "cinza",
+   "poligono_xz": [
+    [
+     -63.2,
+     -21.5
+    ],
+    [
+     -73.3,
+     -54.4
+    ],
+    [
+     -35.2,
+     -69.0
+    ],
+    [
+     -25.1,
+     -35.6
+    ]
+   ],
+   "papel": "galpao_volume_grande"
+  },
+  {
+   "id": "B18",
+   "nome": "E08 quadra de telhado azul",
+   "centro_xz": [
+    128.7,
+    -42.0
+   ],
+   "comprimento_m": 43.3,
+   "largura_m": 29.8,
+   "yaw_graus": 26.0,
+   "area_m2": 1105,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "azul",
+   "poligono_xz": [
+    [
+     115.4,
+     -21.5
+    ],
+    [
+     106.6,
+     -47.7
+    ],
+    [
+     131.3,
+     -57.7
+    ],
+    [
+     135.5,
+     -61.6
+    ],
+    [
+     144.3,
+     -61.4
+    ],
+    [
+     150.3,
+     -36.5
+    ],
+    [
+     129.2,
+     -25.6
+    ]
+   ],
+   "papel": "quadra_coberta"
+  },
+  {
+   "id": "B19",
+   "nome": "E17 prédio pequeno isolado",
+   "centro_xz": [
+    -101.6,
+    -37.5
+   ],
+   "comprimento_m": 13.9,
+   "largura_m": 10.9,
+   "yaw_graus": 37.0,
+   "area_m2": 144,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     -103.5,
+     -29.0
+    ],
+    [
+     -110.1,
+     -37.8
+    ],
+    [
+     -98.9,
+     -46.1
+    ],
+    [
+     -93.5,
+     -36.6
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B20",
+   "nome": "prédio pequeno borda leste",
+   "centro_xz": [
+    162.0,
+    -68.1
+   ],
+   "comprimento_m": 24.7,
+   "largura_m": 6.8,
+   "yaw_graus": 23.0,
+   "area_m2": 153,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     152.3,
+     -60.4
+    ],
+    [
+     150.5,
+     -67.0
+    ],
+    [
+     172.6,
+     -76.1
+    ],
+    [
+     171.8,
+     -68.4
+    ]
+   ],
+   "papel": "anexo_pequeno"
+  },
+  {
+   "id": "B21",
+   "nome": "E09 EAD (ala)",
+   "centro_xz": [
+    118.9,
+    -82.7
+   ],
+   "comprimento_m": 74.1,
+   "largura_m": 13.3,
+   "yaw_graus": 22.0,
+   "area_m2": 819,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     87.0,
+     -65.8
+    ],
+    [
+     86.0,
+     -75.2
+    ],
+    [
+     152.3,
+     -101.9
+    ],
+    [
+     154.8,
+     -92.9
+    ],
+    [
+     92.0,
+     -63.2
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B22",
+   "nome": "E10 LCC (ala)",
+   "centro_xz": [
+    109.5,
+    -108.4
+   ],
+   "comprimento_m": 80.0,
+   "largura_m": 11.9,
+   "yaw_graus": 25.0,
+   "area_m2": 857,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     75.7,
+     -89.7
+    ],
+    [
+     74.4,
+     -98.7
+    ],
+    [
+     106.4,
+     -114.1
+    ],
+    [
+     145.7,
+     -128.9
+    ],
+    [
+     147.8,
+     -120.3
+    ],
+    [
+     77.8,
+     -87.6
+    ]
+   ],
+   "papel": "casa_predio_pequeno"
+  },
+  {
+   "id": "B23",
+   "nome": "prédio pequeno sudeste",
+   "centro_xz": [
+    140.8,
+    -110.5
+   ],
+   "comprimento_m": 19.7,
+   "largura_m": 5.5,
+   "yaw_graus": 21.0,
+   "area_m2": 102,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "poligono_xz": [
+    [
+     132.3,
+     -104.5
+    ],
+    [
+     131.5,
+     -109.8
+    ],
+    [
+     148.7,
+     -116.6
+    ],
+    [
+     150.3,
+     -111.3
+    ]
+   ],
+   "papel": "anexo_pequeno"
+  },
+  {
+   "id": "B24",
+   "nome": "E10 LCC (ala sul)",
+   "centro_xz": [
+    92.9,
+    -121.1
+   ],
+   "comprimento_m": 58.0,
+   "largura_m": 10.3,
+   "yaw_graus": 25.0,
+   "area_m2": 447,
+   "origem": "classificação (img 3) corrigida ao satélite",
+   "material_telhado": "laranja (terracota)",
+   "partes": [
+    {
+     "centro_xz": [
+      85.0,
+      -118.1
+     ],
+     "comprimento_m": 33.5,
+     "largura_m": 10.7,
+     "yaw_graus": 24.0,
+     "papel": "casa_predio_pequeno"
+    },
+    {
+     "centro_xz": [
+      110.7,
+      -129.4
+     ],
+     "comprimento_m": 27.0,
+     "largura_m": 10.0,
+     "yaw_graus": 24.0,
+     "papel": "casa_predio_pequeno"
+    }
+   ],
+   "poligono_xz": [
+    [
+     70.2,
+     -109.8
+    ],
+    [
+     70.2,
+     -117.1
+    ],
+    [
+     93.2,
+     -127.5
+    ],
+    [
+     97.9,
+     -126.6
+    ],
+    [
+     101.8,
+     -130.9
+    ],
+    [
+     124.2,
+     -131.1
+    ],
+    [
+     72.6,
+     -106.9
+    ]
+   ],
+   "papel": "ver partes"
+  },
+  {
+   "id": "B25",
+   "nome": "E02 galpão cinza ao lado do complexo",
+   "centro_xz": [
+    95.4,
+    49.8
+   ],
+   "comprimento_m": 50,
+   "largura_m": 14,
+   "yaw_graus": 40,
+   "origem": "mapa original (satélite)",
+   "material_telhado": "cinza",
+   "papel": "bloco_baixo_comprido"
+  },
+  {
+   "id": "B26",
+   "nome": "E11 refeitório",
+   "centro_xz": [
+    185.7,
+    -123.6
+   ],
+   "comprimento_m": 36,
+   "largura_m": 30,
+   "yaw_graus": 20,
+   "origem": "mapa original (satélite)",
+   "material_telhado": "laranja (terracota)",
+   "papel": "galpao_volume_grande"
+  },
+  {
+   "id": "B27",
+   "nome": "E12 pavilhão pequeno",
+   "centro_xz": [
+    209.9,
+    -63.1
+   ],
+   "comprimento_m": 28,
+   "largura_m": 20,
+   "yaw_graus": 0,
+   "origem": "mapa original (satélite)",
+   "material_telhado": "cinza",
+   "papel": "bloco_baixo_comprido"
+  }
+ ],
+ "vias": [
+  {
+   "id": "R01",
+   "largura_m": 8.3,
+   "comprimento_m": 80.0,
+   "pontos_xz": [
+    [
+     142.6,
+     -70.8
+    ],
+    [
+     165.9,
+     -82.0
+    ],
+    [
+     169.1,
+     -86.8
+    ],
+    [
+     169.0,
+     -97.8
+    ],
+    [
+     161.6,
+     -125.2
+    ],
+    [
+     153.8,
+     -129.1
+    ]
+   ]
+  },
+  {
+   "id": "R02",
+   "largura_m": 4.5,
+   "comprimento_m": 137.0,
+   "pontos_xz": [
+    [
+     -196.5,
+     36.6
+    ],
+    [
+     -66.6,
+     -6.9
+    ]
+   ]
+  },
+  {
+   "id": "R03",
+   "largura_m": 5.2,
+   "comprimento_m": 85.0,
+   "pontos_xz": [
+    [
+     -3.0,
+     89.0
+    ],
+    [
+     50.6,
+     155.0
+    ]
+   ]
+  },
+  {
+   "id": "R04",
+   "largura_m": 5.7,
+   "comprimento_m": 45.0,
+   "pontos_xz": [
+    [
+     -89.3,
+     85.4
+    ],
+    [
+     -107.8,
+     44.5
+    ]
+   ]
+  },
+  {
+   "id": "R05",
+   "largura_m": 10.4,
+   "comprimento_m": 23.0,
+   "pontos_xz": [
+    [
+     -51.6,
+     9.9
+    ],
+    [
+     -50.1,
+     16.8
+    ],
+    [
+     -39.7,
+     28.9
+    ]
+   ]
+  },
+  {
+   "id": "R06",
+   "largura_m": 13.3,
+   "comprimento_m": 17.0,
+   "pontos_xz": [
+    [
+     96.5,
+     44.4
+    ],
+    [
+     84.1,
+     56.3
+    ]
+   ]
+  },
+  {
+   "id": "R07",
+   "largura_m": 4.9,
+   "comprimento_m": 44.0,
+   "pontos_xz": [
+    [
+     -108.2,
+     44.1
+    ],
+    [
+     -117.5,
+     45.1
+    ],
+    [
+     -149.0,
+     59.9
+    ]
+   ]
+  },
+  {
+   "id": "R08",
+   "largura_m": 4.9,
+   "comprimento_m": 43.0,
+   "pontos_xz": [
+    [
+     42.3,
+     110.0
+    ],
+    [
+     60.4,
+     135.6
+    ],
+    [
+     69.6,
+     143.2
+    ]
+   ]
+  },
+  {
+   "id": "R09",
+   "largura_m": 5.0,
+   "comprimento_m": 36.0,
+   "pontos_xz": [
+    [
+     -77.1,
+     24.8
+    ],
+    [
+     -107.8,
+     43.7
+    ]
+   ]
+  },
+  {
+   "id": "R10",
+   "largura_m": 5.9,
+   "comprimento_m": 30.0,
+   "pontos_xz": [
+    [
+     -21.1,
+     6.1
+    ],
+    [
+     -31.9,
+     22.6
+    ],
+    [
+     -39.7,
+     28.9
+    ]
+   ]
+  },
+  {
+   "id": "R11",
+   "largura_m": 3.7,
+   "comprimento_m": 47.0,
+   "pontos_xz": [
+    [
+     25.3,
+     28.0
+    ],
+    [
+     4.3,
+     -13.7
+    ]
+   ]
+  },
+  {
+   "id": "R12",
+   "largura_m": 6.0,
+   "comprimento_m": 28.0,
+   "pontos_xz": [
+    [
+     101.1,
+     -48.7
+    ],
+    [
+     110.0,
+     -22.0
+    ]
+   ]
+  },
+  {
+   "id": "R13",
+   "largura_m": 4.8,
+   "comprimento_m": 34.0,
+   "pontos_xz": [
+    [
+     36.0,
+     -28.0
+    ],
+    [
+     4.4,
+     -14.5
+    ]
+   ]
+  },
+  {
+   "id": "R14",
+   "largura_m": 5.4,
+   "comprimento_m": 26.0,
+   "pontos_xz": [
+    [
+     36.0,
+     -28.0
+    ],
+    [
+     60.4,
+     -36.7
+    ]
+   ]
+  },
+  {
+   "id": "R15",
+   "largura_m": 4.3,
+   "comprimento_m": 32.0,
+   "pontos_xz": [
+    [
+     -25.9,
+     96.2
+    ],
+    [
+     -44.5,
+     70.5
+    ]
+   ]
+  },
+  {
+   "id": "R16",
+   "largura_m": 4.4,
+   "comprimento_m": 31.0,
+   "pontos_xz": [
+    [
+     -61.9,
+     147.7
+    ],
+    [
+     -70.4,
+     127.1
+    ],
+    [
+     -78.3,
+     122.4
+    ]
+   ]
+  },
+  {
+   "id": "R17",
+   "largura_m": 6.5,
+   "comprimento_m": 19.0,
+   "pontos_xz": [
+    [
+     -51.5,
+     9.5
+    ],
+    [
+     -35.2,
+     0.5
+    ]
+   ]
+  },
+  {
+   "id": "R18",
+   "largura_m": 5.1,
+   "comprimento_m": 24.0,
+   "pontos_xz": [
+    [
+     60.8,
+     -37.1
+    ],
+    [
+     75.7,
+     -41.2
+    ],
+    [
+     81.2,
+     -47.6
+    ]
+   ]
+  },
+  {
+   "id": "R19",
+   "largura_m": 4.3,
+   "comprimento_m": 28.0,
+   "pontos_xz": [
+    [
+     7.0,
+     67.2
+    ],
+    [
+     26.5,
+     46.4
+    ]
+   ]
+  },
+  {
+   "id": "R20",
+   "largura_m": 7.2,
+   "comprimento_m": 16.0,
+   "pontos_xz": [
+    [
+     -33.8,
+     44.6
+    ],
+    [
+     -23.4,
+     56.3
+    ]
+   ]
+  },
+  {
+   "id": "R21",
+   "largura_m": 4.8,
+   "comprimento_m": 24.0,
+   "pontos_xz": [
+    [
+     129.9,
+     -65.9
+    ],
+    [
+     126.0,
+     -61.9
+    ],
+    [
+     107.8,
+     -57.1
+    ]
+   ]
+  },
+  {
+   "id": "R22",
+   "largura_m": 6.7,
+   "comprimento_m": 17.0,
+   "pontos_xz": [
+    [
+     101.1,
+     -48.7
+    ],
+    [
+     84.2,
+     -49.1
+    ]
+   ]
+  },
+  {
+   "id": "R23",
+   "largura_m": 5.9,
+   "comprimento_m": 19.0,
+   "pontos_xz": [
+    [
+     -14.8,
+     -7.2
+    ],
+    [
+     2.5,
+     -14.1
+    ]
+   ]
+  },
+  {
+   "id": "R24",
+   "largura_m": 6.4,
+   "comprimento_m": 17.0,
+   "pontos_xz": [
+    [
+     -3.0,
+     89.0
+    ],
+    [
+     -11.4,
+     73.7
+    ]
+   ]
+  },
+  {
+   "id": "R25",
+   "largura_m": 4.1,
+   "comprimento_m": 26.0,
+   "pontos_xz": [
+    [
+     -57.2,
+     -2.9
+    ],
+    [
+     -53.2,
+     -9.0
+    ],
+    [
+     -35.1,
+     -14.2
+    ]
+   ]
+  },
+  {
+   "id": "R26",
+   "largura_m": 5.4,
+   "comprimento_m": 19.0,
+   "pontos_xz": [
+    [
+     -34.8,
+     0.1
+    ],
+    [
+     -16.5,
+     -4.0
+    ]
+   ]
+  },
+  {
+   "id": "R27",
+   "largura_m": 6.0,
+   "comprimento_m": 17.0,
+   "pontos_xz": [
+    [
+     7.0,
+     68.0
+    ],
+    [
+     16.9,
+     81.3
+    ]
+   ]
+  },
+  {
+   "id": "R28",
+   "largura_m": 5.1,
+   "comprimento_m": 17.0,
+   "pontos_xz": [
+    [
+     45.1,
+     30.2
+    ],
+    [
+     32.7,
+     42.1
+    ]
+   ]
+  },
+  {
+   "id": "R29",
+   "largura_m": 5.2,
+   "comprimento_m": 16.0,
+   "pontos_xz": [
+    [
+     16.9,
+     81.3
+    ],
+    [
+     26.6,
+     94.1
+    ]
+   ]
+  },
+  {
+   "id": "R30",
+   "largura_m": 3.5,
+   "comprimento_m": 23.0,
+   "pontos_xz": [
+    [
+     -3.0,
+     89.0
+    ],
+    [
+     -21.1,
+     102.9
+    ]
+   ]
+  },
+  {
+   "id": "R31",
+   "largura_m": 4.9,
+   "comprimento_m": 16.0,
+   "pontos_xz": [
+    [
+     -81.6,
+     100.7
+    ],
+    [
+     -88.9,
+     86.2
+    ]
+   ]
+  }
+ ],
+ "arvores_explicitas": [
+  {
+   "x": -159.1,
+   "z": 150.1,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": -114.2,
+   "z": 151.1,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": 55.1,
+   "z": 153.0,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -101.9,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -101.5,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -101.1,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -100.8,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -100.4,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -100.0,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -99.6,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -99.3,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -98.9,
+   "z": 148.5,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": 57.7,
+   "z": 151.9,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": 34.6,
+   "z": 151.0,
+   "raio_copa_m": 5.6
+  },
+  {
+   "x": -33.9,
+   "z": 148.7,
+   "raio_copa_m": 7.0
+  },
+  {
+   "x": -140.2,
+   "z": 144.8,
+   "raio_copa_m": 8.6
+  },
+  {
+   "x": 82.1,
+   "z": 149.5,
+   "raio_copa_m": 8.3
+  },
+  {
+   "x": -79.4,
+   "z": 144.5,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 28.3,
+   "z": 144.7,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 27.9,
+   "z": 144.3,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": -208.9,
+   "z": 136.8,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 23.1,
+   "z": 138.9,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": -56.4,
+   "z": 136.0,
+   "raio_copa_m": 8.8
+  },
+  {
+   "x": -56.1,
+   "z": 136.0,
+   "raio_copa_m": 8.8
+  },
+  {
+   "x": 71.4,
+   "z": 136.7,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": 125.7,
+   "z": 137.0,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 46.8,
+   "z": 134.9,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": 16.8,
+   "z": 132.6,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 77.9,
+   "z": 131.1,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": 40.6,
+   "z": 128.7,
+   "raio_copa_m": 5.2
+  },
+  {
+   "x": -143.6,
+   "z": 124.3,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -45.2,
+   "z": 126.0,
+   "raio_copa_m": 6.4
+  },
+  {
+   "x": -65.1,
+   "z": 124.3,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": -131.2,
+   "z": 122.5,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": 12.4,
+   "z": 125.2,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": 84.8,
+   "z": 125.6,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": -34.9,
+   "z": 119.7,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -176.9,
+   "z": 116.2,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -119.8,
+   "z": 116.6,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": -151.6,
+   "z": 115.5,
+   "raio_copa_m": 5.8
+  },
+  {
+   "x": -193.5,
+   "z": 114.2,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -152.0,
+   "z": 115.1,
+   "raio_copa_m": 5.8
+  },
+  {
+   "x": -151.6,
+   "z": 115.1,
+   "raio_copa_m": 5.8
+  },
+  {
+   "x": 29.7,
+   "z": 118.3,
+   "raio_copa_m": 6.1
+  },
+  {
+   "x": -192.0,
+   "z": 113.0,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 61.7,
+   "z": 118.6,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": 61.4,
+   "z": 118.1,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": 61.0,
+   "z": 117.7,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": -54.2,
+   "z": 114.4,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -111.8,
+   "z": 112.3,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": -111.8,
+   "z": 111.9,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": -22.4,
+   "z": 113.8,
+   "raio_copa_m": 6.3
+  },
+  {
+   "x": 80.2,
+   "z": 116.1,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": 104.6,
+   "z": 113.8,
+   "raio_copa_m": 4.4
+  },
+  {
+   "x": -103.5,
+   "z": 108.8,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": -69.5,
+   "z": 109.5,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -69.1,
+   "z": 109.5,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -154.1,
+   "z": 106.4,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": -12.6,
+   "z": 109.6,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -95.9,
+   "z": 105.7,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": -57.8,
+   "z": 106.5,
+   "raio_copa_m": 5.8
+  },
+  {
+   "x": -95.9,
+   "z": 105.3,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": -84.8,
+   "z": 105.1,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": 53.1,
+   "z": 107.4,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": 52.8,
+   "z": 106.9,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": -0.9,
+   "z": 105.3,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -1.3,
+   "z": 104.9,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 50.0,
+   "z": 103.2,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": -76.0,
+   "z": 100.0,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -62.6,
+   "z": 99.5,
+   "raio_copa_m": 6.2
+  },
+  {
+   "x": -87.4,
+   "z": 98.5,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": -6.5,
+   "z": 98.7,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": 107.5,
+   "z": 100.0,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": 15.7,
+   "z": 97.2,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -163.0,
+   "z": 92.3,
+   "raio_copa_m": 7.5
+  },
+  {
+   "x": -21.0,
+   "z": 95.1,
+   "raio_copa_m": 3.5
+  },
+  {
+   "x": -64.4,
+   "z": 91.7,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -75.0,
+   "z": 89.4,
+   "raio_copa_m": 8.2
+  },
+  {
+   "x": 9.1,
+   "z": 90.5,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -195.0,
+   "z": 85.0,
+   "raio_copa_m": 4.4
+  },
+  {
+   "x": -195.3,
+   "z": 84.6,
+   "raio_copa_m": 4.4
+  },
+  {
+   "x": 80.5,
+   "z": 89.2,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": 38.3,
+   "z": 87.9,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -213.8,
+   "z": 81.7,
+   "raio_copa_m": 5.2
+  },
+  {
+   "x": 38.0,
+   "z": 87.5,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 37.6,
+   "z": 87.0,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 37.3,
+   "z": 86.6,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 36.9,
+   "z": 86.2,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -25.6,
+   "z": 84.4,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": 36.6,
+   "z": 85.8,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -98.3,
+   "z": 82.3,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": -25.6,
+   "z": 84.0,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -179.1,
+   "z": 80.1,
+   "raio_copa_m": 5.0
+  },
+  {
+   "x": -14.5,
+   "z": 83.4,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": 100.5,
+   "z": 86.0,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": 4.7,
+   "z": 83.4,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 4.7,
+   "z": 83.0,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 4.3,
+   "z": 82.6,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 34.5,
+   "z": 82.9,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 75.4,
+   "z": 82.6,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": 75.7,
+   "z": 82.6,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": -100.6,
+   "z": 76.5,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -67.0,
+   "z": 76.5,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": -30.0,
+   "z": 77.3,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": -29.7,
+   "z": 77.3,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": 96.1,
+   "z": 80.2,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -21.0,
+   "z": 74.7,
+   "raio_copa_m": 3.8
+  },
+  {
+   "x": 28.0,
+   "z": 74.2,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 27.7,
+   "z": 73.8,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -2.9,
+   "z": 72.7,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": -59.6,
+   "z": 70.1,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": 46.9,
+   "z": 72.6,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": -58.8,
+   "z": 69.7,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -26.3,
+   "z": 69.7,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -214.7,
+   "z": 64.9,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -214.7,
+   "z": 64.5,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -103.8,
+   "z": 66.7,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": 97.3,
+   "z": 70.1,
+   "raio_copa_m": 6.3
+  },
+  {
+   "x": -53.4,
+   "z": 65.4,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -53.0,
+   "z": 65.4,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -131.8,
+   "z": 63.1,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 89.7,
+   "z": 68.3,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": 90.1,
+   "z": 68.3,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": -34.9,
+   "z": 63.8,
+   "raio_copa_m": 7.7
+  },
+  {
+   "x": -34.8,
+   "z": 63.3,
+   "raio_copa_m": 7.7
+  },
+  {
+   "x": 41.4,
+   "z": 65.1,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 41.4,
+   "z": 64.7,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": -123.4,
+   "z": 59.2,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -182.3,
+   "z": 56.2,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -118.1,
+   "z": 57.3,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": -78.8,
+   "z": 56.6,
+   "raio_copa_m": 5.0
+  },
+  {
+   "x": -109.9,
+   "z": 55.5,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": -10.4,
+   "z": 55.8,
+   "raio_copa_m": 6.5
+  },
+  {
+   "x": -213.9,
+   "z": 49.8,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": 56.6,
+   "z": 54.9,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 57.0,
+   "z": 54.9,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 109.5,
+   "z": 56.1,
+   "raio_copa_m": 8.1
+  },
+  {
+   "x": 56.3,
+   "z": 54.5,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 56.7,
+   "z": 54.5,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 55.9,
+   "z": 54.0,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 56.3,
+   "z": 54.1,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -84.4,
+   "z": 49.9,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": 31.5,
+   "z": 50.2,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -16.7,
+   "z": 48.3,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -48.0,
+   "z": 46.3,
+   "raio_copa_m": 7.1
+  },
+  {
+   "x": 51.8,
+   "z": 48.7,
+   "raio_copa_m": 4.3
+  },
+  {
+   "x": -88.5,
+   "z": 44.1,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": -131.7,
+   "z": 41.0,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": -132.1,
+   "z": 40.6,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": -9.8,
+   "z": 43.5,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 71.6,
+   "z": 42.2,
+   "raio_copa_m": 7.1
+  },
+  {
+   "x": -164.9,
+   "z": 36.2,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -145.9,
+   "z": 35.8,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 45.7,
+   "z": 40.0,
+   "raio_copa_m": 3.8
+  },
+  {
+   "x": 20.7,
+   "z": 38.9,
+   "raio_copa_m": 6.7
+  },
+  {
+   "x": -84.8,
+   "z": 36.0,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -84.4,
+   "z": 35.6,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -119.5,
+   "z": 34.4,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 84.8,
+   "z": 36.0,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -190.5,
+   "z": 28.2,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 10.8,
+   "z": 29.7,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 11.2,
+   "z": 29.7,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -179.5,
+   "z": 24.8,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -60.3,
+   "z": 27.6,
+   "raio_copa_m": 5.6
+  },
+  {
+   "x": 59.9,
+   "z": 28.5,
+   "raio_copa_m": 4.9
+  },
+  {
+   "x": 30.9,
+   "z": 27.0,
+   "raio_copa_m": 5.2
+  },
+  {
+   "x": -170.0,
+   "z": 21.3,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": 93.0,
+   "z": 27.6,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -123.3,
+   "z": 22.0,
+   "raio_copa_m": 7.1
+  },
+  {
+   "x": -108.1,
+   "z": 22.4,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -159.8,
+   "z": 17.5,
+   "raio_copa_m": 4.9
+  },
+  {
+   "x": 63.9,
+   "z": 22.9,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 63.9,
+   "z": 22.5,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -73.4,
+   "z": 16.3,
+   "raio_copa_m": 7.5
+  },
+  {
+   "x": -148.0,
+   "z": 13.2,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": 77.1,
+   "z": 16.3,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 26.4,
+   "z": 14.6,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 76.7,
+   "z": 15.8,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": -38.4,
+   "z": 12.6,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": 26.0,
+   "z": 14.2,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 26.4,
+   "z": 14.2,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": -136.3,
+   "z": 8.6,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": -91.5,
+   "z": 8.9,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -82.8,
+   "z": 6.2,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": 4.2,
+   "z": 8.4,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -71.6,
+   "z": 4.9,
+   "raio_copa_m": 7.7
+  },
+  {
+   "x": -177.8,
+   "z": 0.6,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": -116.3,
+   "z": 2.1,
+   "raio_copa_m": 4.7
+  },
+  {
+   "x": 90.1,
+   "z": 6.8,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": 90.4,
+   "z": 6.8,
+   "raio_copa_m": 3.3
+  },
+  {
+   "x": 98.3,
+   "z": 4.6,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": 98.6,
+   "z": 4.6,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -100.8,
+   "z": -3.6,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": -100.4,
+   "z": -3.6,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": -3.7,
+   "z": -2.0,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -204.9,
+   "z": -7.4,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -44.6,
+   "z": -3.4,
+   "raio_copa_m": 6.6
+  },
+  {
+   "x": -3.7,
+   "z": -2.4,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -3.3,
+   "z": -2.4,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": 108.8,
+   "z": 0.3,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -204.9,
+   "z": -7.8,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -3.3,
+   "z": -2.8,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -2.9,
+   "z": -2.8,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -204.9,
+   "z": -8.2,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -162.2,
+   "z": -7.2,
+   "raio_copa_m": 7.1
+  },
+  {
+   "x": -2.9,
+   "z": -3.2,
+   "raio_copa_m": 5.7
+  },
+  {
+   "x": -204.9,
+   "z": -8.6,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -204.8,
+   "z": -9.0,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -91.4,
+   "z": -7.1,
+   "raio_copa_m": 4.6
+  },
+  {
+   "x": -83.1,
+   "z": -8.9,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -148.2,
+   "z": -12.6,
+   "raio_copa_m": 6.9
+  },
+  {
+   "x": -78.2,
+   "z": -10.8,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": 18.1,
+   "z": -8.8,
+   "raio_copa_m": 7.8
+  },
+  {
+   "x": 18.8,
+   "z": -9.2,
+   "raio_copa_m": 7.8
+  },
+  {
+   "x": -27.6,
+   "z": -10.8,
+   "raio_copa_m": 7.2
+  },
+  {
+   "x": -132.0,
+   "z": -15.8,
+   "raio_copa_m": 5.6
+  },
+  {
+   "x": -59.5,
+   "z": -14.0,
+   "raio_copa_m": 5.2
+  },
+  {
+   "x": -131.6,
+   "z": -16.2,
+   "raio_copa_m": 5.6
+  },
+  {
+   "x": 30.4,
+   "z": -12.2,
+   "raio_copa_m": 8.1
+  },
+  {
+   "x": 120.0,
+   "z": -10.0,
+   "raio_copa_m": 5.4
+  },
+  {
+   "x": 67.6,
+   "z": -12.9,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 68.0,
+   "z": -13.3,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": -81.6,
+   "z": -17.4,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -119.5,
+   "z": -21.3,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -47.1,
+   "z": -19.4,
+   "raio_copa_m": 6.1
+  },
+  {
+   "x": -105.7,
+   "z": -23.0,
+   "raio_copa_m": 5.3
+  },
+  {
+   "x": -9.0,
+   "z": -20.5,
+   "raio_copa_m": 7.3
+  },
+  {
+   "x": 41.9,
+   "z": -20.1,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": 42.2,
+   "z": -20.1,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": 126.7,
+   "z": -18.7,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": -35.7,
+   "z": -24.5,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -67.8,
+   "z": -25.7,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -25.4,
+   "z": -24.6,
+   "raio_copa_m": 3.0
+  },
+  {
+   "x": 10.6,
+   "z": -27.4,
+   "raio_copa_m": 7.3
+  },
+  {
+   "x": -91.5,
+   "z": -32.4,
+   "raio_copa_m": 3.8
+  },
+  {
+   "x": -69.7,
+   "z": -31.9,
+   "raio_copa_m": 3.2
+  },
+  {
+   "x": 86.5,
+   "z": -29.9,
+   "raio_copa_m": 6.9
+  },
+  {
+   "x": 27.8,
+   "z": -32.7,
+   "raio_copa_m": 6.5
+  },
+  {
+   "x": -72.3,
+   "z": -38.5,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": -72.3,
+   "z": -38.9,
+   "raio_copa_m": 3.6
+  },
+  {
+   "x": 42.1,
+   "z": -37.6,
+   "raio_copa_m": 6.5
+  },
+  {
+   "x": -74.9,
+   "z": -45.1,
+   "raio_copa_m": 3.5
+  },
+  {
+   "x": 53.4,
+   "z": -43.4,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": 53.4,
+   "z": -43.8,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": -89.5,
+   "z": -49.5,
+   "raio_copa_m": 3.1
+  },
+  {
+   "x": 68.3,
+   "z": -46.7,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": 68.7,
+   "z": -46.7,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -76.4,
+   "z": -52.1,
+   "raio_copa_m": 3.4
+  },
+  {
+   "x": -100.0,
+   "z": -53.1,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": 60.4,
+   "z": -57.1,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 93.9,
+   "z": -57.4,
+   "raio_copa_m": 5.9
+  },
+  {
+   "x": -48.5,
+   "z": -68.9,
+   "raio_copa_m": 3.7
+  },
+  {
+   "x": 111.2,
+   "z": -66.8,
+   "raio_copa_m": 6.0
+  },
+  {
+   "x": -41.3,
+   "z": -72.0,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": -40.9,
+   "z": -72.0,
+   "raio_copa_m": 3.9
+  },
+  {
+   "x": 72.9,
+   "z": -70.2,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 121.3,
+   "z": -69.8,
+   "raio_copa_m": 6.8
+  },
+  {
+   "x": 133.7,
+   "z": -75.9,
+   "raio_copa_m": 6.8
+  },
+  {
+   "x": 59.0,
+   "z": -79.9,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": -173.4,
+   "z": -89.8,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 145.4,
+   "z": -81.3,
+   "raio_copa_m": 6.8
+  },
+  {
+   "x": 65.6,
+   "z": -85.1,
+   "raio_copa_m": 6.2
+  },
+  {
+   "x": 88.4,
+   "z": -85.7,
+   "raio_copa_m": 4.5
+  },
+  {
+   "x": 99.8,
+   "z": -86.2,
+   "raio_copa_m": 4.8
+  },
+  {
+   "x": 154.8,
+   "z": -86.0,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 154.4,
+   "z": -86.4,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 112.6,
+   "z": -92.0,
+   "raio_copa_m": 5.4
+  },
+  {
+   "x": 63.8,
+   "z": -94.1,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": 63.9,
+   "z": -94.5,
+   "raio_copa_m": 5.5
+  },
+  {
+   "x": -85.7,
+   "z": -106.3,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 158.5,
+   "z": -100.5,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": 140.6,
+   "z": -101.8,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 140.6,
+   "z": -102.2,
+   "raio_copa_m": 4.2
+  },
+  {
+   "x": 62.9,
+   "z": -111.2,
+   "raio_copa_m": 7.0
+  },
+  {
+   "x": -70.0,
+   "z": -116.1,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": -63.7,
+   "z": -115.9,
+   "raio_copa_m": 9.0
+  },
+  {
+   "x": 108.1,
+   "z": -118.5,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": 152.5,
+   "z": -119.4,
+   "raio_copa_m": 4.9
+  },
+  {
+   "x": 67.9,
+   "z": -122.5,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": 67.9,
+   "z": -122.9,
+   "raio_copa_m": 4.0
+  },
+  {
+   "x": 52.6,
+   "z": -125.4,
+   "raio_copa_m": 6.4
+  },
+  {
+   "x": 75.5,
+   "z": -126.0,
+   "raio_copa_m": 6.2
+  },
+  {
+   "x": 32.6,
+   "z": -128.8,
+   "raio_copa_m": 4.9
+  },
+  {
+   "x": 82.6,
+   "z": -128.2,
+   "raio_copa_m": 5.1
+  },
+  {
+   "x": 97.3,
+   "z": -129.8,
+   "raio_copa_m": 3.1
+  }
+ ],
+ "ordem_geracao": [
+  "terreno base (Terrain com camada de grama + tiles em todas as células, inclusive margem)",
+  "S",
+  "G",
+  "V (asfalto, concreto, meio-fio)",
+  "E (laje + prédios)",
+  "A (árvores explícitas + espalhamento por densidade)",
+  "detalhes por classe",
+  "props de via"
+ ],
+ "regras_sem_vaos": [
+  "toda célula da grade_com_margem recebe uma base (tile) antes de qualquer detalhe",
+  "nenhuma célula pode ficar com o material padrão do Terrain: pintar a camada de grama no Terrain como fallback",
+  "árvores e detalhes não nascem em células E ou V (margem de 1,5 m)",
+  "relatório final: nº de células sem base = 0; contagem de instâncias por camada"
+ ],
+ "papeis": {
+  "chao_grama": {
+   "descricao": "Tile ou plano de grama, plano e repetível",
+   "palavras_chave_en": [
+    "grass",
+    "lawn",
+    "meadow",
+    "ground tile",
+    "grass plane"
+   ],
+   "palavras_chave_pt": [
+    "grama",
+    "gramado",
+    "relva"
+   ],
+   "tamanho_alvo": "≥ 4×4 m, altura ≤ 0,5 m",
+   "criterios": "Verde contínuo. Não aceitar tufo isolado."
+  },
+  "chao_terra": {
+   "descricao": "Tile ou plano de terra batida / areia",
+   "palavras_chave_en": [
+    "dirt",
+    "soil",
+    "sand",
+    "path",
+    "mud",
+    "ground tile"
+   ],
+   "palavras_chave_pt": [
+    "terra",
+    "terra batida",
+    "areia"
+   ],
+   "tamanho_alvo": "≥ 4×4 m, altura ≤ 0,5 m",
+   "criterios": "Cor de terra clara, sem marcações de via."
+  },
+  "laje_concreto": {
+   "descricao": "Laje, calçada ou piso de concreto, plano",
+   "palavras_chave_en": [
+    "concrete",
+    "pavement",
+    "sidewalk",
+    "plaza",
+    "paving",
+    "floor tile"
+   ],
+   "palavras_chave_pt": [
+    "concreto",
+    "calçada",
+    "piso",
+    "praça"
+   ],
+   "tamanho_alvo": "≥ 2×2 m, altura ≤ 0,3 m",
+   "criterios": "Cinza neutro, repetível."
+  },
+  "asfalto_modular": {
+   "descricao": "Peças modulares de rua: reta, curva, cruzamento, ponta",
+   "palavras_chave_en": [
+    "road",
+    "street",
+    "asphalt",
+    "straight",
+    "curve",
+    "corner",
+    "cross",
+    "intersection",
+    "end"
+   ],
+   "palavras_chave_pt": [
+    "rua",
+    "asfalto",
+    "via",
+    "curva",
+    "cruzamento"
+   ],
+   "tamanho_alvo": "largura 8–14 m, altura ≤ 0,5 m",
+   "criterios": "Conjunto completo do mesmo pacote. Excluir trilho/bonde.",
+   "exemplo_nao_obrigatorio": "exemplo já visto (não obrigatório): Env_Road_* (Pandazole)"
+  },
+  "meio_fio": {
+   "descricao": "Meio-fio / guia de calçada",
+   "palavras_chave_en": [
+    "curb",
+    "kerb",
+    "sidewalk edge"
+   ],
+   "palavras_chave_pt": [
+    "meio-fio",
+    "guia"
+   ],
+   "tamanho_alvo": "compr. 2–6 m, altura ≤ 0,3 m",
+   "criterios": "Peças reta e de canto."
+  },
+  "arvore_folhosa": {
+   "descricao": "Árvore folhosa de copa arredondada",
+   "palavras_chave_en": [
+    "tree",
+    "broadleaf",
+    "deciduous",
+    "oak",
+    "round tree"
+   ],
+   "palavras_chave_pt": [
+    "árvore",
+    "mangueira",
+    "copa"
+   ],
+   "tamanho_alvo": "altura 5–15 m, copa 4–12 m",
+   "criterios": "≥ 5 variações. Excluir: pine/conifer, dead, snow, fantasy, giant, sapling. Palmeira até 15%.",
+   "exemplo_nao_obrigatorio": "exemplos já vistos no projeto (não obrigatórios): S_Tree_A–J (Vegetation Stylized Kit)"
+  },
+  "arvore_grande": {
+   "descricao": "Árvore grande, uso raro (≤ 5%)",
+   "palavras_chave_en": [
+    "tree",
+    "big tree",
+    "large tree"
+   ],
+   "palavras_chave_pt": [
+    "árvore grande"
+   ],
+   "tamanho_alvo": "altura 12–18 m",
+   "criterios": "Mesmo estilo das demais árvores."
+  },
+  "arbusto": {
+   "descricao": "Arbusto / moita",
+   "palavras_chave_en": [
+    "bush",
+    "shrub",
+    "hedge"
+   ],
+   "palavras_chave_pt": [
+    "arbusto",
+    "moita"
+   ],
+   "tamanho_alvo": "0,5–2 m",
+   "criterios": "≥ 3 variações."
+  },
+  "samambaia_folhagem": {
+   "descricao": "Samambaia / folhagem baixa de sub-bosque",
+   "palavras_chave_en": [
+    "fern",
+    "foliage",
+    "undergrowth",
+    "ground cover",
+    "leaves"
+   ],
+   "palavras_chave_pt": [
+    "samambaia",
+    "folhagem"
+   ],
+   "tamanho_alvo": "0,3–1,2 m",
+   "criterios": "Pode ser plano ou cruzado (cards)."
+  },
+  "tufo_grama": {
+   "descricao": "Tufo de grama alta",
+   "palavras_chave_en": [
+    "grass",
+    "tuft",
+    "clump",
+    "patch"
+   ],
+   "palavras_chave_pt": [
+    "tufo",
+    "capim"
+   ],
+   "tamanho_alvo": "0,2–0,8 m",
+   "criterios": "Baixa contagem de triângulos (< 200)."
+  },
+  "flor": {
+   "descricao": "Flores baixas",
+   "palavras_chave_en": [
+    "flower",
+    "flowers",
+    "daisy",
+    "blossom"
+   ],
+   "palavras_chave_pt": [
+    "flor"
+   ],
+   "tamanho_alvo": "0,2–0,6 m",
+   "criterios": "Cores discretas."
+  },
+  "trevo_cobertura": {
+   "descricao": "Cobertura rasteira / trevo",
+   "palavras_chave_en": [
+    "clover",
+    "ground cover",
+    "weeds"
+   ],
+   "palavras_chave_pt": [
+    "trevo",
+    "mato"
+   ],
+   "tamanho_alvo": "0,1–0,4 m",
+   "criterios": "—"
+  },
+  "rocha_pequena": {
+   "descricao": "Rocha ou pedra pequena",
+   "palavras_chave_en": [
+    "rock",
+    "stone",
+    "boulder"
+   ],
+   "palavras_chave_pt": [
+    "rocha",
+    "pedra"
+   ],
+   "tamanho_alvo": "0,3–1,5 m",
+   "criterios": "Excluir: cliff, mountain, arch, crystal, ruin.",
+   "exemplo_nao_obrigatorio": "exemplo já visto (não obrigatório): HardRock_01–04 (Pandazole)"
+  },
+  "pedrinha": {
+   "descricao": "Pedrinhas / seixos",
+   "palavras_chave_en": [
+    "pebble",
+    "gravel",
+    "small stone"
+   ],
+   "palavras_chave_pt": [
+    "pedrinha",
+    "cascalho"
+   ],
+   "tamanho_alvo": "0,05–0,3 m",
+   "criterios": "—"
+  },
+  "tronco_caido": {
+   "descricao": "Tronco caído",
+   "palavras_chave_en": [
+    "log",
+    "fallen trunk",
+    "branch"
+   ],
+   "palavras_chave_pt": [
+    "tronco",
+    "galho"
+   ],
+   "tamanho_alvo": "compr. 1–4 m",
+   "criterios": "—"
+  },
+  "toco": {
+   "descricao": "Toco de árvore",
+   "palavras_chave_en": [
+    "stump"
+   ],
+   "palavras_chave_pt": [
+    "toco"
+   ],
+   "tamanho_alvo": "0,3–1 m",
+   "criterios": "—"
+  },
+  "cogumelo": {
+   "descricao": "Cogumelos (usar em grupos)",
+   "palavras_chave_en": [
+    "mushroom",
+    "toadstool",
+    "fungus",
+    "fungi"
+   ],
+   "palavras_chave_pt": [
+    "cogumelo",
+    "fungo"
+   ],
+   "tamanho_alvo": "0,1–0,6 m",
+   "criterios": "Cores naturais. Evitar brilho e estilo fantasia.",
+   "exemplo_nao_obrigatorio": "exemplo já visto (não obrigatório): Mashroom_01–04 (Pandazole)"
+  },
+  "lixeira": {
+   "descricao": "Lixeira",
+   "palavras_chave_en": [
+    "trash can",
+    "garbage bin",
+    "dustbin",
+    "waste bin"
+   ],
+   "palavras_chave_pt": [
+    "lixeira"
+   ],
+   "tamanho_alvo": "altura 0,5–1,2 m",
+   "criterios": "—"
+  },
+  "banco": {
+   "descricao": "Banco de praça",
+   "palavras_chave_en": [
+    "bench"
+   ],
+   "palavras_chave_pt": [
+    "banco"
+   ],
+   "tamanho_alvo": "compr. 1,5–2,2 m",
+   "criterios": "—"
+  },
+  "poste_luz": {
+   "descricao": "Poste de luz / luminária",
+   "palavras_chave_en": [
+    "street lamp",
+    "lamp post",
+    "light pole",
+    "street light"
+   ],
+   "palavras_chave_pt": [
+    "poste",
+    "luminária"
+   ],
+   "tamanho_alvo": "altura 4–9 m",
+   "criterios": "Sem luz ativa nem efeitos."
+  },
+  "hidrante": {
+   "descricao": "Hidrante",
+   "palavras_chave_en": [
+    "fire hydrant",
+    "hydrant"
+   ],
+   "palavras_chave_pt": [
+    "hidrante"
+   ],
+   "tamanho_alvo": "0,5–1 m",
+   "criterios": "—"
+  },
+  "cerca": {
+   "descricao": "Cerca baixa",
+   "palavras_chave_en": [
+    "fence"
+   ],
+   "palavras_chave_pt": [
+    "cerca"
+   ],
+   "tamanho_alvo": "compr. 2–4 m, altura 0,8–2 m",
+   "criterios": "—"
+  },
+  "anexo_pequeno": {
+   "descricao": "Construção pequena (anexo, guarita, depósito)",
+   "palavras_chave_en": [
+    "small house",
+    "shed",
+    "hut",
+    "kiosk",
+    "shop"
+   ],
+   "palavras_chave_pt": [
+    "casinha",
+    "depósito",
+    "guarita"
+   ],
+   "tamanho_alvo": "6–16 × 4–8 m, altura 3–6 m",
+   "criterios": "Telhado trocável para laranja ou cinza."
+  },
+  "casa_predio_pequeno": {
+   "descricao": "Casa ou prédio pequeno, 1–2 andares",
+   "palavras_chave_en": [
+    "house",
+    "cottage",
+    "small building",
+    "shop",
+    "residential"
+   ],
+   "palavras_chave_pt": [
+    "casa",
+    "prédio pequeno"
+   ],
+   "tamanho_alvo": "8–18 × 8–14 m, altura 4–9 m",
+   "criterios": "Excluir: skyscraper, tower, castle, ruin, church, medieval."
+  },
+  "bloco_baixo_comprido": {
+   "descricao": "Bloco comprido e baixo (salas, escola, administração)",
+   "palavras_chave_en": [
+    "school",
+    "office",
+    "government",
+    "classroom",
+    "long building",
+    "residential block"
+   ],
+   "palavras_chave_pt": [
+    "escola",
+    "bloco",
+    "salas",
+    "administração"
+   ],
+   "tamanho_alvo": "15–35 × 12–20 m, altura 5–10 m",
+   "criterios": "Telhado de duas águas ou telha; 1–2 andares. Excluir: arranha-céu, torre.",
+   "exemplo_nao_obrigatorio": "exemplo já visto (não obrigatório): Building_House_04 (SimplePoly City), 25×8×15 m"
+  },
+  "galpao_volume_grande": {
+   "descricao": "Galpão / volume grande de telhado plano ou metálico",
+   "palavras_chave_en": [
+    "warehouse",
+    "industrial",
+    "factory",
+    "hangar",
+    "depot",
+    "garage"
+   ],
+   "palavras_chave_pt": [
+    "galpão",
+    "armazém",
+    "oficina"
+   ],
+   "tamanho_alvo": "20–45 × 20–45 m, altura 8–14 m",
+   "criterios": "Excluir: em construção, ruína.",
+   "exemplo_nao_obrigatorio": "exemplo já visto (não obrigatório): industrial-buildings-building-C (Toon City), 25×13×25 m"
+  },
+  "quadra_coberta": {
+   "descricao": "Quadra / ginásio coberto",
+   "palavras_chave_en": [
+    "sports hall",
+    "gym",
+    "covered court",
+    "arena",
+    "basketball court"
+   ],
+   "palavras_chave_pt": [
+    "quadra",
+    "ginásio"
+   ],
+   "tamanho_alvo": "≈ 43 × 30 m, altura ≈ 9 m",
+   "criterios": "Se nada servir, usar box com material azul."
+  }
+ },
+ "uso_por_classe": [
+  {
+   "classe": "G",
+   "camada": "base",
+   "papel": "chao_grama",
+   "densidade_por_100m2": null,
+   "regra": "100% da área"
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "tufo_grama",
+   "densidade_por_100m2": 8,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "trevo_cobertura",
+   "densidade_por_100m2": 2,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "flor",
+   "densidade_por_100m2": 3,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "arbusto",
+   "densidade_por_100m2": 0.5,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "rocha_pequena",
+   "densidade_por_100m2": 0.4,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "pedrinha",
+   "densidade_por_100m2": 0.6,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "tronco_caido",
+   "densidade_por_100m2": 0.05,
+   "regra": null
+  },
+  {
+   "classe": "G",
+   "camada": "detalhe",
+   "papel": "cogumelo",
+   "densidade_por_100m2": 0.1,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "base",
+   "papel": "chao_grama",
+   "densidade_por_100m2": null,
+   "regra": "100% da área"
+  },
+  {
+   "classe": "A",
+   "camada": "árvores",
+   "papel": "arvore_folhosa",
+   "densidade_por_100m2": 1.1,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "árvores",
+   "papel": "arvore_grande",
+   "densidade_por_100m2": null,
+   "regra": "≤ 5% das árvores"
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "samambaia_folhagem",
+   "densidade_por_100m2": 3,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "arbusto",
+   "densidade_por_100m2": 1.5,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "rocha_pequena",
+   "densidade_por_100m2": 0.6,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "tronco_caido",
+   "densidade_por_100m2": 0.15,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "toco",
+   "densidade_por_100m2": 0.15,
+   "regra": null
+  },
+  {
+   "classe": "A",
+   "camada": "sub-bosque",
+   "papel": "cogumelo",
+   "densidade_por_100m2": null,
+   "regra": "0,8 (grupos de 3–5 na base de troncos e árvores)"
+  },
+  {
+   "classe": "S",
+   "camada": "base",
+   "papel": "chao_terra",
+   "densidade_por_100m2": null,
+   "regra": "100% da área"
+  },
+  {
+   "classe": "S",
+   "camada": "detalhe",
+   "papel": "rocha_pequena",
+   "densidade_por_100m2": 1.2,
+   "regra": null
+  },
+  {
+   "classe": "S",
+   "camada": "detalhe",
+   "papel": "pedrinha",
+   "densidade_por_100m2": 1.5,
+   "regra": null
+  },
+  {
+   "classe": "S",
+   "camada": "detalhe",
+   "papel": "tufo_grama",
+   "densidade_por_100m2": 2,
+   "regra": null
+  },
+  {
+   "classe": "S",
+   "camada": "detalhe",
+   "papel": "tronco_caido",
+   "densidade_por_100m2": 0.1,
+   "regra": null
+  },
+  {
+   "classe": "V",
+   "camada": "base",
+   "papel": "asfalto_modular",
+   "densidade_por_100m2": null,
+   "regra": "eixos de via"
+  },
+  {
+   "classe": "V",
+   "camada": "base",
+   "papel": "laje_concreto",
+   "densidade_por_100m2": null,
+   "regra": "pátios, estacionamentos e calçadas largas"
+  },
+  {
+   "classe": "V",
+   "camada": "borda",
+   "papel": "meio_fio",
+   "densidade_por_100m2": null,
+   "regra": "1 peça a cada ~4 m de borda V/G ou V/A"
+  },
+  {
+   "classe": "V",
+   "camada": "props",
+   "papel": "lixeira",
+   "densidade_por_100m2": null,
+   "regra": "1 a cada ~80 m de via principal"
+  },
+  {
+   "classe": "V",
+   "camada": "props",
+   "papel": "banco",
+   "densidade_por_100m2": null,
+   "regra": "1 a cada ~100 m, perto de edificações"
+  },
+  {
+   "classe": "V",
+   "camada": "props",
+   "papel": "poste_luz",
+   "densidade_por_100m2": null,
+   "regra": "1 a cada ~40 m, só vias principais"
+  },
+  {
+   "classe": "V",
+   "camada": "props",
+   "papel": "hidrante",
+   "densidade_por_100m2": null,
+   "regra": "3 a 4 no total"
+  },
+  {
+   "classe": "E",
+   "camada": "base",
+   "papel": "laje_concreto",
+   "densidade_por_100m2": null,
+   "regra": "laje com 1,5 m de margem sob cada footprint"
+  },
+  {
+   "classe": "E",
+   "camada": "props",
+   "papel": "lixeira",
+   "densidade_por_100m2": null,
+   "regra": "1 conjunto por edificação grande"
+  },
+  {
+   "classe": "E",
+   "camada": "props",
+   "papel": "banco",
+   "densidade_por_100m2": null,
+   "regra": "1 conjunto por edificação grande"
+  },
+  {
+   "classe": "E",
+   "camada": "props",
+   "papel": "cerca",
+   "densidade_por_100m2": null,
+   "regra": "opcional, só em lotes isolados"
+  },
+  {
+   "classe": "?",
+   "camada": "base",
+   "papel": "chao_grama",
+   "densidade_por_100m2": null,
+   "regra": "100% da área"
+  },
+  {
+   "classe": "?",
+   "camada": "detalhe",
+   "papel": "tufo_grama",
+   "densidade_por_100m2": 12,
+   "regra": null
+  },
+  {
+   "classe": "?",
+   "camada": "detalhe",
+   "papel": "arbusto",
+   "densidade_por_100m2": 2,
+   "regra": null
+  },
+  {
+   "classe": "?",
+   "camada": "detalhe",
+   "papel": "rocha_pequena",
+   "densidade_por_100m2": 0.6,
+   "regra": null
+  }
+ ],
+ "busca_assets": {
+  "pontuacao": {
+   "palavra_chave": 35,
+   "tamanho": 30,
+   "estilo": 20,
+   "qualidade": 10,
+   "pacote_preferido": 5,
+   "minimo": 50
+  },
+  "tolerancia_tamanho": {
+   "geral_pct": 35,
+   "itens_menores_1m_pct": 50
+  },
+  "escalas": {
+   "edificacoes_xz": [
+    0.7,
+    1.4
+   ],
+   "vegetacao_props_uniforme": [
+    0.7,
+    1.4
+   ],
+   "altura_edificacao_pct": 20
+  },
+  "max_pacotes_por_grupo": 2,
+  "min_variacoes_arvore": 5,
+  "cache_asset_store": {
+   "macOS": "~/Library/Unity/Asset Store-5.x",
+   "Windows": "C:\\Users\\<usuario>\\AppData\\Roaming\\Unity\\Asset Store-5.x",
+   "Linux": "~/.local/share/unity3d/Asset Store-5.x",
+   "obs": "só para pacotes .unitypackage; UPM só após instalar; caminho pode ser alterado; não importar sem aprovação"
+  },
+  "saidas": [
+   "CampusGenerated/inventario_assets.csv",
+   "CampusGenerated/escolhas_assets.json"
+  ],
+  "lacuna": "placeholder neutro na cor da classe + relatório; nunca deixar vazio"
+ }
+}

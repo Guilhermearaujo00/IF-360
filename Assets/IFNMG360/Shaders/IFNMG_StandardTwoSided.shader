@@ -85,7 +85,7 @@ Shader "IFNMG/Standard Two-Sided"
 
                 UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos)
 
-                fixed3 diffuse = (UNITY_LIGHTMODEL_AMBIENT.rgb + unity_LightColor[0].rgb * ndotl * atten.rgb) * albedo.rgb;
+                fixed3 diffuse = (UNITY_LIGHTMODEL_AMBIENT.rgb + unity_LightColor[0].rgb * ndotl * atten) * albedo.rgb;
                 return fixed4(diffuse, 1.0);
             }
             ENDCG
